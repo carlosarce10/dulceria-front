@@ -3,7 +3,7 @@
     <form class="formulario">
       <div class="fondoForm">
         <h2 class="login">Login</h2>
-        <div class="field" style="padding-top: 5%;">
+        <div class="field" style="padding-top: 5%">
           <div class="ui left icon input">
             <input type="email" placeholder="E-mail address" /><i
               class="user icon"
@@ -18,13 +18,27 @@
           </div>
         </div>
         <div>
-          <sui-button class="btnGo" basic secondary>GO</sui-button>
+          <sui-button
+            @click="$router.push('CajeroIndex')"
+            class="btnGo"
+            basic
+            secondary
+            >GO</sui-button
+          >
         </div>
-        <label style="color: #AEA4A4;" for="">Forgot your password?</label>
+        <label style="color: #aea4a4" for="">Forgot your password?</label>
       </div>
     </form>
   </div>
 </template>
+
+<script>
+import Vue from "vue";
+import VueRouter from "vue-router";
+
+Vue.use(VueRouter);
+export default {};
+</script>
 
 <style>
 .formulario {
