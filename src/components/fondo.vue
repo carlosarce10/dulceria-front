@@ -1,10 +1,10 @@
-<template class="">
+<template>
   <Particles
     id="tsparticles"
     :options="{
       background: {
         color: {
-          value: '#64B5F6',
+          value: '#ffffff',
         },
       },
       fpsLimit: 60,
@@ -29,10 +29,10 @@
       },
       particles: {
         color: {
-          value: '#ffffff',
+          value: '#64B5F6',
         },
         links: {
-          color: '#ffffff',
+          color: '#64B5F6',
           distance: 150,
           enable: true,
           opacity: 0.5,
