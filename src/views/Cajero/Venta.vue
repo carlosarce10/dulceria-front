@@ -4,6 +4,128 @@
     <div class="funciones">
       <h3>Venta</h3>
     </div>
+    <br />
+    <br />
+    <div class="table">
+      <sui-grid divided="vertically">
+        <sui-grid-row :columns="2">
+          <sui-grid-column>
+            <sui-table class="tableResume" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell>Nombre Producto</sui-table-header-cell>
+                  <sui-table-header-cell>Precio</sui-table-header-cell>
+                  <sui-table-header-cell>Cantidad</sui-table-header-cell>
+                  <sui-table-header-cell>
+                    Pieza (ml, gr, kg)
+                  </sui-table-header-cell>
+                  <sui-table-header-cell>Subtotal</sui-table-header-cell>
+                  <sui-table-header-cell>Editar Cantidad</sui-table-header-cell>
+                  <sui-table-header-cell
+                    >Eliminar Producto</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row>
+                  <sui-table-cell>Apples</sui-table-cell>
+                  <sui-table-cell>$212</sui-table-cell>
+                  <sui-table-cell>3</sui-table-cell>
+                  <sui-table-cell>5kg</sui-table-cell>
+                  <sui-table-cell>25</sui-table-cell>
+                  <sui-table-cell>
+                    <div is="sui-button-group">
+                      <sui-button positive
+                        ><i class="plus square icon"></i
+                      ></sui-button>
+                      <sui-button-or />
+                      <sui-button><i class="minus icon"></i></sui-button>
+                    </div>
+                  </sui-table-cell>
+                  <sui-table-cell>
+                    <sui-button negative circular icon="trash" />
+                  </sui-table-cell>
+                </sui-table-row>
+                <sui-table-row>
+                  <sui-table-cell>Apples</sui-table-cell>
+                  <sui-table-cell>$212</sui-table-cell>
+                  <sui-table-cell>3</sui-table-cell>
+                  <sui-table-cell>5kg</sui-table-cell>
+                  <sui-table-cell>25</sui-table-cell>
+                  <sui-table-cell>
+                    <div is="sui-button-group">
+                      <sui-button positive
+                        ><i class="plus square icon"></i
+                      ></sui-button>
+                      <sui-button-or />
+                      <sui-button><i class="minus icon"></i></sui-button>
+                    </div>
+                  </sui-table-cell>
+                  <sui-table-cell>
+                    <sui-button negative circular icon="trash" />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-grid-column>
+          <sui-grid-column>
+            <div class="search">
+              <div class="ui fluid category search">
+                <div class="ui icon input">
+                  <input
+                    class="prompt"
+                    type="text"
+                    placeholder="Buscar productos..."
+                  />
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </div>
+            <div class="products">
+              <sui-table basic>
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell>Producto</sui-table-header-cell>
+                    <sui-table-header-cell>Precio</sui-table-header-cell>
+                    <sui-table-header-cell>Acción</sui-table-header-cell>
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row>
+                    <sui-table-cell>Sabritas</sui-table-cell>
+                    <sui-table-cell>$50</sui-table-cell>
+                    <sui-table-cell>
+                      <sui-button positive
+                        ><i class="plus square icon"></i
+                      ></sui-button>
+                    </sui-table-cell>
+                  </sui-table-row>
+                  <sui-table-row>
+                    <sui-table-cell>Jumex</sui-table-cell>
+                    <sui-table-cell>$15</sui-table-cell>
+                    <sui-table-cell>
+                      <sui-button positive
+                        ><i class="plus square icon"></i
+                      ></sui-button>
+                    </sui-table-cell>
+                  </sui-table-row>
+                  <sui-table-row>
+                    <sui-table-cell>Corona</sui-table-cell>
+                    <sui-table-cell>$18</sui-table-cell>
+                    <sui-table-cell>
+                      <sui-button positive
+                        ><i class="plus square icon"></i
+                      ></sui-button>
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </div>
+          </sui-grid-column>
+        </sui-grid-row>
+      </sui-grid>
+    </div>
     <fondo />
   </div>
 </template>
@@ -30,6 +152,20 @@ export default {
 </script>
 
 <style>
+.products {
+  margin-right: 5%;
+}
+
+.search {
+  margin-top: -5%;
+  margin-right: 5%;
+  float: right;
+}
+
+.table {
+  margin-left: 5%;
+}
+
 .funciones {
   color: #64b5f6;
   line-height: 50px;
