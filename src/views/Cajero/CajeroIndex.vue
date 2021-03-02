@@ -1,8 +1,8 @@
 <template>
   <div>
     <cabecera />
-    <div>
-      <h3 class="funciones vl">Funciones de cajero</h3>
+    <div class="funciones">
+      <h3>Funciones de cajero</h3>
     </div>
     <div class="container">
       <div class="card">
@@ -108,6 +108,10 @@ export default {
   margin-left: 5%;
   border-left: 3px solid #64b5f6;
   height: 45px;
+}
+.funciones > h3 {
+  line-height: 50px;
+  margin-left: 0.5%;
 }
 .cards {
   width: 50%;

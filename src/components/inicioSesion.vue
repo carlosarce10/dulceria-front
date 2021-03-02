@@ -48,7 +48,7 @@ export default {};
   margin-top: 15%;
 }
 .fondoForm {
-  background-image: linear-gradient(to right, #2193b0, #57dbf8);
+  background-color: #f1f1f1;
   border-radius: 10px;
   padding-top: 10%;
   padding-bottom: 10%;
