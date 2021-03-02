@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border">
     <form class="formulario">
       <div class="fondoForm">
         <h2 class="login">Login</h2>
@@ -26,7 +26,7 @@
             >GO</sui-button
           >
         </div>
-        <label style="color: gray" for="">Forgot your password?</label>
+        <label style="color: white" for="">Forgot your password?</label>
       </div>
     </form>
   </div>
@@ -48,7 +48,7 @@ export default {};
   margin-top: 15%;
 }
 .fondoForm {
-  background-color: #fafafa;
+  background-image: linear-gradient(to right, #2193b0, #57dbf8);
   border-radius: 10px;
   padding-top: 10%;
   padding-bottom: 10%;
@@ -56,7 +56,7 @@ export default {};
 
 .login {
   padding-right: 50%;
-  color: #64b5f6;
+  color: #ffffff;
 }
 
 .btnGo {

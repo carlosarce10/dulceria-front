@@ -85,9 +85,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/header";
 import Particles from "particles.vue";
 import Vue from "vue";
-import VueRouter from "vue-router";
 
-Vue.use(VueRouter);
 Vue.use(Particles);
 export default {
   name: "Cajero",
@@ -97,11 +95,6 @@ export default {
   },
   data() {
     return {};
-  },
-  mounted() {
-    $(".special.cards .image").dimmer({
-      on: "hover",
-    });
   },
 };
 </script>
@@ -187,6 +180,7 @@ img {
   background: #ff0057;
   transform: translateY(11px);
 }
+
 .container .card .face.face2 .content h3 {
   margin: 10px 0 10px 0;
   padding: 0;
