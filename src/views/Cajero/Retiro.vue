@@ -1,7 +1,9 @@
 <template>
   <div>
     <cabecera />
-    <h1>Retiro</h1>
+    <div class="funciones">
+      <h3>Retiro</h3>
+    </div>
     <fondo />
   </div>
 </template>
@@ -26,3 +28,19 @@ export default {
   },
 };
 </script>
+
+<style>
+.funciones {
+  color: #64b5f6;
+  line-height: 50px;
+  width: 100%;
+  text-align: left;
+  margin-left: 5%;
+  border-left: 3px solid #64b5f6;
+  height: 45px;
+}
+.funciones > h3 {
+  line-height: 50px;
+  margin-left: 0.5%;
+}
+</style>
