@@ -19,14 +19,14 @@
         </div>
         <div>
           <sui-button
-            @click="$router.push('CajeroIndex')"
+            @click="$router.push('Cajero')"
             class="btnGo"
-            basic
-            secondary
+            primary
+            button
             >GO</sui-button
           >
         </div>
-        <label style="color: #aea4a4" for="">Forgot your password?</label>
+        <label style="color: gray" for="">Forgot your password?</label>
       </div>
     </form>
   </div>
@@ -48,7 +48,7 @@ export default {};
   margin-top: 15%;
 }
 .fondoForm {
-  background-color: white;
+  background-color: #fafafa;
   border-radius: 10px;
   padding-top: 10%;
   padding-bottom: 10%;
@@ -56,7 +56,7 @@ export default {};
 
 .login {
   padding-right: 50%;
-  color: #007bc6;
+  color: #64b5f6;
 }
 
 .btnGo {

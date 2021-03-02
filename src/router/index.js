@@ -1,7 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import CajeroIndex from "../views/Cajero/CajeroIndex";
+import Cajero from "../views/Cajero/CajeroIndex";
+import Venta from "../views/Cajero/Venta";
+import Consultar from "../views/Cajero/Consultar";
+import Retiro from "../views/Cajero/Retiro";
+import CerrarCaja from "../views/Cajero/CerrarCaja";
 
 Vue.use(VueRouter);
 
@@ -12,9 +16,30 @@ const routes = [
     component: Home,
   },
   {
-    path: "/CajeroIndex",
-    name: "CajeroIndex",
-    component: CajeroIndex,
+    path: "/Cajero",
+    name: "Cajero",
+    component: Cajero,
+  },
+
+  {
+    path: "/Venta",
+    name: "Venta",
+    component: Venta,
+  },
+  {
+    path: "/Consultar",
+    name: "Consultar",
+    component: Consultar,
+  },
+  {
+    path: "/Retiro",
+    name: "Retiro",
+    component: Retiro,
+  },
+  {
+    path: "/CerrarCaja",
+    name: "CerrarCaja",
+    component: CerrarCaja,
   },
 ];
 const router = new VueRouter({
