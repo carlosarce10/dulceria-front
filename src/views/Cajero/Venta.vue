@@ -15,24 +15,26 @@
                 <sui-table-row>
                   <sui-table-header-cell>Nombre Producto</sui-table-header-cell>
                   <sui-table-header-cell>Precio</sui-table-header-cell>
-                  <sui-table-header-cell>Cantidad</sui-table-header-cell>
+                  <sui-table-header-cell
+                    >Tipo (Menudeo/Mayoreo)</sui-table-header-cell
+                  >
                   <sui-table-header-cell>
                     Pieza (ml, gr, kg)
                   </sui-table-header-cell>
                   <sui-table-header-cell>Subtotal</sui-table-header-cell>
-                  <sui-table-header-cell>Editar Cantidad</sui-table-header-cell>
-                  <sui-table-header-cell
-                    >Eliminar Producto</sui-table-header-cell
-                  >
+                  <sui-table-header-cell>Cantidad</sui-table-header-cell>
+
+                  <sui-table-header-cell>Quitar Producto</sui-table-header-cell>
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row>
                   <sui-table-cell>Apples</sui-table-cell>
                   <sui-table-cell>$212</sui-table-cell>
-                  <sui-table-cell>3</sui-table-cell>
+                  <sui-table-cell>Menudeo</sui-table-cell>
                   <sui-table-cell>5kg</sui-table-cell>
                   <sui-table-cell>25</sui-table-cell>
+
                   <sui-table-cell>
                     <div is="sui-button-group">
                       <sui-button positive
@@ -43,15 +45,16 @@
                     </div>
                   </sui-table-cell>
                   <sui-table-cell>
-                    <sui-button negative circular icon="trash" />
+                    <sui-button negative circular icon="times" />
                   </sui-table-cell>
                 </sui-table-row>
                 <sui-table-row>
                   <sui-table-cell>Apples</sui-table-cell>
                   <sui-table-cell>$212</sui-table-cell>
-                  <sui-table-cell>3</sui-table-cell>
+                  <sui-table-cell>Menudeo</sui-table-cell>
                   <sui-table-cell>5kg</sui-table-cell>
                   <sui-table-cell>25</sui-table-cell>
+
                   <sui-table-cell>
                     <div is="sui-button-group">
                       <sui-button positive
@@ -62,7 +65,7 @@
                     </div>
                   </sui-table-cell>
                   <sui-table-cell>
-                    <sui-button negative circular icon="trash" />
+                    <sui-button negative circular icon="times" />
                   </sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
@@ -88,7 +91,9 @@
                   <sui-table-row>
                     <sui-table-header-cell>Producto</sui-table-header-cell>
                     <sui-table-header-cell>Precio</sui-table-header-cell>
-                    <sui-table-header-cell>Acción</sui-table-header-cell>
+                    <sui-table-header-cell
+                      >Agregar Producto</sui-table-header-cell
+                    >
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
