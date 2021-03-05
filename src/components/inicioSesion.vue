@@ -26,7 +26,7 @@
             >GO</sui-button
           >
         </div>
-        <label style="color: white" for="">Forgot your password?</label>
+        <label style="color: #a3a3a3" for="">Forgot your password?</label>
       </div>
     </form>
   </div>
@@ -56,7 +56,7 @@ export default {};
 
 .login {
   padding-right: 50%;
-  color: #ffffff;
+  color: #64b5f6;
 }
 
 .btnGo {

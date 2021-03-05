@@ -37,7 +37,7 @@
 
                   <sui-table-cell>
                     <div is="sui-button-group">
-                      <sui-button positive
+                      <sui-button class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                       <sui-button-or />
@@ -57,7 +57,7 @@
 
                   <sui-table-cell>
                     <div is="sui-button-group">
-                      <sui-button positive
+                      <sui-button class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                       <sui-button-or />
@@ -101,7 +101,7 @@
                     <sui-table-cell>Sabritas</sui-table-cell>
                     <sui-table-cell>$50</sui-table-cell>
                     <sui-table-cell>
-                      <sui-button positive
+                      <sui-button class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                     </sui-table-cell>
@@ -110,7 +110,7 @@
                     <sui-table-cell>Jumex</sui-table-cell>
                     <sui-table-cell>$15</sui-table-cell>
                     <sui-table-cell>
-                      <sui-button positive
+                      <sui-button class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                     </sui-table-cell>
@@ -119,7 +119,7 @@
                     <sui-table-cell>Corona</sui-table-cell>
                     <sui-table-cell>$18</sui-table-cell>
                     <sui-table-cell>
-                      <sui-button positive
+                      <sui-button class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                     </sui-table-cell>
@@ -183,5 +183,10 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+
+.btnModal {
+  background-color: #64b5f6 !important;
+  color: white !important;
 }
 </style>

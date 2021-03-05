@@ -17,28 +17,33 @@
           </sui-card>
         </div>
       </div>
-      <div class="nine wide column">
+      <div class="nine wide column fondoForm">
         <sui-form>
           <sui-form-fields fields="two">
             <sui-form-field>
               <label>Total ventas del día</label>
-              <sui-input icon="dollar sign" focus />
+              <sui-input icon="dollar sign" disabled />
             </sui-form-field>
             <sui-form-field>
               <label>Monto inicial</label>
-              <sui-input icon="dollar sign" focus />
+              <sui-input icon="dollar sign" disabled />
             </sui-form-field>
           </sui-form-fields>
           <sui-form-fields fields="two">
             <sui-form-field>
               <label>Monto actual</label>
-              <sui-input icon="dollar sign" focus />
+              <sui-input icon="dollar sign" disabled />
             </sui-form-field>
             <sui-form-field>
               <label>Total retirado</label>
-              <sui-input icon="dollar sign" focus />
+              <sui-input icon="dollar sign" disabled />
             </sui-form-field>
           </sui-form-fields>
+          <hr />
+          <div>
+            <sui-button class="btnModal">Aceptar</sui-button>
+            <sui-button class="btnModal2">Cancelar</sui-button>
+          </div>
         </sui-form>
       </div>
     </div>
@@ -86,14 +91,6 @@
         </div>
       </div>
     </div>
-    <div class="ui grid">
-      <div class="five wide column">
-        <sui-button floated="right" negative content="Cancelar" />
-      </div>
-      <div class="seven wide column">
-        <sui-button floated="right" positive content="Cerrar Caja" />
-      </div>
-    </div>
     <fondo />
   </div>
 </template>
@@ -132,5 +129,25 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.fondoForm {
+  background-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(165, 165, 165, 0.726);
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.btnModal {
+  background-color: #64b5f6 !important;
+  color: white !important;
+}
+.btnModal2 {
+  background-color: red !important;
+  color: white !important;
+}
+hr {
+  margin-top: 22%;
 }
 </style>
