@@ -19,22 +19,26 @@
       </div>
       <div class="nine wide column">
         <sui-form>
-          <sui-form-field>
-            <label>Total ventas del día</label>
-            <sui-input icon="dollar sign" focus />
-          </sui-form-field>
-          <sui-form-field>
-            <label>Monto inicial</label>
-            <sui-input icon="dollar sign" focus />
-          </sui-form-field>
-          <sui-form-field>
-            <label>Monto actual</label>
-            <sui-input icon="dollar sign" focus />
-          </sui-form-field>
-          <sui-form-field>
-            <label>Total retirado</label>
-            <sui-input icon="dollar sign" focus />
-          </sui-form-field>
+          <sui-form-fields fields="two">
+            <sui-form-field>
+              <label>Total ventas del día</label>
+              <sui-input icon="dollar sign" focus />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Monto inicial</label>
+              <sui-input icon="dollar sign" focus />
+            </sui-form-field>
+          </sui-form-fields>
+          <sui-form-fields fields="two">
+            <sui-form-field>
+              <label>Monto actual</label>
+              <sui-input icon="dollar sign" focus />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Total retirado</label>
+              <sui-input icon="dollar sign" focus />
+            </sui-form-field>
+          </sui-form-fields>
         </sui-form>
       </div>
     </div>
