@@ -109,4 +109,9 @@ export default {
   margin-left: 5%;
   margin-top: 5%;
 }
+.btnModal {
+  background-color: #64b5f6 !important;
+  color: white !important;
+  margin-bottom: -2% !important;
+}
 </style>
