@@ -93,7 +93,7 @@
 
 <script>
 import fondo from "../../components/fondo";
-import cabecera from "../../components/header";
+import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
