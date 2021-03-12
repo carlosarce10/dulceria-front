@@ -2,8 +2,13 @@
   <div>
     <header>
       <div class="wrapper">
-        <div class="logo">Logo</div>
-
+        <div class="logo">
+          <img
+            style="height: 100px; margin-bottom: -45%"
+            src="../assets/V1.png"
+            alt=""
+          />
+        </div>
         <nav>
           <a href="#">Inicio</a>
           <a href="#">Servicios</a>
@@ -29,13 +34,12 @@ header {
 }
 
 header .logo {
-  color: #f2f2f2;
-  font-size: 30px;
   line-height: 100px;
   float: left;
 }
 
 header nav {
+  margin-top: 1%;
   float: right;
   line-height: 100px;
 }

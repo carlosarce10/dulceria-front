@@ -19,7 +19,7 @@
         </div>
         <div>
           <sui-button
-            @click="$router.push('Cajero')"
+            @click="$router.push('Admin')"
             class="btnGo"
             primary
             button
