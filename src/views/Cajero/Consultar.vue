@@ -8,41 +8,37 @@
       <sui-table color="blue">
         <sui-table-header>
           <sui-table-row>
-            <sui-table-header-cell>Producto</sui-table-header-cell>
-            <sui-table-header-cell>Precio</sui-table-header-cell>
-            <sui-table-header-cell>Precio Mayoreo</sui-table-header-cell>
-            <sui-table-header-cell>Cantidad</sui-table-header-cell>
-            <sui-table-header-cell>Estatus</sui-table-header-cell>
+            <sui-table-header-cell text-align="center"
+              >Producto</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Precio</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Precio Mayoreo</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Cantidad</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Estatus</sui-table-header-cell
+            >
           </sui-table-row>
         </sui-table-header>
         <sui-table-body>
           <sui-table-row>
-            <sui-table-cell>Producto 1</sui-table-cell>
-            <sui-table-cell>$20</sui-table-cell>
-            <sui-table-cell>$15</sui-table-cell>
-            <sui-table-cell>10</sui-table-cell>
-            <sui-table-cell>Activo</sui-table-cell>
+            <sui-table-cell text-align="center">Producto 1</sui-table-cell>
+            <sui-table-cell text-align="center">$20</sui-table-cell>
+            <sui-table-cell text-align="center">$15</sui-table-cell>
+            <sui-table-cell text-align="center">10</sui-table-cell>
+            <sui-table-cell text-align="center">Activo</sui-table-cell>
           </sui-table-row>
           <sui-table-row>
-            <sui-table-cell>Producto 2</sui-table-cell>
-            <sui-table-cell>$15</sui-table-cell>
-            <sui-table-cell>$10</sui-table-cell>
-            <sui-table-cell>18</sui-table-cell>
-            <sui-table-cell>Activo</sui-table-cell>
-          </sui-table-row>
-          <sui-table-row>
-            <sui-table-cell>Producto 3</sui-table-cell>
-            <sui-table-cell>$18</sui-table-cell>
-            <sui-table-cell>$12</sui-table-cell>
-            <sui-table-cell>22</sui-table-cell>
-            <sui-table-cell>Activo</sui-table-cell>
-          </sui-table-row>
-          <sui-table-row>
-            <sui-table-cell>Producto 4</sui-table-cell>
-            <sui-table-cell>$8</sui-table-cell>
-            <sui-table-cell>$6</sui-table-cell>
-            <sui-table-cell>8</sui-table-cell>
-            <sui-table-cell>Activo</sui-table-cell>
+            <sui-table-cell text-align="center">Producto 2</sui-table-cell>
+            <sui-table-cell text-align="center">$15</sui-table-cell>
+            <sui-table-cell text-align="center">$10</sui-table-cell>
+            <sui-table-cell text-align="center">18</sui-table-cell>
+            <sui-table-cell text-align="center">Activo</sui-table-cell>
           </sui-table-row>
         </sui-table-body>
       </sui-table>

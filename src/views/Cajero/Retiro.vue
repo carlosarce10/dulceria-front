@@ -71,7 +71,7 @@
               <sui-input icon="dollar sign" />
             </sui-form-field>
           </sui-form-fields>
-          <hr />
+          <hr style="margin-top: 24%" />
           <div>
             <sui-button class="btnModal">Aceptar</sui-button>
             <sui-button class="btnModal2">Cancelar</sui-button>
@@ -82,6 +82,38 @@
     <div>
       <sui-modal v-model="open">
         <sui-modal-header>Ventas del día</sui-modal-header>
+        <sui-modal-body>
+          <sui-table color="blue">
+            <sui-table-header>
+              <sui-table-row>
+                <sui-table-header-cell text-align="center"
+                  >Producto/Paquete</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Cantidad</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Total</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Descuento</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Descuento de monto</sui-table-header-cell
+                >
+              </sui-table-row>
+            </sui-table-header>
+            <sui-table-body>
+              <sui-table-row>
+                <sui-table-cell text-align="center">Papas</sui-table-cell>
+                <sui-table-cell text-align="center">10</sui-table-cell>
+                <sui-table-cell text-align="center">$3,900</sui-table-cell>
+                <sui-table-cell text-align="center">$400</sui-table-cell>
+                <sui-table-cell text-align="center">$0</sui-table-cell>
+              </sui-table-row>
+            </sui-table-body>
+          </sui-table>
+        </sui-modal-body>
         <sui-modal-actions>
           <sui-button positive @click.native="toggle"> OK </sui-button>
         </sui-modal-actions>
@@ -174,9 +206,5 @@ export default {
   border-color: rgba(165, 165, 165, 0.445);
   padding-top: 2.5%;
   padding-bottom: 2.5%;
-}
-
-hr {
-  margin-top: 11%;
 }
 </style>

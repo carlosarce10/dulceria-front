@@ -15,6 +15,22 @@
               <sui-card-header>Daniel Beltrán</sui-card-header>
             </sui-card-content>
           </sui-card>
+          <sui-card
+            style="
+              margin-top: 7%;
+              position: relative !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+            "
+          >
+            <label style="margin-top: 5%; margin-bottom: -5%"
+              >Detalles de venta</label
+            ><br />
+            <sui-button class="btnModal3" @click.native="toggle"
+              >Ver</sui-button
+            >
+          </sui-card>
         </div>
       </div>
       <div class="nine wide column fondoForm">
@@ -22,24 +38,32 @@
           <sui-form-fields fields="two">
             <sui-form-field>
               <label>Total ventas del día</label>
-              <sui-input icon="dollar sign" disabled />
+              <sui-statistic-value class="labelBordes"
+                >$5,550</sui-statistic-value
+              >
             </sui-form-field>
             <sui-form-field>
               <label>Monto inicial</label>
-              <sui-input icon="dollar sign" disabled />
+              <sui-statistic-value class="labelBordes"
+                >$500</sui-statistic-value
+              >
             </sui-form-field>
           </sui-form-fields>
           <sui-form-fields fields="two">
             <sui-form-field>
               <label>Monto actual</label>
-              <sui-input icon="dollar sign" disabled />
+              <sui-statistic-value class="labelBordes"
+                >$859</sui-statistic-value
+              >
             </sui-form-field>
             <sui-form-field>
               <label>Total retirado</label>
-              <sui-input icon="dollar sign" disabled />
+              <sui-statistic-value class="labelBordes"
+                >$300</sui-statistic-value
+              >
             </sui-form-field>
           </sui-form-fields>
-          <hr />
+          <hr style="margin-top: 36%" />
           <div>
             <sui-button class="btnModal">Aceptar</sui-button>
             <sui-button class="btnModal2">Cancelar</sui-button>
@@ -47,49 +71,45 @@
         </sui-form>
       </div>
     </div>
-    <br />
-    <br />
-    <div class="ui two column centered grid">
-      <div class="row">
-        <div class="column">
-          <sui-table celled>
+    <div>
+      <sui-modal v-model="open">
+        <sui-modal-header>Ventas del día</sui-modal-header>
+        <sui-modal-body>
+          <sui-table color="blue">
             <sui-table-header>
-              <sui-table-row text-align="center">
-                <sui-table-header-cell>Producto</sui-table-header-cell>
-                <sui-table-header-cell>Cantidad Vendida</sui-table-header-cell>
-                <sui-table-header-cell>Subtotal</sui-table-header-cell>
+              <sui-table-row>
+                <sui-table-header-cell text-align="center"
+                  >Producto/Paquete</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Cantidad</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >SUbtotal</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Descuento</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
+                  >Descuento de monto</sui-table-header-cell
+                >
               </sui-table-row>
             </sui-table-header>
             <sui-table-body>
-              <sui-table-row text-align="center">
-                <sui-table-cell>Boing Mango</sui-table-cell>
-                <sui-table-cell>15</sui-table-cell>
-                <sui-table-cell>$150</sui-table-cell>
-              </sui-table-row>
-              <sui-table-row text-align="center">
-                <sui-table-cell>Doritos</sui-table-cell>
-                <sui-table-cell>26</sui-table-cell>
-                <sui-table-cell>$350</sui-table-cell>
-              </sui-table-row>
-              <sui-table-row text-align="center">
-                <sui-table-cell>Donas</sui-table-cell>
-                <sui-table-cell>10</sui-table-cell>
-                <sui-table-cell>$150</sui-table-cell>
+              <sui-table-row>
+                <sui-table-cell text-align="center">Papas</sui-table-cell>
+                <sui-table-cell text-align="center">10</sui-table-cell>
+                <sui-table-cell text-align="center">$3,900</sui-table-cell>
+                <sui-table-cell text-align="center">$400</sui-table-cell>
+                <sui-table-cell text-align="center">$0</sui-table-cell>
               </sui-table-row>
             </sui-table-body>
-            <sui-table-footer full-width>
-              <sui-table-row>
-                <sui-table-header-cell colspan="2"
-                  >Total:</sui-table-header-cell
-                >
-                <sui-table-header-cell colspan="4" text-align="center">
-                  $1500
-                </sui-table-header-cell>
-              </sui-table-row>
-            </sui-table-footer>
           </sui-table>
-        </div>
-      </div>
+        </sui-modal-body>
+        <sui-modal-actions>
+          <sui-button positive @click.native="toggle"> OK </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
     </div>
     <fondo />
   </div>
@@ -111,7 +131,12 @@ export default {
     cabecera,
   },
   data() {
-    return {};
+    return { open: false };
+  },
+  methods: {
+    toggle() {
+      this.open = !this.open;
+    },
   },
 };
 </script>
@@ -147,7 +172,19 @@ export default {
   background-color: red !important;
   color: white !important;
 }
-hr {
-  margin-top: 22%;
+
+.btnModal3 {
+  background-color: #64b5f6 !important;
+  color: white !important;
+  width: 25% !important;
+  margin-bottom: 5% !important;
+}
+
+.labelBordes {
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(165, 165, 165, 0.445);
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
 }
 </style>

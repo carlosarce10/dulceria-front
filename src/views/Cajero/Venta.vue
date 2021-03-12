@@ -13,27 +13,37 @@
             <sui-table class="tableResume" color="blue">
               <sui-table-header>
                 <sui-table-row>
-                  <sui-table-header-cell>Nombre Producto</sui-table-header-cell>
-                  <sui-table-header-cell>Precio</sui-table-header-cell>
-                  <sui-table-header-cell
+                  <sui-table-header-cell text-align="center"
+                    >Nombre Producto</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Precio</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
                     >Tipo (Menudeo/Mayoreo)</sui-table-header-cell
                   >
-                  <sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">
                     Pieza (ml, gr, kg)
                   </sui-table-header-cell>
-                  <sui-table-header-cell>Subtotal</sui-table-header-cell>
-                  <sui-table-header-cell>Cantidad</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center"
+                    >Subtotal</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Cantidad</sui-table-header-cell
+                  >
 
-                  <sui-table-header-cell>Quitar Producto</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center"
+                    >Quitar Producto</sui-table-header-cell
+                  >
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row>
-                  <sui-table-cell>Apples</sui-table-cell>
-                  <sui-table-cell>$212</sui-table-cell>
-                  <sui-table-cell>Menudeo</sui-table-cell>
-                  <sui-table-cell>5kg</sui-table-cell>
-                  <sui-table-cell>25</sui-table-cell>
+                  <sui-table-cell text-align="center">Apples</sui-table-cell>
+                  <sui-table-cell text-align="center">$212</sui-table-cell>
+                  <sui-table-cell text-align="center">Menudeo</sui-table-cell>
+                  <sui-table-cell text-align="center">5kg</sui-table-cell>
+                  <sui-table-cell text-align="center">25</sui-table-cell>
 
                   <sui-table-cell>
                     <div is="sui-button-group">
@@ -44,16 +54,22 @@
                       <sui-button><i class="minus icon"></i></sui-button>
                     </div>
                   </sui-table-cell>
-                  <sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: block;
+                      margin-left: auto;
+                      margin-right: auto;
+                    "
+                  >
                     <sui-button negative circular icon="times" />
                   </sui-table-cell>
                 </sui-table-row>
                 <sui-table-row>
-                  <sui-table-cell>Apples</sui-table-cell>
-                  <sui-table-cell>$212</sui-table-cell>
-                  <sui-table-cell>Menudeo</sui-table-cell>
-                  <sui-table-cell>5kg</sui-table-cell>
-                  <sui-table-cell>25</sui-table-cell>
+                  <sui-table-cell text-align="center">Apples</sui-table-cell>
+                  <sui-table-cell text-align="center">$212</sui-table-cell>
+                  <sui-table-cell text-align="center">Menudeo</sui-table-cell>
+                  <sui-table-cell text-align="center">5kg</sui-table-cell>
+                  <sui-table-cell text-align="center">25</sui-table-cell>
 
                   <sui-table-cell>
                     <div is="sui-button-group">
@@ -64,7 +80,13 @@
                       <sui-button><i class="minus icon"></i></sui-button>
                     </div>
                   </sui-table-cell>
-                  <sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: block;
+                      margin-left: auto;
+                      margin-right: auto;
+                    "
+                  >
                     <sui-button negative circular icon="times" />
                   </sui-table-cell>
                 </sui-table-row>
@@ -89,37 +111,61 @@
               <sui-table basic>
                 <sui-table-header>
                   <sui-table-row>
-                    <sui-table-header-cell>Producto</sui-table-header-cell>
-                    <sui-table-header-cell>Precio</sui-table-header-cell>
-                    <sui-table-header-cell
+                    <sui-table-header-cell text-align="center"
+                      >Producto</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Precio</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
                       >Agregar Producto</sui-table-header-cell
                     >
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
                   <sui-table-row>
-                    <sui-table-cell>Sabritas</sui-table-cell>
-                    <sui-table-cell>$50</sui-table-cell>
+                    <sui-table-cell text-align="center"
+                      >Sabritas</sui-table-cell
+                    >
+                    <sui-table-cell text-align="center">$50</sui-table-cell>
                     <sui-table-cell>
-                      <sui-button class="btnModal"
+                      <sui-button
+                        style="
+                          display: block;
+                          margin-left: auto;
+                          margin-right: auto;
+                        "
+                        class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                     </sui-table-cell>
                   </sui-table-row>
                   <sui-table-row>
-                    <sui-table-cell>Jumex</sui-table-cell>
-                    <sui-table-cell>$15</sui-table-cell>
+                    <sui-table-cell text-align="center">Jumex</sui-table-cell>
+                    <sui-table-cell text-align="center">$15</sui-table-cell>
                     <sui-table-cell>
-                      <sui-button class="btnModal"
+                      <sui-button
+                        style="
+                          display: block;
+                          margin-left: auto;
+                          margin-right: auto;
+                        "
+                        class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                     </sui-table-cell>
                   </sui-table-row>
                   <sui-table-row>
-                    <sui-table-cell>Corona</sui-table-cell>
-                    <sui-table-cell>$18</sui-table-cell>
+                    <sui-table-cell text-align="center">Corona</sui-table-cell>
+                    <sui-table-cell text-align="center">$18</sui-table-cell>
                     <sui-table-cell>
-                      <sui-button class="btnModal"
+                      <sui-button
+                        style="
+                          display: block;
+                          margin-left: auto;
+                          margin-right: auto;
+                        "
+                        class="btnModal"
                         ><i class="plus square icon"></i
                       ></sui-button>
                     </sui-table-cell>
