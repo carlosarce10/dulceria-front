@@ -6,7 +6,7 @@
     </div>
     <!-- para lista es: {{ result[0].name }} -->
     <!-- para objetos es: {{ result.name }} -->
-    <p>Title: {{ result[0].name }}</p>
+    <p>Title: {{ result }}</p>
     <fondo />
   </div>
 </template>
