@@ -4,6 +4,9 @@
     <div class="funciones">
       <h3>Productos</h3>
     </div>
+    <!-- para lista es: {{ result[0].name }} -->
+    <!-- para objetos es: {{ result.name }} -->
+    <p>Title: {{ result[0].name }}</p>
     <fondo />
   </div>
 </template>
@@ -13,6 +16,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
+import axios from "axios";
 
 Vue.use(Particles);
 export default {
@@ -20,6 +24,16 @@ export default {
   components: {
     fondo,
     cabecera,
+  },
+  data() {
+    return {
+      result: null,
+    };
+  },
+  mounted() {
+    axios
+      .get("http://localhost:8080/brand/list/true")
+      .then((result) => (this.result = result.data));
   },
 };
 </script>
