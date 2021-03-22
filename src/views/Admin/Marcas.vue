@@ -11,7 +11,10 @@
         <sui-tab-pane title="Marcas Activas">
           <div class="table">
             <div class="search">
-              <div class="ui fluid category search">
+              <div
+                style="margin-top: 1%; margin-bottom: 1%"
+                class="ui fluid category search"
+              >
                 <div class="ui icon input">
                   <div style="margin-right: 5%">
                     <sui-button
@@ -45,7 +48,7 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="result in result" :key="result.name">
+                  <sui-table-row v-for="result in result" :key="result.id">
                     <sui-table-cell text-align="center">{{
                       result.name
                     }}</sui-table-cell>
@@ -62,7 +65,13 @@
                         circular
                         icon="edit"
                       />
-                      <sui-button negative circular icon="times" />
+                      <sui-button
+                        id="delete"
+                        v-on:click="eliminar(result.id)"
+                        negative
+                        circular
+                        icon="times"
+                      />
                     </sui-table-cell>
                   </sui-table-row>
                 </sui-table-body>
@@ -93,7 +102,7 @@
                       >Marca</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
+                      >Recuperar</sui-table-header-cell
                     >
                   </sui-table-row>
                 </sui-table-header>
@@ -110,18 +119,14 @@
                       "
                     >
                       <sui-button
+                        id="recuperar"
+                        v-on:click="recuperar(results.id)"
                         style="background: #64b5f6"
                         negative
                         circular
-                        icon="edit"
+                        icon="redo"
                       />
-                      <sui-button
-                        id="delete"
-                        negative
-                        circular
-                        icon="times"
-                        type="submit"
-                      />
+                      
                     </sui-table-cell>
                   </sui-table-row>
                 </sui-table-body>
@@ -136,9 +141,12 @@
       <sui-modal v-model="open">
         <sui-modal-header style="margin-bottom: 3%"
           >Registrar nueva marca</sui-modal-header
-        >
+        >        
         <sui-modal-body>
-          <sui-form id="formRegistro">
+          <sui-form
+            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+            id="formRegistro"
+          >
             <sui-form-field>
               <label>Nombre de la marca:</label>
               <input v-model="name" />
@@ -215,10 +223,18 @@ export default {
       location.reload();
     },
 
-    delete(id) {
-      console.log("entre");
+    eliminar(id) {
+      console.log(id)
       axios.delete("http://localhost:8080/brand/del/" + id);
+      location.reload();
+      
     },
+
+    recuperar(id){
+      console.log(id)
+      axios.put("http://localhost:8080/brand/put/"+ id);
+      location.reload();
+    }
   },
 };
 </script>
