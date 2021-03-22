@@ -225,14 +225,18 @@ export default {
 
     eliminar(id) {
       console.log(id)
-      axios.delete("http://localhost:8080/brand/del/" + id);
+      axios.delete("http://localhost:8080/brand/del/" + id)
+      .catch((error) => console.log(error))
+      .finally(() => (this.loading = false));
       location.reload();
       
     },
 
     recuperar(id){
       console.log(id)
-      axios.put("http://localhost:8080/brand/put/"+ id);
+      axios.put("http://localhost:8080/brand/put/"+ id)
+      .catch((error) => console.log(error))
+      .finally(() => (this.loading = false));
       location.reload();
     }
   },
