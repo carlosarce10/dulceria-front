@@ -4,6 +4,7 @@
     <div class="funciones">
       <h3>Cajero</h3>
     </div>
+    <button @click="showAlert">Hello world</button>
     <fondo />
   </div>
 </template>
@@ -20,6 +21,23 @@ export default {
   components: {
     fondo,
     cabecera,
+  },
+  data() {
+    return {
+      open: false,
+      result: null,
+      results: null,
+      id: null,
+      loading: true,
+      name: "",
+      price: null,
+    };
+  },
+  methods: {
+    showAlert() {
+      // Use sweetalert2
+      this.$swal("Hello Vue world!!!");
+    },
   },
 };
 </script>

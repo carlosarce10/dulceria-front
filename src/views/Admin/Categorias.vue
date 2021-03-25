@@ -4,7 +4,7 @@
     <div class="funciones">
       <h3>Categorías</h3>
     </div>
-<div style="width: 60%; margin-left: 20%">
+    <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
       <sui-tab>
         <sui-tab-pane title="Categorías Activas">
@@ -125,7 +125,6 @@
                         circular
                         icon="redo"
                       />
-                      
                     </sui-table-cell>
                   </sui-table-row>
                 </sui-table-body>
@@ -140,7 +139,7 @@
       <sui-modal v-model="open">
         <sui-modal-header style="margin-bottom: 3%"
           >Registrar nueva categoría</sui-modal-header
-        >        
+        >
         <sui-modal-body>
           <sui-form
             style="margin-bottom: 5%; width: 50%; margin-left: 25%"
@@ -184,17 +183,17 @@ export default {
     fondo,
     cabecera,
   },
-  data (){
-    return{
+  data() {
+    return {
       open: false,
       result: null,
       results: null,
       id: null,
       loading: true,
-      name: "",
-    }
+      name: null,
+    };
   },
-   mounted() {
+  mounted() {
     axios
       .get("http://localhost:8080/category/list/true")
       .then((result) => (this.result = result.data))
@@ -219,26 +218,27 @@ export default {
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-     
+
       location.reload();
     },
 
     eliminar(id) {
-      console.log(id)
-      axios.delete("http://localhost:8080/category/del/" + id)
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+      console.log(id);
+      axios
+        .delete("http://localhost:8080/category/del/" + id)
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
       location.reload();
-      
     },
 
-    recuperar(id){
-      console.log(id)
-      axios.put("http://localhost:8080/category/put/"+ id)
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+    recuperar(id) {
+      console.log(id);
+      axios
+        .put("http://localhost:8080/category/put/" + id)
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
       location.reload();
-    }
+    },
   },
 };
 </script>
