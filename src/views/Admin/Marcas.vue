@@ -192,12 +192,6 @@ export default {
       .then((result) => (this.result = result.data))
       .catch((error) => console.log(error))
       .finally(() => (this.loading = false));
-
-    axios
-      .get("http://localhost:8080/brand/list/false")
-      .then((results) => (this.results = results.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
   },
   methods: {
     toggle() {

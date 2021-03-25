@@ -10,10 +10,7 @@
           />
         </div>
         <nav>
-          <a href="#">Inicio</a>
-          <a href="#">Servicios</a>
-          <a href="#">Proyectos</a>
-          <a href="#">Contacto</a>
+          <a href="#">Cerrar sesión</a>
         </nav>
       </div>
     </header>

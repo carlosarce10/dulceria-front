@@ -26,18 +26,61 @@
           </div>
           <div class="tablet mobile only row">
             <div class="column">
-              <div class="menuHamburguesa">
+              <div>
                 <a id="mobile_item" class="item"><i class="bars icon"></i></a>
+                <sui-checkbox class="menuHamburguesa" v-model="visible" />
               </div>
             </div>
           </div>
         </div>
         <div>
           <div class="ui sidebar vertical menu">
-            <a class="item">Menu Item A</a>
+            <!-- <a class="item">Menu Item A</a>
             <a class="item">Menu Item B</a>
             <a class="item">Menu Item C</a>
-            <a class="item">Menu Item D</a>
+            <a class="item">Menu Item D</a> -->
+            <sui-sidebar-pushable>
+              <sui-menu
+                is="sui-sidebar"
+                :visible="visible"
+                animation="overlay"
+                width="thin"
+                icon="labeled"
+                inverted
+                vertical
+              >
+                <sui-menu-item>
+                  <a class="item" href="/Admin">Productos</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/Inventario">Inventario</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/CajeroAdmin">Cajeros</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/Marcas">Marcas</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/Categorias">Categorías</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/Ventas">Ventas</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/Paquetes">Paquetes</a>
+                </sui-menu-item>
+                <sui-menu-item>
+                  <a class="item" href="/Descuentos">Descuentos</a>
+                </sui-menu-item>
+              </sui-menu>
+              <sui-sidebar-pusher>
+                <sui-segment>
+                  <h3 is="sui-header">Application Content</h3>
+                  <docs-wireframe name="paragraph" />
+                </sui-segment>
+              </sui-sidebar-pusher>
+            </sui-sidebar-pushable>
           </div>
         </div>
       </div>
@@ -97,17 +140,25 @@ header nav a:hover {
   margin: 0 !important;
 }
 .menuHamburguesa {
-  display: flex;
-  padding: 10px 20px;
-  margin-top: 5%;
-  max-width: 60px;
-  background: white;
-  text-shadow: 1px 1px black;
-  float: right;
+  display: flex !important;
+  padding: 10px 20px !important;
+  margin-top: 5% !important;
+  max-width: 60px !important;
+  background: white !important;
+  text-shadow: 1px 1px black !important;
+  float: right !important;
 }
 </style>
 
 <script>
+export default {
+  name: "Sidebar",
+  data() {
+    return {
+      visible: false,
+    };
+  },
+};
 /* const $ = require("jquery");
 $(".ui.sidebar")
   .sidebar({
