@@ -60,6 +60,9 @@
                       "
                     >
                       <sui-button
+                        @click.native="toggleEdit"
+                        id="editar"
+                        v-on:click="editar(result.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -126,7 +129,6 @@
                         circular
                         icon="redo"
                       />
-                      
                     </sui-table-cell>
                   </sui-table-row>
                 </sui-table-body>
@@ -141,7 +143,7 @@
       <sui-modal v-model="open">
         <sui-modal-header style="margin-bottom: 3%"
           >Registrar nueva marca</sui-modal-header
-        >        
+        >
         <sui-modal-body>
           <sui-form
             style="margin-bottom: 5%; width: 50%; margin-left: 25%"
@@ -166,6 +168,35 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+    <div>
+      <sui-modal v-model="openEdit" v-for="result in result" :key="result.id">
+        <sui-modal-header style="margin-bottom: 3%"
+          >Modificar marca</sui-modal-header
+        >
+        <sui-modal-body>
+          <sui-form
+            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+            id="formModificar"
+          >
+            <sui-form-field>
+              <label>Nombre de la marca:</label>
+              <input v-model="name" />
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-body>
+        <sui-modal-actions style="margin-bottom: 3%">
+          <sui-button
+            id="editar"
+            v-on:click="editar(result.id)"
+            positive
+            @click.native="toggleEdit"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
     <fondo />
   </div>
 </template>
@@ -175,7 +206,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
-import axios from "axios";
+import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
@@ -187,17 +218,25 @@ export default {
   data() {
     return {
       open: false,
+      openEdit: false,
       result: null,
       results: null,
+      resultEdit: null,
       id: null,
       loading: true,
       name: "",
     };
   },
   mounted() {
-    axios
-      .get("http://localhost:8080/brand/list/true")
+    api
+      .doGet("/brand/list/true")
       .then((result) => (this.result = result.data))
+      .catch((error) => console.log(error))
+      .finally(() => (this.loading = false));
+
+    api
+      .doGet("/brand/list/false")
+      .then((results) => (this.results = results.data))
       .catch((error) => console.log(error))
       .finally(() => (this.loading = false));
   },
@@ -205,34 +244,43 @@ export default {
     toggle() {
       this.open = !this.open;
     },
+    toggleEdit() {
+      this.openEdit = !this.openEdit;
+    },
 
     register() {
-      axios
-        .post("http://localhost:8080/brand/save", {
+      api
+        .doPost("brand/save/", {
           name: this.name,
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      this.$router.push("/Marcas");
-      location.reload();
+      //this.$router.push("/Marcas");
+      //location.reload();
     },
-
+    getId(id) {
+      api
+        .doGet("/brand/get/" + id)
+        .then((resultEdit) => (this.resultEdit = resultEdit.data))
+        .catch((error) => console.log(error));
+    },
     eliminar(id) {
-      console.log(id)
-      axios.delete("http://localhost:8080/brand/del/" + id)
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+      console.log(id);
+      api
+        .doDelete("brand/del/" + id)
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
       location.reload();
-      
     },
 
-    recuperar(id){
-      console.log(id)
-      axios.put("http://localhost:8080/brand/put/"+ id)
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+    editar(id) {
+      console.log(id);
+      api
+        .doPut("brand/put/" + id)
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
       location.reload();
-    }
+    },
   },
 };
 </script>

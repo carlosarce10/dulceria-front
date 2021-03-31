@@ -9,25 +9,22 @@
 
       <sui-tab>
         <sui-tab-pane title="Productos Activos">
-          <sui-card-group :items-per-row="3">
-            <sui-card>
-              <sui-dimmer-dimmable
-                @mouseenter.native="cardOneActive = true"
-                @mouseleave.native="cardOneActive = false"
-              >
-                <sui-dimmer blurring :active="cardOneActive">
-                  <sui-button inverted>Add Friend</sui-button>
-                </sui-dimmer>
-              </sui-dimmer-dimmable>
-              <sui-card-content v-for="result in result" :key="result.id">
-                <sui-card-header>{{ result.name }}</sui-card-header>
-                <sui-card-meta>{{ result.retail_price }}</sui-card-meta>
-              </sui-card-content>
-              <sui-card-content extra>
-                <sui-icon name="users" /> 2 Members
-              </sui-card-content>
-            </sui-card>
-          </sui-card-group>
+          <div style="justify-content: center; align-content: center">
+            <sui-card-group :items-per-row="4">
+              <sui-card v-for="result in result" :key="result.id">
+                <sui-dimmer-dimmable>
+                  <sui-dimmer>
+                    <sui-button inverted>Add Friend</sui-button>
+                  </sui-dimmer>
+                </sui-dimmer-dimmable>
+                <sui-card-content>
+                  <sui-card-header>{{ result.name }}</sui-card-header>
+                  <sui-card-meta>{{ result.retailPrice }}</sui-card-meta>
+                  <sui-card-meta>{{ result.wholesalePrice }}</sui-card-meta>
+                </sui-card-content>
+              </sui-card>
+            </sui-card-group>
+          </div>
         </sui-tab-pane>
         <sui-tab-pane title="Productos Inactivos">
           <div class="table">
@@ -57,9 +54,9 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="results in results" :key="results.id">
+                  <sui-table-row v-for="resultF in resultF" :key="resultF.id">
                     <sui-table-cell text-align="center">{{
-                      results.name
+                      resultF.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -70,7 +67,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="recuperar(results.id)"
+                        v-on:click="recuperar(resultF.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -110,25 +107,19 @@
             </sui-form-field>
             <sui-form-field>
               <label>Contenido Neto:</label>
-              <input v-model="net_content" />
+              <input v-model="netContent" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio menudeo:</label>
-              <input v-model="retail_price" />
+              <input v-model="retailPrice" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio mayoreo:</label>
-              <input v-model="wholesale_price" />
+              <input v-model="wholesalePrice" />
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
-              <sui-dropdown
-                v-for="resultss in resultss"
-                :key="resultss.id"
-                placeholder="Marcas..."
-                selection
-                v-model="brand"
-              />
+              <sui-dropdown placeholder="Marcas..." selection v-model="brand" />
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
@@ -174,21 +165,26 @@ export default {
   data() {
     return {
       name: "",
-      net_content: "",
-      retail_price: "",
-      wholesale_price: "",
-      brand: "",
-      category: "",
+      netContent: "",
+      retailPrice: "",
+      wholesalePric: "",
+      brand: null,
+      category: null,
       open: false,
       result: null,
       results: null,
       resultss: null,
+      resultF: null,
     };
   },
   mounted() {
     axios
       .get("http://localhost:8080/product/list/true")
       .then((result) => (this.result = result.data))
+      .catch((error) => console.log(error));
+    axios
+      .get("http://localhost:8080/product/list/false")
+      .then((resultF) => (this.resultF = resultF.data))
       .catch((error) => console.log(error));
     axios
       .get("http://localhost:8080/category/list/true")
