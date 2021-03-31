@@ -249,8 +249,8 @@ export default {
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      this.$router.push("/Paquetes");
-      location.reload();
+      this.$swal("Se ha registrado exitosamente");
+      this.onReset();
     },
     eliminar(id) {
       api
@@ -267,6 +267,10 @@ export default {
         .finally(() => (this.loading = false));
       location.reload();
     },
+    onReset() {
+      location.reload();
+    },
+    showAlert() {},
   },
 };
 </script>

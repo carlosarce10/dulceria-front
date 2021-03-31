@@ -32,7 +32,7 @@ export default {
     return this.execute("POST", endPoint, object);
   },
   doPut(endPoint, object) {
-    return this.execute("PUT", endPoint + object.id, object);
+    return this.execute("PUT", endPoint, object);
   },
   doDelete(endPoint) {
     return this.execute("DELETE", endPoint);

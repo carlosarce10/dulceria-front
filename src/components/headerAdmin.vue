@@ -28,17 +28,13 @@
             <div class="column">
               <div>
                 <a id="mobile_item" class="item"><i class="bars icon"></i></a>
-                <sui-checkbox class="menuHamburguesa" v-model="visible" />
+                <sui-button class="menuHamburguesa" v-on:click="onVisible()" />
               </div>
             </div>
           </div>
         </div>
         <div>
           <div class="ui sidebar vertical menu">
-            <!-- <a class="item">Menu Item A</a>
-            <a class="item">Menu Item B</a>
-            <a class="item">Menu Item C</a>
-            <a class="item">Menu Item D</a> -->
             <sui-sidebar-pushable>
               <sui-menu
                 is="sui-sidebar"
@@ -158,12 +154,14 @@ export default {
       visible: false,
     };
   },
+  methods: {
+    onVisible() {
+      if (this.visible) {
+        this.visible = false;
+      } else {
+        this.visible = true;
+      }
+    },
+  },
 };
-/* const $ = require("jquery");
-$(".ui.sidebar")
-  .sidebar({
-    context: $(".ui.pushable.segment"),
-    transition: "overlay",
-  })
-  .sidebar("attach events", "#mobile_item"); */
 </script>
