@@ -9,23 +9,45 @@
 
       <sui-tab>
         <sui-tab-pane title="Productos Activos">
-          <div style="justify-content: center; align-content: center">
-            <sui-card-group :items-per-row="4">
-              <sui-card v-for="result in result" :key="result.id">
-                <sui-dimmer-dimmable>
-                  <sui-dimmer>
-                    <sui-button inverted>Add Friend</sui-button>
-                  </sui-dimmer>
-                </sui-dimmer-dimmable>
-                <sui-card-content>
-                  <sui-card-header>{{ result.name }}</sui-card-header>
-                  <sui-card-meta>{{ result.retailPrice }}</sui-card-meta>
-                  <sui-card-meta>{{ result.wholesalePrice }}</sui-card-meta>
-                </sui-card-content>
-              </sui-card>
-            </sui-card-group>
+          <div class="table">
+            <div class="search">
+              <div
+                style="margin-top: 5%; margin-bottom: 1%"
+                class="ui fluid category search"
+              >
+                <div class="ui icon input">
+                  <div style="margin-right: 5%">
+                    <sui-button
+                      @click.native="toggle"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="plus"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="justify-content: center; align-content: center">
+              <sui-card-group :items-per-row="4">
+                <sui-card v-for="result in result" :key="result.id">
+                  <sui-dimmer-dimmable>
+                    <sui-dimmer>
+                      <sui-button inverted>Add Friend</sui-button>
+                    </sui-dimmer>
+                  </sui-dimmer-dimmable>
+                  <sui-card-content>
+                    <sui-card-header>{{ result.name }}</sui-card-header>
+                    <sui-card-meta>{{ result.retailPrice }}</sui-card-meta>
+                    <sui-card-meta>{{ result.wholesalePrice }}</sui-card-meta>
+                  </sui-card-content>
+                </sui-card>
+              </sui-card-group>
+            </div>
           </div>
         </sui-tab-pane>
+
         <sui-tab-pane title="Productos Inactivos">
           <div class="table">
             <div class="search">
@@ -82,19 +104,11 @@
         </sui-tab-pane>
       </sui-tab>
     </div>
-    <div style="margin-right: 50%; margin-top: 2%">
-      <sui-button
-        @click.native="toggle"
-        style="background: #64b5f6"
-        negative
-        circular
-        icon="plus"
-      />
-    </div>
+
     <div>
       <sui-modal v-model="open">
         <sui-modal-header style="margin-bottom: 3%"
-          >Registrar nueva categoría</sui-modal-header
+          >Registrar nuevo producto</sui-modal-header
         >
         <sui-modal-body>
           <sui-form
@@ -111,23 +125,35 @@
             </sui-form-field>
             <sui-form-field>
               <label>Precio menudeo:</label>
-              <input v-model="retailPrice" />
+              <input type="number" v-model="retailPrice" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio mayoreo:</label>
-              <input v-model="wholesalePrice" />
+              <input type="number" v-model="wholesalePrice" />
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
-              <sui-dropdown placeholder="Marcas..." selection v-model="brand" />
+              <select ref="seleccionado" v-model="resultsBrand.id">
+                <option
+                  v-for="resultsBrand in resultsBrand"
+                  :key="resultsBrand.id"
+                  :value="resultsBrand"
+                >
+                  {{ resultsBrand.name }}
+                </option>
+              </select>
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
-              <sui-dropdown
-                placeholder="Categoría..."
-                selection
-                v-model="category"
-              />
+              <select ref="seleccionado" v-model="results.id">
+                <option
+                  v-for="results in results"
+                  :key="results.id"
+                  :value="results"
+                >
+                  {{ results.name }}
+                </option>
+              </select>
             </sui-form-field>
           </sui-form>
         </sui-modal-body>
@@ -153,7 +179,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
-import axios from "axios";
+import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
@@ -167,33 +193,34 @@ export default {
       name: "",
       netContent: "",
       retailPrice: "",
-      wholesalePric: "",
+      wholesalePrice: "",
       brand: null,
       category: null,
       open: false,
       result: null,
       results: null,
-      resultss: null,
+      resultsBrand: null,
       resultF: null,
+      id: null,
     };
   },
   mounted() {
-    axios
-      .get("http://localhost:8080/product/list/true")
+    api
+      .doGet("/product/list/true")
       .then((result) => (this.result = result.data))
       .catch((error) => console.log(error));
-    axios
-      .get("http://localhost:8080/product/list/false")
+    api
+      .doGet("/product/list/false")
       .then((resultF) => (this.resultF = resultF.data))
       .catch((error) => console.log(error));
-    axios
-      .get("http://localhost:8080/category/list/true")
+    api
+      .doGet("/category/list/true")
       .then((results) => (this.results = results.data))
       .catch((error) => console.log(error))
       .finally(() => (this.loading = false));
-    axios
-      .get("http://localhost:8080/brand/list/true")
-      .then((resultss) => (this.resultss = resultss.data))
+    api
+      .doGet("/brand/list/true")
+      .then((resultsBrand) => (this.resultsBrand = resultsBrand.data))
       .catch((error) => console.log(error))
       .finally(() => (this.loading = false));
   },
@@ -202,14 +229,19 @@ export default {
       this.open = !this.open;
     },
     register() {
-      axios
-        .post("http://localhost:8080/product/save", {
+      console.log(this.resultsBrand.id);
+      console.log(this.results.id);
+      api
+        .doPost("/product/save", {
           name: this.name,
+          netContent: this.netContent,
+          retailPrice: this.retailPrice,
+          wholesalePric: this.wholesalePrice,
+          brand: [this.resultsBrand.id],
+          category: [this.results.id],
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-
-      location.reload();
     },
   },
 };

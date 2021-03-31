@@ -77,7 +77,6 @@
               <sui-sidebar-pusher>
                 <sui-segment>
                   <h3 is="sui-header">Application Content</h3>
-                  <docs-wireframe name="paragraph" />
                 </sui-segment>
               </sui-sidebar-pusher>
             </sui-sidebar-pushable>

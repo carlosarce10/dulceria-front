@@ -62,7 +62,6 @@
                       <sui-button
                         @click.native="toggleEdit"
                         id="editar"
-                        v-on:click="editar(result.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -169,7 +168,7 @@
       </sui-modal>
     </div>
     <div>
-      <sui-modal v-model="openEdit" v-for="result in result" :key="result.id">
+      <sui-modal v-model="openEdit">
         <sui-modal-header style="margin-bottom: 3%"
           >Modificar marca</sui-modal-header
         >
