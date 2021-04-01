@@ -1,6 +1,7 @@
 <template>
   <div>
     <cabecera />
+    <br />
     <div class="funciones">
       <h3>Inventario</h3>
     </div>

@@ -2,8 +2,8 @@
   <div>
     <header>
       <div class="ui stackable menu mymenu">
-        <div  class="item">
-          <img class="logo" src="../assets/V1.png"/>
+        <div class="item">
+          <img class="logo" src="../assets/V1.png" />
         </div>
         <div class="right menu">
           <a class="item" href="/Admin">Productos</a>
@@ -22,14 +22,14 @@
 </template>
 
 <style >
-.mymenu{
-  background: #2286C3 !important;
+.mymenu {
+  background: #2286c3 !important;
   border-radius: 0 !important;
 }
-.item{
+.item {
   color: white !important;
 }
-.logo{
+.logo {
   height: 100%;
 }
 
@@ -37,7 +37,6 @@
   margin-left: 1%;
   overflow: hidden; /* Eliminamos errores de float */
 }
-
 
 /* Menú de hamburguesa */
 #content {
