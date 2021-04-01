@@ -352,7 +352,7 @@ export default {
     eliminar(id) {
       console.log(id);
       api
-        .doDelete("product/del/" + id)
+        .doDelete("/product/del/" + id)
         .then((response) => {
           this.resultFalse.push(response.data);
           window.location.reload();
