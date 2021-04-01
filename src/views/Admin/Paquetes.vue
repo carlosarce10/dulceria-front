@@ -51,12 +51,15 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="result in result" :key="result.id">
+                  <sui-table-row
+                    v-for="listPackage in listPackage"
+                    :key="listPackage.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      result.name
+                      listPackage.name
                     }}</sui-table-cell>
                     <sui-table-cell text-align="center">{{
-                      result.price
+                      listPackage.price
                     }}</sui-table-cell>
                     <sui-table-cell
                       ><sui-button
@@ -85,7 +88,7 @@
                       />
                       <sui-button
                         id="delete"
-                        v-on:click="eliminar(result.id)"
+                        v-on:click="eliminar(listPackage.id)"
                         negative
                         circular
                         icon="times"
@@ -128,12 +131,15 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="resultF in resultF" :key="resultF.id">
+                  <sui-table-row
+                    v-for="listPackageFalse in listPackageFalse"
+                    :key="listPackageFalse.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      resultF.name
+                      listPackageFalse.name
                     }}</sui-table-cell>
                     <sui-table-cell text-align="center">{{
-                      resultF.price
+                      listPackageFalse.price
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -143,7 +149,7 @@
                       "
                       ><sui-button
                         id="recuperar"
-                        v-on:click="recuperar(resultF.id)"
+                        v-on:click="recuperar(listPackageFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -170,11 +176,11 @@
           >
             <sui-form-field>
               <label>Nombre del paquete:</label>
-              <input type="text" v-model="name" />
+              <input type="text" v-model="packages.name" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio del paquete:</label>
-              <input type="number" v-model="price" />
+              <input type="number" v-model="packages.price" />
             </sui-form-field>
           </sui-form>
         </sui-modal-body>
@@ -191,6 +197,40 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+    <<<<<<< HEAD
+    <div>
+      <sui-modal v-model="openEdit">
+        <sui-modal-header style="margin-bottom: 3%"
+          >Editar paquete</sui-modal-header
+        >
+        <sui-modal-body>
+          <sui-form
+            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+            id="formEdit"
+          >
+            <sui-form-field>
+              <label>Nombre del paquete:</label>
+              <input type="text" v-model="packages.name" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Precio del paquete:</label>
+              <input type="number" v-model="packages.price" />
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-body>
+        <sui-modal-actions>
+          <sui-button
+            id="editar"
+            type="submit"
+            positive
+            @click.native="toggleEdit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
+    ======= >>>>>>> 58964e0de5c17a10e62deaae5e1a74dcb62a9c55
     <fondo />
   </div>
 </template>
@@ -212,12 +252,16 @@ export default {
   data() {
     return {
       open: false,
-      result: null,
-      resultF: null,
+      openEdit: false,
       id: null,
       loading: true,
-      name: null,
-      price: null,
+      elegido: {},
+      packages: {
+        name: null,
+        price: null,
+      },
+      listPackage: null,
+      listPackageFalse: null,
     };
   },
   mounted() {
@@ -231,20 +275,34 @@ export default {
     obtenerDatos() {
       api
         .doGet("package/list/true")
-        .then((result) => (this.result = result.data))
+        .then((listPackage) => (this.listPackage = listPackage.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
     obtenerDatosF() {
       api
         .doGet("package/list/false")
-        .then((resultF) => (this.resultF = resultF.data))
+        .then(
+          (listPackageFalse) => (this.listPackageFalse = listPackageFalse.data)
+        )
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
     register() {
       api
-        .doPost("package/save", {
+        .doPost("package/save", this.packages)
+        .then((response) => {
+          this.packages.push(this.response.data);
+          this.$swal("Se ha registrado exitosamente");
+          this.onReset();
+          console.log(response);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
+    editar(id) {
+      api
+        .doPost("package/get/" + id, {
           name: this.name,
           price: this.price,
         })
@@ -269,7 +327,10 @@ export default {
       location.reload();
     },
     onReset() {
-      location.reload();
+      this.packages.name = null;
+      this.packages.price = null;
+      this.obtenerDatos();
+      this.obtenerDatosF();
     },
     showAlert() {},
   },
