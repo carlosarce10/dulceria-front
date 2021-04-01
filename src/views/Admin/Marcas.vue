@@ -231,10 +231,10 @@ export default {
       //id: null,
       loading: true,
       name: "",
-      marcaEdit:{
-        id:0,
-        name:""
-      }
+      marcaEdit: {
+        id: 0,
+        name: "",
+      },
     };
   },
   beforeMount() {
@@ -259,25 +259,25 @@ export default {
     },
     toggleEdit(id) {
       api
-        .doGet("/brand/get/"+id)
-        .then(response => {
+        .doGet("/brand/get/" + id)
+        .then((response) => {
           console.log(response);
           this.marcaEdit = response.data;
-        }).catch(error=>{
-          console.log(error);
         })
-
+        .catch((error) => {
+          console.log(error);
+        });
 
       this.openEdit = !this.openEdit;
     },
-    editar(){
+    editar() {
       api
-        .doPost("brand/save",this.marcaEdit)
-        .then(response=>{
+        .doPost("brand/save", this.marcaEdit)
+        .then((response) => {
           console.log(response);
           this.getLists();
         })
-        .catch(error=>{
+        .catch((error) => {
           console.log(error);
         });
     },

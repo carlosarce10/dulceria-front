@@ -87,7 +87,7 @@
                       "
                     >
                       <sui-button
-                        @click.native="toggleEdit"
+                        @click.native="toggleEdit(resultTrue.id)"
                         id="editar"
                         style="background: #64b5f6"
                         negative
@@ -183,7 +183,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="editar(resultFalse.id)"
+                        v-on:click="recuperar(resultFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -248,7 +248,6 @@
                 ref="seleccionado"
                 v-model="product.category.id"
               >
-                <option value="">Categoría...</option>
                 <option
                   v-for="resultsCategory in resultsCategory"
                   :key="resultsCategory.id"
@@ -266,6 +265,79 @@
             @click="register"
             positive
             @click.native="toggle"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
+    <div>
+      <sui-modal v-model="openEdit">
+        <sui-modal-header style="margin-bottom: 3%"
+          >Modificar producto</sui-modal-header
+        >
+        <sui-modal-body>
+          <sui-form
+            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+            id="formModificar"
+          >
+            <sui-form-field>
+              <label>Nombre del producto:</label>
+              <input v-model="productEdit.name" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Contenido Neto:</label>
+              <input v-model="productEdit.netContent" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Precio menudeo:</label>
+              <input type="number" v-model="productEdit.retailPrice" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Precio mayoreo:</label>
+              <input type="number" v-model="productEdit.wholesalePrice" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Marca del producto:</label>
+              <select
+                class="ui dropdown"
+                ref="seleccionado"
+                v-model="productEdit.brand.id"
+              >
+                <option
+                  v-for="resultsBrand in resultsBrand"
+                  :key="resultsBrand.id"
+                  :value="resultsBrand.id"
+                >
+                  {{ resultsBrand.name }}
+                </option>
+              </select>
+            </sui-form-field>
+            <sui-form-field>
+              <label>Categoría del producto:</label>
+              <select
+                class="ui dropdown"
+                ref="seleccionado"
+                v-model="productEdit.category.id"
+              >
+                <option
+                  v-for="resultsCategory in resultsCategory"
+                  :key="resultsCategory.id"
+                  :value="resultsCategory.id"
+                >
+                  {{ resultsCategory.name }}
+                </option>
+              </select>
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-body>
+        <sui-modal-actions style="margin-bottom: 3%">
+          <sui-button
+            id="editar"
+            v-on:click="editar()"
+            positive
+            @click.native="toggleEdit"
             type="submit"
           >
             OK
@@ -301,8 +373,17 @@ export default {
         brand: { id: 0 },
         category: { id: 0 },
       },
-
+      productEdit: {
+        id: 0,
+        name: "",
+        netContent: "",
+        retailPrice: "",
+        wholesalePrice: "",
+        brand: { id: 0 },
+        category: { id: 0 },
+      },
       open: false,
+      openEdit: false,
       resultTrue: null,
       resultsCategory: null,
       resultsBrand: null,
@@ -340,12 +421,26 @@ export default {
     toggle() {
       this.open = !this.open;
     },
+    toggleEdit(id) {
+      api
+        .doGet("/product/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.productEdit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.openEdit = !this.openEdit;
+    },
     register() {
+      console.log(this.product);
       api
         .doPost("/product/save", this.product)
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -355,23 +450,35 @@ export default {
       api
         .doDelete("/product/del/" + id)
         .then((response) => {
-          this.resultFalse.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
     editar(id) {
       console.log(id);
+      console.log(this.productEdit);
       api
-        .doPut("product/put/" + id)
+        .doPost("product/save/" + this.productEdit)
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
       //location.reload();
+    },
+    recuperar(id) {
+      console.log(id);
+      api
+        .doPut("product/put/" + id)
+        .then((response) => {
+          console.log(response);
+          this.getLists();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
     },
   },
 };
