@@ -147,21 +147,23 @@
 
     <div>
       <sui-modal v-model="open">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Registrar nueva marca</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formRegistro"
-          >
+        <sui-modal-header >Registrar nueva marca</sui-modal-header>
+        <sui-modal-content>
+          <sui-form id="formRegistro">
             <sui-form-field>
               <label>Nombre de la marca:</label>
               <input v-model="name" />
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions style="margin-bottom: 3%">
+        </sui-modal-content>
+        <sui-modal-actions >
+          <sui-button
+            negative
+            @click.native="toggle"
+            type="submit"
+          >
+            Cancelar
+          </sui-button>
           <sui-button
             id="registrar"
             @click="register"
@@ -203,6 +205,7 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+
     <fondo />
   </div>
 </template>
@@ -328,7 +331,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
 .funciones {
   color: #64b5f6;
   line-height: 50px;
