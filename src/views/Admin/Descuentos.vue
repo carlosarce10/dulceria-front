@@ -1,6 +1,7 @@
 <template>
   <div>
     <cabecera />
+    <br />
     <div class="funciones">
       <h3>Descuentos</h3>
     </div>
@@ -52,7 +53,7 @@
             :key="listDiscounts.id"
           >
             <sui-table-cell text-align="center">
-              {{ listDiscounts.discount }} %</sui-table-cell
+              {{ listDiscounts.discount }}%</sui-table-cell
             >
             <sui-table-cell text-align="center">{{
               listDiscounts.comments

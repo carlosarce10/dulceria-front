@@ -1,6 +1,7 @@
 <template>
   <div>
     <cabecera />
+    <br />
     <div class="funciones">
       <h3>Ventas</h3>
     </div>
