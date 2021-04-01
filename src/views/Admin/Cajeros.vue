@@ -4,6 +4,128 @@
     <div class="funciones">
       <h3>Cajero</h3>
     </div>
+
+    <div>
+      <div class="ui icon input" style="margin-right: 63%">
+        <div>
+          <sui-button
+            floated="left"
+            @click.native="toggle"
+            style="background: #64b5f6"
+            primary
+            icon="plus"
+          />
+        </div>
+      </div>
+      <sui-container style="margin-top: 2%">
+        <sui-table color="blue">
+          <sui-table-header>
+            <sui-table-row>
+              <sui-table-header-cell text-align="center"
+                >Nombre de usuario</sui-table-header-cell
+              >
+              <sui-table-header-cell text-align="center"
+                >última conexión</sui-table-header-cell
+              >
+              <sui-table-header-cell text-align="center"
+                >Rol</sui-table-header-cell
+              >
+              <sui-table-header-cell text-align="center"
+                >Acciones</sui-table-header-cell
+              >
+            </sui-table-row>
+          </sui-table-header>
+          <sui-table-body>
+            <sui-table-row
+              v-for="listaUserTrue in listaUserTrue"
+              :key="listaUserTrue.id"
+            >
+              <sui-table-cell text-align="center">{{
+                listaUserTrue.username
+              }}</sui-table-cell>
+              <sui-table-cell text-align="center">{{
+                listaUserTrue.lastLogin
+              }}</sui-table-cell>
+              <sui-table-cell text-align="center">{{
+                listaUserTrue.role.name
+              }}</sui-table-cell>
+              <sui-table-cell
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <sui-button
+                  @click.native="toggleEdit"
+                  id="editar"
+                  style="background: #64b5f6"
+                  negative
+                  circular
+                  icon="edit"
+                />
+                <sui-button
+                  id="delete"
+                  v-on:click="eliminar(listaUserTrue.id)"
+                  negative
+                  circular
+                  icon="times"
+                />
+              </sui-table-cell>
+            </sui-table-row>
+          </sui-table-body>
+        </sui-table>
+      </sui-container>
+    </div>
+    <div>
+      <sui-modal v-model="open">
+        <sui-modal-header style="margin-bottom: 3%"
+          >Registrar nuevo producto</sui-modal-header
+        >
+        <sui-modal-body>
+          <sui-form
+            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+            id="formRegistro"
+          >
+            <sui-form-field>
+              <label>Nombre de usuario:</label>
+              <input v-model="user.username" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Contraseña:</label>
+              <input v-model="user.password" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Rol:</label>
+              <select
+                class="ui dropdown"
+                ref="seleccionado"
+                v-model="user.role.id"
+              >
+                <option
+                  v-for="listaRoles in listaRoles"
+                  :key="listaRoles.id"
+                  :value="listaRoles.id"
+                >
+                  {{ listaRoles.name }}
+                </option>
+              </select>
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-body>
+        <sui-modal-actions style="margin-bottom: 3%">
+          <sui-button
+            id="registrar"
+            @click="register"
+            positive
+            @click.native="toggle"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
     <!--<button @click="showAlert">Hello world</button>-->
     <fondo />
   </div>
@@ -14,6 +136,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
+import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
@@ -25,15 +148,48 @@ export default {
   data() {
     return {
       open: false,
-      result: null,
-      results: null,
-      id: null,
-      loading: true,
-      name: "",
-      price: null,
+      listaUserTrue: null,
+      listaUserFalse: null,
+      listaRoles: null,
+      user: {
+        username: "",
+        passrod: "",
+        lastLogin: "",
+        role: { id: "", name: "" },
+      },
     };
   },
+  beforeMount() {
+    this.getLists();
+  },
   methods: {
+    getLists() {
+      api
+        .doGet("/user/list/true")
+        .then((listaUserTrue) => (this.listaUserTrue = listaUserTrue.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/user/list/false")
+        .then((listaUserFalse) => (this.listaUserFalse = listaUserFalse.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/role/list")
+        .then((listaRoles) => (this.listaRoles = listaRoles.data))
+        .catch((error) => console.log(error));
+    },
+    toggle() {
+      this.open = !this.open;
+    },
+    register() {
+      api
+        .doPost("/user/save", this.user)
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
     showAlert() {
       // Use sweetalert2
       this.$swal("Hello Vue world!!!");
