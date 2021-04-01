@@ -460,7 +460,7 @@ export default {
       console.log(id);
       console.log(this.productEdit);
       api
-        .doPost("product/save/" + this.productEdit)
+        .doPost("product/save",this.productEdit)
         .then((response) => {
           console.log(response);
           this.getLists();
