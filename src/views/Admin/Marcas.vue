@@ -48,9 +48,12 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="result in result" :key="result.id">
+                  <sui-table-row
+                    v-for="resultTrue in resultTrue"
+                    :key="resultTrue.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      result.name
+                      resultTrue.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -69,7 +72,7 @@
                       />
                       <sui-button
                         id="delete"
-                        v-on:click="eliminar(result.id)"
+                        v-on:click="eliminar(resultTrue.id)"
                         negative
                         circular
                         icon="times"
@@ -109,9 +112,12 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="results in results" :key="results.id">
+                  <sui-table-row
+                    v-for="resultFalse in resultFalse"
+                    :key="resultFalse.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      results.name
+                      resultFalse.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -122,7 +128,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="recuperar(results.id)"
+                        v-on:click="editar(resultFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -186,7 +192,7 @@
         <sui-modal-actions style="margin-bottom: 3%">
           <sui-button
             id="editar"
-            v-on:click="editar(result.id)"
+            v-on:click="editar(resultTrue.id)"
             positive
             @click.native="toggleEdit"
             type="submit"
@@ -218,28 +224,31 @@ export default {
     return {
       open: false,
       openEdit: false,
-      result: null,
-      results: null,
+      resultTrue: null,
+      resultFalse: null,
       resultEdit: null,
-      id: null,
+      //id: null,
       loading: true,
       name: "",
     };
   },
-  mounted() {
-    api
-      .doGet("/brand/list/true")
-      .then((result) => (this.result = result.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
-
-    api
-      .doGet("/brand/list/false")
-      .then((results) => (this.results = results.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+  beforeMount() {
+    this.getLists();
   },
   methods: {
+    getLists() {
+      api
+        .doGet("/brand/list/true")
+        .then((resultTrue) => (this.resultTrue = resultTrue.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+
+      api
+        .doGet("/brand/list/false")
+        .then((resultFalse) => (this.resultFalse = resultFalse.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
     toggle() {
       this.open = !this.open;
     },
@@ -251,6 +260,10 @@ export default {
       api
         .doPost("brand/save/", {
           name: this.name,
+        })
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -267,18 +280,24 @@ export default {
       console.log(id);
       api
         .doDelete("brand/del/" + id)
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
     },
 
     editar(id) {
       console.log(id);
       api
         .doPut("brand/put/" + id)
+        .then((response) => {
+          this.resultFalse.push(response.data);
+          window.location.reload();
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
     },
   },
 };

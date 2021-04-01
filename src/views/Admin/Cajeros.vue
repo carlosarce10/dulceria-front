@@ -4,7 +4,7 @@
     <div class="funciones">
       <h3>Cajero</h3>
     </div>
-    <button @click="showAlert">Hello world</button>
+    <!--<button @click="showAlert">Hello world</button>-->
     <fondo />
   </div>
 </template>

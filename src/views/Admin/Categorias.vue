@@ -47,9 +47,12 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="result in result" :key="result.id">
+                  <sui-table-row
+                    v-for="resultTrue in resultTrue"
+                    :key="resultTrue.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      result.name
+                      resultTrue.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -66,7 +69,7 @@
                       />
                       <sui-button
                         id="delete"
-                        v-on:click="eliminar(result.id)"
+                        v-on:click="eliminar(resultTrue.id)"
                         negative
                         circular
                         icon="times"
@@ -106,9 +109,12 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="results in results" :key="results.id">
+                  <sui-table-row
+                    v-for="resultFalse in resultFalse"
+                    :key="resultFalse.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      results.name
+                      resultFalse.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -119,7 +125,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="recuperar(results.id)"
+                        v-on:click="recuperar(resultFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -174,7 +180,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
-import axios from "axios";
+import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
@@ -186,58 +192,69 @@ export default {
   data() {
     return {
       open: false,
-      result: null,
-      results: null,
+      resultTrue: null,
+      resultFalse: null,
       id: null,
       loading: true,
       name: null,
     };
   },
-  mounted() {
-    axios
-      .get("http://localhost:8080/category/list/true")
-      .then((result) => (this.result = result.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
-
-    axios
-      .get("http://localhost:8080/category/list/false")
-      .then((results) => (this.results = results.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+  beforeMount() {
+    this.getLists();
   },
   methods: {
+    getLists() {
+      api
+        .doGet("/category/list/true")
+        .then((resultTrue) => (this.resultTrue = resultTrue.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+
+      api
+        .doGet("/category/list/false")
+        .then((resultFalse) => (this.resultFalse = resultFalse.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
     toggle() {
       this.open = !this.open;
     },
 
     register() {
-      axios
-        .post("http://localhost:8080/category/save", {
+      api
+        .doPost("/category/save", {
           name: this.name,
+        })
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-
-      location.reload();
     },
 
     eliminar(id) {
       console.log(id);
-      axios
-        .delete("http://localhost:8080/category/del/" + id)
+      api
+        .doDelete("/category/del/" + id)
         .catch((error) => console.log(error))
+        .then((response) => {
+          this.resultFalse.push(response.data);
+          window.location.reload();
+        })
         .finally(() => (this.loading = false));
-      location.reload();
     },
 
     recuperar(id) {
       console.log(id);
-      axios
-        .put("http://localhost:8080/category/put/" + id)
+      api
+        .doPut("/category/put/" + id)
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
     },
   },
 };

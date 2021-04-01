@@ -12,7 +12,7 @@
           <div class="table">
             <div class="search">
               <div
-                style="margin-top: 5%; margin-bottom: 1%"
+                style="margin-top: 1%; margin-bottom: 1%"
                 class="ui fluid category search"
               >
                 <div class="ui icon input">
@@ -28,23 +28,83 @@
                 </div>
               </div>
             </div>
-
-            <div style="justify-content: center; align-content: center">
-              <sui-card-group :items-per-row="4">
-                <sui-card v-for="result in result" :key="result.id">
-                  <sui-dimmer-dimmable>
-                    <sui-dimmer>
-                      <sui-button inverted>Add Friend</sui-button>
-                    </sui-dimmer>
-                  </sui-dimmer-dimmable>
-                  <sui-card-content>
-                    <sui-card-header>{{ result.name }}</sui-card-header>
-                    <sui-card-meta>{{ result.retailPrice }}</sui-card-meta>
-                    <sui-card-meta>{{ result.wholesalePrice }}</sui-card-meta>
-                  </sui-card-content>
-                </sui-card>
-              </sui-card-group>
-            </div>
+            <sui-container style="margin-top: 2%">
+              <sui-table color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Producto</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Contenido neto</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Precio Mayoreo</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Precio menudeo</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Marca</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Categoría</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Acciones</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row
+                    v-for="resultTrue in resultTrue"
+                    :key="resultTrue.id"
+                  >
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.name
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.netContent
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.wholesalePrice
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.retailPrice
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.brand.name
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.category.name
+                    }}</sui-table-cell>
+                    <sui-table-cell
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <sui-button
+                        @click.native="toggleEdit"
+                        id="editar"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="edit"
+                      />
+                      <sui-button
+                        id="delete"
+                        v-on:click="eliminar(resultTrue.id)"
+                        negative
+                        circular
+                        icon="times"
+                      />
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-container>
           </div>
         </sui-tab-pane>
 
@@ -68,6 +128,21 @@
                 <sui-table-header>
                   <sui-table-row>
                     <sui-table-header-cell text-align="center"
+                      >Producto</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Contenido neto</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Precio Mayoreo</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Precio menudeo</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Marca</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
                       >Categoría</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
@@ -76,9 +151,27 @@
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
-                  <sui-table-row v-for="resultF in resultF" :key="resultF.id">
+                  <sui-table-row
+                    v-for="resultFalse in resultFalse"
+                    :key="resultFalse.id"
+                  >
                     <sui-table-cell text-align="center">{{
-                      resultF.name
+                      resultFalse.name
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultFalse.netContent
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultFalse.wholesalePrice
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultFalse.retailPrice
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultFalse.brand.name
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      resultFalse.category.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -89,7 +182,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="recuperar(resultF.id)"
+                        v-on:click="editar(resultFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -117,27 +210,31 @@
           >
             <sui-form-field>
               <label>Nombre del producto:</label>
-              <input v-model="name" />
+              <input v-model="product.name" />
             </sui-form-field>
             <sui-form-field>
               <label>Contenido Neto:</label>
-              <input v-model="netContent" />
+              <input v-model="product.netContent" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio menudeo:</label>
-              <input type="number" v-model="retailPrice" />
+              <input type="number" v-model="product.retailPrice" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio mayoreo:</label>
-              <input type="number" v-model="wholesalePrice" />
+              <input type="number" v-model="product.wholesalePrice" />
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
-              <select ref="seleccionado" v-model="resultsBrand.id">
+              <select
+                class="ui dropdown"
+                ref="seleccionado"
+                v-model="product.brand.id"
+              >
                 <option
                   v-for="resultsBrand in resultsBrand"
                   :key="resultsBrand.id"
-                  :value="resultsBrand"
+                  :value="resultsBrand.id"
                 >
                   {{ resultsBrand.name }}
                 </option>
@@ -145,13 +242,18 @@
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
-              <select ref="seleccionado" v-model="results.id">
+              <select
+                class="ui dropdown"
+                ref="seleccionado"
+                v-model="product.category.id"
+              >
+                <option value="">Categoría...</option>
                 <option
-                  v-for="results in results"
-                  :key="results.id"
-                  :value="results"
+                  v-for="resultsCategory in resultsCategory"
+                  :key="resultsCategory.id"
+                  :value="resultsCategory.id"
                 >
-                  {{ results.name }}
+                  {{ resultsCategory.name }}
                 </option>
               </select>
             </sui-form-field>
@@ -190,58 +292,85 @@ export default {
   },
   data() {
     return {
-      name: "",
-      netContent: "",
-      retailPrice: "",
-      wholesalePrice: "",
-      brand: null,
-      category: null,
+      product: {
+        name: "",
+        netContent: "",
+        retailPrice: "",
+        wholesalePrice: "",
+        brand: { id: 0 },
+        category: { id: 0 },
+      },
+
       open: false,
-      result: null,
-      results: null,
+      resultTrue: null,
+      resultsCategory: null,
       resultsBrand: null,
-      resultF: null,
+      resultFalse: null,
       id: null,
     };
   },
-  mounted() {
-    api
-      .doGet("/product/list/true")
-      .then((result) => (this.result = result.data))
-      .catch((error) => console.log(error));
-    api
-      .doGet("/product/list/false")
-      .then((resultF) => (this.resultF = resultF.data))
-      .catch((error) => console.log(error));
-    api
-      .doGet("/category/list/true")
-      .then((results) => (this.results = results.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
-    api
-      .doGet("/brand/list/true")
-      .then((resultsBrand) => (this.resultsBrand = resultsBrand.data))
-      .catch((error) => console.log(error))
-      .finally(() => (this.loading = false));
+  beforeMount() {
+    this.getLists();
   },
   methods: {
+    getLists() {
+      api
+        .doGet("/product/list/true")
+        .then((resultTrue) => (this.resultTrue = resultTrue.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/product/list/false")
+        .then((resultFalse) => (this.resultFalse = resultFalse.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/category/list/true")
+        .then(
+          (resultsCategory) => (this.resultsCategory = resultsCategory.data)
+        )
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+      api
+        .doGet("/brand/list/true")
+        .then((resultsBrand) => (this.resultsBrand = resultsBrand.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
+
     toggle() {
       this.open = !this.open;
     },
     register() {
-      console.log(this.resultsBrand.id);
-      console.log(this.results.id);
       api
-        .doPost("/product/save", {
-          name: this.name,
-          netContent: this.netContent,
-          retailPrice: this.retailPrice,
-          wholesalePric: this.wholesalePrice,
-          brand: [this.resultsBrand.id],
-          category: [this.results.id],
+        .doPost("/product/save", this.product)
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
+    },
+    eliminar(id) {
+      console.log(id);
+      api
+        .doDelete("product/del/" + id)
+        .then((response) => {
+          this.resultFalse.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
+    editar(id) {
+      console.log(id);
+      api
+        .doPut("product/put/" + id)
+        .then((response) => {
+          this.resultTrue.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+      //location.reload();
     },
   },
 };
