@@ -4,9 +4,12 @@
     <div class="funciones">
       <h3>Descuentos</h3>
     </div>
-    <div class="table">
+    <sui-container style="margin-top: 2%">
       <div class="search">
-        <div class="ui fluid category search">
+        <div
+          style="margin-top: 1%; margin-bottom: 1%"
+          class="ui fluid category search"
+        >
           <div class="ui icon input">
             <div style="margin-right: 5%">
               <sui-button
@@ -17,132 +20,158 @@
                 icon="plus"
               />
             </div>
-            <input
-              class="prompt"
-              type="text"
-              placeholder="Buscar productos..."
-            />
-            <i class="search icon"></i>
           </div>
-          <div class="results"></div>
         </div>
       </div>
-      <sui-container style="margin-top: 2%">
-        <sui-table color="blue">
-          <sui-table-header>
-            <sui-table-row>
-              <sui-table-header-cell text-align="center"
-                >Nombre</sui-table-header-cell
+      <sui-table color="blue">
+        <sui-table-header>
+          <sui-table-row>
+            <sui-table-header-cell text-align="center"
+              >Descuento</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Comentarios</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Marca</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Categoría</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Producto</sui-table-header-cell
+            >
+            <sui-table-header-cell text-align="center"
+              >Acciones</sui-table-header-cell
+            >
+          </sui-table-row>
+        </sui-table-header>
+        <sui-table-body>
+          <sui-table-row
+            v-for="listDiscounts in listDiscounts"
+            :key="listDiscounts.id"
+          >
+            <sui-table-cell text-align="center">{{
+              listDiscounts.discount
+            }}</sui-table-cell>
+            <sui-table-cell text-align="center">{{
+              listDiscounts.comments
+            }}</sui-table-cell>
+            <sui-table-cell text-align="center">{{
+              listDiscounts.brand.name
+            }}</sui-table-cell>
+            <sui-table-cell text-align="center">{{
+              listDiscounts.category.name
+            }}</sui-table-cell>
+            <sui-table-cell text-align="center">{{
+              listDiscounts.product.name
+            }}</sui-table-cell>
+            <sui-table-cell
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <sui-button
+                @click.native="toggleEdit"
+                id="editar"
+                style="background: #64b5f6"
+                negative
+                circular
+                icon="edit"
+              />
+              <sui-button
+                id="delete"
+                v-on:click="eliminar(listDiscounts.id)"
+                negative
+                circular
+                icon="times"
+              />
+            </sui-table-cell>
+          </sui-table-row>
+        </sui-table-body>
+      </sui-table>
+    </sui-container>
+    <sui-modal v-model="open">
+      <sui-modal-header style="margin-bottom: 3%"
+        >Registrar nuevo descuento</sui-modal-header
+      >
+      <sui-modal-body>
+        <sui-form
+          style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+          id="formRegistro"
+        >
+          <sui-form-field>
+            <label>Cantidad del descuento:</label>
+            <input type="number" v-model="discount.discount" />
+          </sui-form-field>
+          <sui-form-field>
+            <label>Comentarios:</label>
+            <textarea v-model="discount.comments"></textarea>
+          </sui-form-field>
+          <sui-form-field>
+            <label>Marca:</label>
+            <select
+              class="ui dropdown"
+              ref="seleccionado"
+              v-model="discount.brand.id"
+            >
+              <option
+                v-for="listBrand in listBrand"
+                :key="listBrand.id"
+                :value="listBrand.id"
               >
-              <sui-table-header-cell text-align="center"
-                >Tipo</sui-table-header-cell
+                {{ listBrand.name }}
+              </option>
+            </select>
+          </sui-form-field>
+          <sui-form-field>
+            <label>Categoría:</label>
+            <select
+              class="ui dropdown"
+              ref="seleccionado"
+              v-model="discount.category.id"
+            >
+              <option
+                v-for="listCategory in listCategory"
+                :key="listCategory.id"
+                :value="listCategory.id"
               >
-              <sui-table-header-cell text-align="center"
-                >Descuento</sui-table-header-cell
+                {{ listCategory.name }}
+              </option>
+            </select>
+          </sui-form-field>
+          <sui-form-field>
+            <label>Producto:</label>
+            <select
+              class="ui dropdown"
+              ref="seleccionado"
+              v-model="discount.product.id"
+            >
+              <option
+                v-for="listProduct in listProduct"
+                :key="listProduct.id"
+                :value="listProduct.id"
               >
-              <sui-table-header-cell text-align="center"
-                >Comentarios</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Acciones</sui-table-header-cell
-              >
-            </sui-table-row>
-          </sui-table-header>
-          <sui-table-body>
-            <sui-table-row>
-              <sui-table-cell text-align="center">Barcel</sui-table-cell>
-              <sui-table-cell text-align="center">Marca</sui-table-cell>
-              <sui-table-cell text-align="center">10%</sui-table-cell>
-              <sui-table-cell text-align="center"
-                >Descuento por fecha de caducidad</sui-table-cell
-              >
-              <sui-table-cell
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-              >
-                <sui-button
-                  style="background: #64b5f6"
-                  negative
-                  circular
-                  icon="edit"
-                />
-                <sui-button negative circular icon="times" />
-              </sui-table-cell>
-            </sui-table-row>
-            <sui-table-row>
-              <sui-table-cell text-align="center">Chetos</sui-table-cell>
-              <sui-table-cell text-align="center">Producto</sui-table-cell>
-              <sui-table-cell text-align="center">15%</sui-table-cell>
-              <sui-table-cell text-align="center"
-                >Descuento por el día del niño</sui-table-cell
-              >
-              <sui-table-cell
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-              >
-                <sui-button
-                  style="background: #64b5f6"
-                  negative
-                  circular
-                  icon="edit"
-                />
-                <sui-button negative circular icon="times" />
-              </sui-table-cell>
-            </sui-table-row>
-          </sui-table-body>
-        </sui-table>
-      </sui-container>
-    </div>
-    <div>
-      <sui-modal v-model="open">
-        <sui-modal-header>Agregar nuevo descuento</sui-modal-header>
-        <sui-modal-body>
-          <sui-form>
-            <sui-form-field>
-              <sui-form-fields fields="two">
-                <sui-form-field>
-                  <label style="margin-left: 2%">Tipo</label>
-                  <sui-dropdown
-                    placeholder="Seleccione opción"
-                    selection
-                    :options="opciones"
-                    v-model="Opciones"
-                  />
-                </sui-form-field>
-                <sui-form-field>
-                  <label style="margin-left: 2%">Producto</label>
-                  <sui-dropdown
-                    placeholder="Seleccione opción"
-                    selection
-                    :options="opciones"
-                    v-model="Opciones"
-                  />
-                </sui-form-field>
-              </sui-form-fields>
-              <sui-form-fields fields="two">
-                <sui-form-field>
-                  <label style="margin-left: 2%">Agregar descuento</label>
-                  <input type="number" name="" placeholder="Descuento" />
-                </sui-form-field>
-                <sui-form-field>
-                  <label>Agregar comentario</label>
-                  <input placeholder="Comentario" />
-                </sui-form-field>
-              </sui-form-fields>
-            </sui-form-field>
-          </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions>
-          <sui-button positive @click.native="toggle"> OK </sui-button>
-        </sui-modal-actions>
-      </sui-modal>
-    </div>
+                {{ listProduct.name }}
+              </option>
+            </select>
+          </sui-form-field>
+        </sui-form>
+      </sui-modal-body>
+      <sui-modal-actions style="margin-bottom: 3%">
+        <sui-button
+          id="registrar"
+          @click="register"
+          positive
+          @click.native="toggle"
+          type="submit"
+        >
+          OK
+        </sui-button>
+      </sui-modal-actions>
+    </sui-modal>
     <fondo />
   </div>
 </template>
@@ -152,6 +181,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
+import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
@@ -162,16 +192,65 @@ export default {
   },
   data() {
     return {
+      discount: {
+        discount: "",
+        comments: "",
+        brand: { id: 0 },
+        category: { id: 0 },
+        product: { id: 0 },
+      },
+      listCategory: null,
+      listBrand: null,
+      listProduct: null,
+      listDiscounts: null,
       open: false,
-      Opciones: null,
-      opciones: [
-        { value: "marca", text: "Marca" },
-        { value: "producto", text: "Producto" },
-        { value: "paquete", text: "Paquete" },
-      ],
     };
   },
+  beforeMount() {
+    this.getLists();
+  },
+
   methods: {
+    getLists() {
+      api
+        .doGet("/discount/list")
+        .then((listDiscounts) => (this.listDiscounts = listDiscounts.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/category/list/true")
+        .then((listCategory) => (this.listCategory = listCategory.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/brand/list/true")
+        .then((listBrand) => (this.listBrand = listBrand.data))
+        .catch((error) => console.log(error));
+      api
+        .doGet("/product/list/true")
+        .then((listProduct) => (this.listProduct = listProduct.data))
+        .catch((error) => console.log(error));
+    },
+    register() {
+      console.log(this.discount);
+      api
+        .doPost("/discount/save", this.discount)
+        .then((response) => {
+          this.discount.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
+    eliminar(id) {
+      console.log(id);
+      api
+        .doDelete("/discount/del/" + id)
+        .then((response) => {
+          this.discount.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
     toggle() {
       this.open = !this.open;
     },
