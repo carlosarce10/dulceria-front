@@ -64,7 +64,7 @@
                       "
                     >
                       <sui-button
-                        @click.native="toggleEdit"
+                        @click.native="toggleEdit(resultTrue.id)"
                         id="editar"
                         style="background: #64b5f6"
                         negative
@@ -129,7 +129,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="editar(resultFalse.id)"
+                        v-on:click="recuperar(resultFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -186,14 +186,14 @@
           >
             <sui-form-field>
               <label>Nombre de la marca:</label>
-              <input v-model="name" />
+              <input v-model="marcaEdit.name" />
             </sui-form-field>
           </sui-form>
         </sui-modal-body>
         <sui-modal-actions style="margin-bottom: 3%">
           <sui-button
             id="editar"
-            v-on:click="editar(resultTrue.id)"
+            v-on:click="editar()"
             positive
             @click.native="toggleEdit"
             type="submit"
@@ -231,6 +231,10 @@ export default {
       //id: null,
       loading: true,
       name: "",
+      marcaEdit:{
+        id:0,
+        name:""
+      }
     };
   },
   beforeMount() {
@@ -253,10 +257,30 @@ export default {
     toggle() {
       this.open = !this.open;
     },
-    toggleEdit() {
+    toggleEdit(id) {
+      api
+        .doGet("/brand/get/"+id)
+        .then(response => {
+          console.log(response);
+          this.marcaEdit = response.data;
+        }).catch(error=>{
+          console.log(error);
+        })
+
+
       this.openEdit = !this.openEdit;
     },
-
+    editar(){
+      api
+        .doPost("brand/save",this.marcaEdit)
+        .then(response=>{
+          console.log(response);
+          this.getLists();
+        })
+        .catch(error=>{
+          console.log(error);
+        });
+    },
     register() {
       api
         .doPost("brand/save/", {
@@ -282,20 +306,20 @@ export default {
       api
         .doDelete("brand/del/" + id)
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
 
-    editar(id) {
+    recuperar(id) {
       console.log(id);
       api
         .doPut("brand/put/" + id)
         .then((response) => {
-          this.resultFalse.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
