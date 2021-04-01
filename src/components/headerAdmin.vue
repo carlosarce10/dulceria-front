@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<style >
+<style scoped>
 .mymenu{
   background: #2286C3 !important;
   border-radius: 0 !important;

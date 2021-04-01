@@ -196,7 +196,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    <<<<<<< HEAD
     <div>
       <sui-modal v-model="openEdit">
         <sui-modal-header style="margin-bottom: 3%"
@@ -229,7 +228,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    ======= >>>>>>> 58964e0de5c17a10e62deaae5e1a74dcb62a9c55
     <fondo />
   </div>
 </template>
@@ -291,7 +289,7 @@ export default {
       api
         .doPost("package/save", this.packages)
         .then((response) => {
-          this.packages.push(this.response.data);
+          
           this.$swal("Se ha registrado exitosamente");
           this.onReset();
           console.log(response);
@@ -313,21 +311,31 @@ export default {
     eliminar(id) {
       api
         .doDelete("package/del/" + id)
+        .then(res=>{
+          console.log(res);
+          this.$swal("Se ha eliminado exitosamente");
+          this.onReset();
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
+        
     },
     recuperar(id) {
       console.log(id);
       api
         .doPut("package/put/" + id)
+        .then(res=>{
+          console.log(res);
+          this.$swal("Se ha recuperado exitosamente");
+          this.onReset();
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
+      
     },
     onReset() {
-      this.packages.name = null;
-      this.packages.price = null;
+      this.packages.name = "";
+      this.packages.price = "";
       this.obtenerDatos();
       this.obtenerDatosF();
     },
