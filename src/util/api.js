@@ -13,9 +13,12 @@ export default {
       method: method,
       url: resource,
       data,
-       headers: {
-                Authorization: localStorage.getItem('token') === null?'':'Bearer ' + localStorage.getItem('token')
-            }, 
+      headers: {
+        Authorization:
+          localStorage.getItem("token") === null
+            ? ""
+            : "Bearer " + localStorage.getItem("token"),
+      },
       config,
     });
   },

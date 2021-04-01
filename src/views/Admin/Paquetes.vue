@@ -77,10 +77,12 @@
                       "
                     >
                       <sui-button
+                        id="edit"
                         style="background: #64b5f6"
                         negative
                         circular
                         icon="edit"
+                        @click.native="toggleEdit"
                       />
                       <sui-button
                         id="delete"
@@ -190,6 +192,38 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+    <div>
+      <sui-modal v-model="openEdit">
+        <sui-modal-header style="margin-bottom: 3%"
+          >Editar paquete</sui-modal-header
+        >
+        <sui-modal-body>
+          <sui-form
+            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
+            id="formEdit"
+          >
+            <sui-form-field>
+              <label>Nombre del paquete:</label>
+              <input type="text" v-model="name" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Precio del paquete:</label>
+              <input type="number" v-model="price" />
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-body>
+        <sui-modal-actions>
+          <sui-button
+            id="editar"
+            type="submit"
+            positive
+            @click.native="toggleEdit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
     <fondo />
   </div>
 </template>
@@ -211,12 +245,15 @@ export default {
   data() {
     return {
       open: false,
+      openEdit: false,
       result: null,
       resultF: null,
       id: null,
       loading: true,
       name: null,
       price: null,
+      elegido: {},
+      paquetes: [],
     };
   },
   mounted() {
@@ -226,6 +263,9 @@ export default {
   methods: {
     toggle() {
       this.open = !this.open;
+    },
+    toggleEdit() {
+      this.openEdit = !this.openEdit;
     },
     obtenerDatos() {
       api
@@ -250,14 +290,27 @@ export default {
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
       this.$swal("Se ha registrado exitosamente");
+    },
+    editar(id) {
+      api
+        .doPost("package/get/" + id, {
+          name: this.name,
+          price: this.price,
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+      this.$swal("Se ha registrado exitosamente");
       this.onReset();
     },
+    /* elegido(paquetes) {
+      this.elegido = paquetes;
+    }, */
     eliminar(id) {
       api
         .doDelete("package/del/" + id)
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
+      this.onReset();
     },
     recuperar(id) {
       console.log(id);
@@ -265,10 +318,13 @@ export default {
         .doPut("package/put/" + id)
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      location.reload();
+      this.onReset();
     },
     onReset() {
-      location.reload();
+      this.name = null;
+      this.price = null;
+      this.obtenerDatos();
+      this.obtenerDatosF();
     },
     showAlert() {},
   },

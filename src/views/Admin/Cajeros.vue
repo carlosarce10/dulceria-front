@@ -6,76 +6,138 @@
     </div>
 
     <div>
-      <div class="ui icon input" style="margin-right: 63%">
-        <div>
-          <sui-button
-            floated="left"
-            @click.native="toggle"
-            style="background: #64b5f6"
-            primary
-            icon="plus"
-          />
-        </div>
+      <div style="width: 60%; margin-left: 20%">
+        <sui-tab>
+          <sui-tab-pane title="Usuarios Activos">
+            <div style="margin-top: 1%; margin-bottom: 1%; margin-left: 55%">
+              <div class="ui icon input">
+                <div style="margin-right: 5%">
+                  <sui-button
+                    @click.native="toggle"
+                    style="background: #64b5f6"
+                    negative
+                    circular
+                    icon="plus"
+                  />
+                </div>
+              </div>
+            </div>
+            <sui-container style="margin-top: 2%">
+              <sui-table color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Nombre de usuario</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >última conexión</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Rol</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Acciones</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row
+                    v-for="listaUserTrue in listaUserTrue"
+                    :key="listaUserTrue.id"
+                  >
+                    <sui-table-cell text-align="center">{{
+                      listaUserTrue.username
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listaUserTrue.lastLogin
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listaUserTrue.role.name
+                    }}</sui-table-cell>
+                    <sui-table-cell
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <sui-button
+                        @click.native="toggleEdit"
+                        id="editar"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="edit"
+                      />
+                      <sui-button
+                        id="delete"
+                        v-on:click="eliminar(listaUserTrue.id)"
+                        negative
+                        circular
+                        icon="times"
+                      />
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-container>
+          </sui-tab-pane>
+          <sui-tab-pane title="Usuarios Inactivos">
+            <sui-container style="margin-top: 2%">
+              <sui-table color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Nombre de usuario</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >última conexión</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Rol</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Acciones</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row
+                    v-for="listaUserFalse in listaUserFalse"
+                    :key="listaUserFalse.id"
+                  >
+                    <sui-table-cell text-align="center">{{
+                      listaUserFalse.username
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listaUserFalse.lastLogin
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listaUserFalse.role.name
+                    }}</sui-table-cell>
+                    <sui-table-cell
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <sui-button
+                        id="recuperar"
+                        v-on:click="editar(listaUserFalse.id)"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="redo"
+                      />
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-container>
+          </sui-tab-pane>
+        </sui-tab>
       </div>
-      <sui-container style="margin-top: 2%">
-        <sui-table color="blue">
-          <sui-table-header>
-            <sui-table-row>
-              <sui-table-header-cell text-align="center"
-                >Nombre de usuario</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >última conexión</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Rol</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Acciones</sui-table-header-cell
-              >
-            </sui-table-row>
-          </sui-table-header>
-          <sui-table-body>
-            <sui-table-row
-              v-for="listaUserTrue in listaUserTrue"
-              :key="listaUserTrue.id"
-            >
-              <sui-table-cell text-align="center">{{
-                listaUserTrue.username
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listaUserTrue.lastLogin
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listaUserTrue.role.name
-              }}</sui-table-cell>
-              <sui-table-cell
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-              >
-                <sui-button
-                  @click.native="toggleEdit"
-                  id="editar"
-                  style="background: #64b5f6"
-                  negative
-                  circular
-                  icon="edit"
-                />
-                <sui-button
-                  id="delete"
-                  v-on:click="eliminar(listaUserTrue.id)"
-                  negative
-                  circular
-                  icon="times"
-                />
-              </sui-table-cell>
-            </sui-table-row>
-          </sui-table-body>
-        </sui-table>
-      </sui-container>
     </div>
     <div>
       <sui-modal v-model="open">
@@ -184,11 +246,32 @@ export default {
       api
         .doPost("/user/save", this.user)
         .then((response) => {
-          this.resultTrue.push(response.data);
+          this.listaUserTrue.push(response.data);
           window.location.reload();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
+    },
+    eliminar(id) {
+      api
+        .doDelete("user/del/" + id)
+        .then((response) => {
+          this.listaUserFalse.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
+    editar(id) {
+      api
+        .doPut("user/put/" + id)
+        .then((response) => {
+          this.listaUserTrue.push(response.data);
+          window.location.reload();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+      //location.reload();
     },
     showAlert() {
       // Use sweetalert2
