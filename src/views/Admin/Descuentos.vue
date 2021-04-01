@@ -51,9 +51,9 @@
             v-for="listDiscounts in listDiscounts"
             :key="listDiscounts.id"
           >
-            <sui-table-cell text-align="center">{{
-              listDiscounts.discount
-            }}</sui-table-cell>
+            <sui-table-cell text-align="center">
+              {{ listDiscounts.discount }} %</sui-table-cell
+            >
             <sui-table-cell text-align="center">{{
               listDiscounts.comments
             }}</sui-table-cell>

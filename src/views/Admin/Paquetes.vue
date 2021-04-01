@@ -80,12 +80,10 @@
                       "
                     >
                       <sui-button
-                        id="edit"
                         style="background: #64b5f6"
                         negative
                         circular
                         icon="edit"
-                        @click.native="toggleEdit"
                       />
                       <sui-button
                         id="delete"
@@ -198,6 +196,7 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+    <<<<<<< HEAD
     <div>
       <sui-modal v-model="openEdit">
         <sui-modal-header style="margin-bottom: 3%"
@@ -230,6 +229,7 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+    ======= >>>>>>> 58964e0de5c17a10e62deaae5e1a74dcb62a9c55
     <fondo />
   </div>
 </template>
@@ -271,9 +271,6 @@ export default {
     toggle() {
       this.open = !this.open;
     },
-    toggleEdit() {
-      this.openEdit = !this.openEdit;
-    },
     obtenerDatos() {
       api
         .doGet("package/list/true")
@@ -313,15 +310,12 @@ export default {
       this.$swal("Se ha registrado exitosamente");
       this.onReset();
     },
-    /* elegido(paquetes) {
-      this.elegido = paquetes;
-    }, */
     eliminar(id) {
       api
         .doDelete("package/del/" + id)
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      this.onReset();
+      location.reload();
     },
     recuperar(id) {
       console.log(id);
@@ -329,7 +323,7 @@ export default {
         .doPut("package/put/" + id)
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      this.onReset();
+      location.reload();
     },
     onReset() {
       this.packages.name = null;
