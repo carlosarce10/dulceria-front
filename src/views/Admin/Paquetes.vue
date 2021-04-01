@@ -197,7 +197,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    <<<<<<< HEAD
     <div>
       <sui-modal v-model="openEdit">
         <sui-modal-header style="margin-bottom: 3%"
@@ -230,7 +229,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    ======= >>>>>>> 58964e0de5c17a10e62deaae5e1a74dcb62a9c55
     <fondo />
   </div>
 </template>
