@@ -5,17 +5,17 @@
 </template>
 
 <style>
-.modal-small > div{
+.modal-small > div {
   width: 30% !important;
 }
 
-.panel{
+.panel {
   width: 75%;
   margin-left: auto;
   margin-right: auto;
 }
 
-.panel-small{
+.panel-small {
   width: 50%;
   margin-left: auto;
   margin-right: auto;
@@ -40,5 +40,22 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+/* Validaciones */
+.dirty {
+  border-color: #8e8;
+}
+
+.dirty:focus {
+  outline-color: #8e8;
+}
+
+.error {
+  border-color: #f99;
+}
+
+.error:focus {
+  outline-color: #f99;
 }
 </style>
