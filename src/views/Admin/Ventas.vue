@@ -17,7 +17,7 @@
             <input
               class="prompt"
               type="text"
-              placeholder="Buscar venta..."
+              placeholder="Buscar productos..."
             />
             <i class="search icon"></i>
           </div>

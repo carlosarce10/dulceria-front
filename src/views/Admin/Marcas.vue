@@ -33,7 +33,7 @@
                 <div class="results"></div>
               </div>
             </div>
-            <sui-container style="margin-top: 2%">
+            <sui-container >
               <sui-table color="blue">
                 <sui-table-header>
                   <sui-table-row>
