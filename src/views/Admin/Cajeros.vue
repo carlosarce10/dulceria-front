@@ -63,7 +63,7 @@
                       "
                     >
                       <sui-button
-                        @click.native="toggleEdit"
+                        @click.native="toggleEdit(listaUserTrue.id)"
                         id="editar"
                         style="background: #64b5f6"
                         negative
@@ -125,7 +125,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="editar(listaUserFalse.id)"
+                        v-on:click="recuperar(listaUserFalse.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -141,15 +141,10 @@
       </div>
     </div>
     <div>
-      <sui-modal v-model="open">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Registrar nuevo producto</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formRegistro"
-          >
+      <sui-modal class="modal-small" v-model="open">
+        <sui-modal-header>Registrar nuevo producto</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre de usuario:</label>
               <input v-model="user.username" />
@@ -175,13 +170,43 @@
               </select>
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions style="margin-bottom: 3%">
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggle" type="submit">
+            Cancelar
+          </sui-button>
           <sui-button
             id="registrar"
             @click="register"
             positive
             @click.native="toggle"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
+    <div>
+      <sui-modal class="modal-small" v-model="openEdit">
+        <sui-modal-header>Modificar usuario</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
+            <sui-form-field>
+              <label>Nombre del usuario:</label>
+              <input v-model="userEdit.username" />
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggleEdit" type="submit">
+            Cancelar
+          </sui-button>
+          <sui-button
+            id="editar"
+            v-on:click="editar()"
+            positive
+            @click.native="toggleEdit"
             type="submit"
           >
             OK
@@ -211,6 +236,7 @@ export default {
   data() {
     return {
       open: false,
+      openEdit: false,
       listaUserTrue: null,
       listaUserFalse: null,
       listaRoles: null,
@@ -219,6 +245,10 @@ export default {
         passrod: "",
         lastLogin: "",
         role: { id: "", name: "" },
+      },
+      userEdit: {
+        id: 0,
+        username: "",
       },
     };
   },
@@ -243,12 +273,25 @@ export default {
     toggle() {
       this.open = !this.open;
     },
+    toggleEdit(id) {
+      api
+        .doGet("/user/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.userEdit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.openEdit = !this.openEdit;
+    },
     register() {
       api
         .doPost("/user/save", this.user)
         .then((response) => {
-          this.listaUserTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -257,22 +300,33 @@ export default {
       api
         .doDelete("user/del/" + id)
         .then((response) => {
-          this.listaUserFalse.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
-    editar(id) {
+    editar() {
       api
-        .doPut("user/put/" + id)
+        .doPost("/user/save", this.userEdit)
         .then((response) => {
-          this.listaUserTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
       //location.reload();
+    },
+    recuperar(id) {
+      console.log(id);
+      api
+        .doPut("/user/put/" + id)
+        .then((response) => {
+          console.log(response);
+          this.getLists();
+        })
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
     },
     showAlert() {
       // Use sweetalert2

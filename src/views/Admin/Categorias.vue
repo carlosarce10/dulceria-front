@@ -63,6 +63,8 @@
                       "
                     >
                       <sui-button
+                        @click.native="toggleEdit(resultTrue.id)"
+                        id="editar"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -143,7 +145,7 @@
     </div>
 
     <div>
-      <sui-modal v-model="open">
+      <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar nueva categoría</sui-modal-header>
         <sui-modal-content>
           <sui-form>
@@ -174,7 +176,33 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-
+    <div>
+      <sui-modal class="modal-small" v-model="openEdit">
+        <sui-modal-header>Modificar categoría</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
+            <sui-form-field>
+              <label>Nombre de la marca:</label>
+              <input v-model="categoriaEdit.name" />
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggleEdit" type="button">
+            CANCEL
+          </sui-button>
+          <sui-button
+            id="editar"
+            v-on:click="editar()"
+            positive
+            @click.native="toggleEdit"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
     <fondo />
   </div>
 </template>
@@ -196,11 +224,16 @@ export default {
   data() {
     return {
       open: false,
+      openEdit: false,
       resultTrue: null,
       resultFalse: null,
       id: null,
       loading: true,
-      name: null,
+      name: "",
+      categoriaEdit: {
+        id: 0,
+        name: "",
+      },
     };
   },
   beforeMount() {
@@ -223,15 +256,38 @@ export default {
     toggle() {
       this.open = !this.open;
     },
+    toggleEdit(id) {
+      api
+        .doGet("/category/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.categoriaEdit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
+      this.openEdit = !this.openEdit;
+    },
+    editar() {
+      api
+        .doPost("category/save", this.categoriaEdit)
+        .then((response) => {
+          console.log(response);
+          this.getLists();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     register() {
       api
         .doPost("/category/save", {
           name: this.name,
         })
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -243,8 +299,8 @@ export default {
         .doDelete("/category/del/" + id)
         .catch((error) => console.log(error))
         .then((response) => {
-          this.resultFalse.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .finally(() => (this.loading = false));
     },
@@ -254,8 +310,8 @@ export default {
       api
         .doPut("/category/put/" + id)
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -264,7 +320,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
