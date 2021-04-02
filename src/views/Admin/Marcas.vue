@@ -5,10 +5,7 @@
     <div class="funciones">
       <h3>Marcas</h3>
     </div>
-
-    <div style="width: 60%; margin-left: 20%">
-      <sui-divider hidden />
-      <sui-tab>
+      <sui-tab class="panel-small">
         <sui-tab-pane title="Marcas Activas">
           <div class="table">
             <div class="search">
@@ -36,7 +33,7 @@
                 <div class="results"></div>
               </div>
             </div>
-            <sui-container style="margin-top: 2%">
+            <sui-container >
               <sui-table color="blue">
                 <sui-table-header>
                   <sui-table-row>
@@ -143,7 +140,6 @@
           </div>
         </sui-tab-pane>
       </sui-tab>
-    </div>
 
     <div>
       <sui-modal class="modal-small" v-model="open">
