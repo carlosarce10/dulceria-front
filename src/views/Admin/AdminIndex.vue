@@ -67,12 +67,12 @@
                     <sui-table-cell text-align="center">{{
                       resultTrue.netContent
                     }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.wholesalePrice
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.retailPrice
-                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center"
+                      >${{ resultTrue.wholesalePrice }}</sui-table-cell
+                    >
+                    <sui-table-cell text-align="center"
+                      >${{ resultTrue.retailPrice }}</sui-table-cell
+                    >
                     <sui-table-cell text-align="center">{{
                       resultTrue.brand.name
                     }}</sui-table-cell>
@@ -162,12 +162,12 @@
                     <sui-table-cell text-align="center">{{
                       resultFalse.netContent
                     }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.wholesalePrice
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.retailPrice
-                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center"
+                      >${{ resultFalse.wholesalePrice }}</sui-table-cell
+                    >
+                    <sui-table-cell text-align="center"
+                      >${{ resultFalse.retailPrice }}</sui-table-cell
+                    >
                     <sui-table-cell text-align="center">{{
                       resultFalse.brand.name
                     }}</sui-table-cell>
@@ -200,15 +200,10 @@
     </div>
 
     <div>
-      <sui-modal v-model="open">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Registrar nuevo producto</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formRegistro"
-          >
+      <sui-modal class="modal-small" v-model="open">
+        <sui-modal-header>Registrar producto</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre del producto:</label>
               <input v-model="product.name" />
@@ -258,8 +253,11 @@
               </select>
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
+        </sui-modal-content>
         <sui-modal-actions style="margin-bottom: 3%">
+          <sui-button negative @click.native="toggle" type="submit">
+            Cancelar
+          </sui-button>
           <sui-button
             id="registrar"
             @click="register"
@@ -273,15 +271,10 @@
       </sui-modal>
     </div>
     <div>
-      <sui-modal v-model="openEdit">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Modificar producto</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formModificar"
-          >
+      <sui-modal class="modal-small" v-model="openEdit">
+        <sui-modal-header>Modificar producto</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre del producto:</label>
               <input v-model="productEdit.name" />
@@ -331,8 +324,11 @@
               </select>
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions style="margin-bottom: 3%">
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggleEdit" type="submit">
+            Cancelar
+          </sui-button>
           <sui-button
             id="editar"
             v-on:click="editar()"
@@ -456,11 +452,9 @@ export default {
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
-    editar(id) {
-      console.log(id);
-      console.log(this.productEdit);
+    editar() {
       api
-        .doPost("product/save",this.productEdit)
+        .doPost("product/save", this.productEdit)
         .then((response) => {
           console.log(response);
           this.getLists();

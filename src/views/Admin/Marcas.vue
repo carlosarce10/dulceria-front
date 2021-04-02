@@ -147,21 +147,17 @@
 
     <div>
       <sui-modal class="modal-small" v-model="open">
-        <sui-modal-header >Registrar nueva marca</sui-modal-header>
+        <sui-modal-header>Registrar marca</sui-modal-header>
         <sui-modal-content>
-          <sui-form id="formRegistro">
+          <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
               <input v-model="name" />
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
-        <sui-modal-actions >
-          <sui-button
-            negative
-            @click.native="toggle"
-            type="submit"
-          >
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggle" type="submit">
             Cancelar
           </sui-button>
           <sui-button
@@ -177,22 +173,20 @@
       </sui-modal>
     </div>
     <div>
-      <sui-modal v-model="openEdit">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Modificar marca</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formModificar"
-          >
+      <sui-modal class="modal-small" v-model="openEdit">
+        <sui-modal-header>Modificar marca</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
               <input v-model="marcaEdit.name" />
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions style="margin-bottom: 3%">
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggleEdit" type="submit">
+            Cancelar
+          </sui-button>
           <sui-button
             id="editar"
             v-on:click="editar()"
@@ -205,7 +199,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-
     <fondo />
   </div>
 </template>
@@ -275,7 +268,7 @@ export default {
     },
     editar() {
       api
-        .doPost("brand/save", this.marcaEdit)
+        .doPost("/brand/save", this.marcaEdit)
         .then((response) => {
           console.log(response);
           this.getLists();
@@ -286,28 +279,22 @@ export default {
     },
     register() {
       api
-        .doPost("brand/save/", {
+        .doPost("/brand/save/", {
           name: this.name,
         })
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
       //this.$router.push("/Marcas");
       //location.reload();
     },
-    getId(id) {
-      api
-        .doGet("/brand/get/" + id)
-        .then((resultEdit) => (this.resultEdit = resultEdit.data))
-        .catch((error) => console.log(error));
-    },
     eliminar(id) {
       console.log(id);
       api
-        .doDelete("brand/del/" + id)
+        .doDelete("/brand/del/" + id)
         .then((response) => {
           console.log(response);
           this.getLists();
@@ -319,7 +306,7 @@ export default {
     recuperar(id) {
       console.log(id);
       api
-        .doPut("brand/put/" + id)
+        .doPut("/brand/put/" + id)
         .then((response) => {
           console.log(response);
           this.getLists();
