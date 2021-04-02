@@ -165,7 +165,7 @@
       </sui-tab>
     </div>
     <div>
-      <sui-modal v-model="open">
+      <sui-modal class="modal-small" v-model="open">
         <sui-modal-header style="margin-bottom: 3%"
           >Registrar paquete</sui-modal-header
         >
@@ -173,6 +173,7 @@
           <sui-form
             style="margin-bottom: 5%; width: 50%; margin-left: 25%"
             id="formRegistro"
+            :class="{ 'form-group--error': $v.name.$error }"
           >
             <sui-form-field>
               <label>Nombre del paquete:</label>
@@ -185,6 +186,9 @@
           </sui-form>
         </sui-modal-body>
         <sui-modal-actions>
+          <sui-button type="button" negative @click.native="toggle">
+            Cancelar
+          </sui-button>
           <sui-button
             id="registrar"
             @click="register"
@@ -204,12 +208,30 @@
         >
         <sui-modal-body>
           <sui-form
+            @submit.prevent="submit"
             style="margin-bottom: 5%; width: 50%; margin-left: 25%"
             id="formEdit"
           >
             <sui-form-field>
-              <label>Nombre del paquete:</label>
-              <input type="text" v-model="packages.name" />
+              <div
+                class="form-group"
+                :class="{ 'form-group--error': $v.name.$error }"
+              >
+                <label class="form__label">Name</label>
+                <input class="form__input" v-model.trim="$v.name.$model" />
+              </div>
+              <div class="error" v-if="!$v.name.required">Name is required</div>
+              <div class="error" v-if="!$v.name.minLength">
+                Name must have at least
+                {{ $v.name.$params.minLength.min }} letters.
+              </div>
+              <button
+                class="button"
+                type="submit"
+                :disabled="submitStatus === 'PENDING'"
+              >
+                Submit!
+              </button>
             </sui-form-field>
             <sui-form-field>
               <label>Precio del paquete:</label>
@@ -229,6 +251,23 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+    <form @submit.prevent="submit">
+      <div>
+        <label class="form__label">Name</label>
+        <input class="form__input" v-model.trim="$v.name.$model" />
+      </div>
+      <div class="error" v-if="!$v.name.required">Name is required</div>
+      <div class="error" v-if="!$v.name.minLength">
+        Name must have at least {{ $v.name.$params.minLength.min }} letters.
+      </div>
+      <button
+        class="button"
+        type="submit"
+        :disabled="submitStatus === 'PENDING'"
+      >
+        Submit!
+      </button>
+    </form>
     <fondo />
   </div>
 </template>
@@ -239,6 +278,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import { required, minLength } from "vuelidate/lib/validators";
 
 Vue.use(Particles);
 export default {
@@ -260,6 +300,9 @@ export default {
       },
       listPackage: null,
       listPackageFalse: null,
+      name: "",
+      age: 0,
+      submitStatus: null,
     };
   },
   mounted() {
@@ -290,7 +333,6 @@ export default {
       api
         .doPost("package/save", this.packages)
         .then((response) => {
-          
           this.$swal("Se ha registrado exitosamente");
           this.onReset();
           console.log(response);
@@ -312,27 +354,25 @@ export default {
     eliminar(id) {
       api
         .doDelete("package/del/" + id)
-        .then(res=>{
+        .then((res) => {
           console.log(res);
           this.$swal("Se ha eliminado exitosamente");
           this.onReset();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-        
     },
     recuperar(id) {
       console.log(id);
       api
         .doPut("package/put/" + id)
-        .then(res=>{
+        .then((res) => {
           console.log(res);
           this.$swal("Se ha recuperado exitosamente");
           this.onReset();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      
     },
     onReset() {
       this.packages.name = "";
@@ -341,11 +381,36 @@ export default {
       this.obtenerDatosF();
     },
     showAlert() {},
+    checkForm: function(e) {
+      if (this.name && this.age) return true;
+      this.errors = [];
+      if (!this.name) this.errors.push("Name required.");
+      if (!this.age) this.errors.push("Age required.");
+      e.preventDefault();
+    },
+    submit() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.submitStatus = "ERROR";
+      } else {
+        // do your submit logic here
+        this.submitStatus = "PENDING";
+        setTimeout(() => {
+          this.submitStatus = "OK";
+        }, 500);
+      }
+    },
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(4),
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
@@ -361,11 +426,10 @@ export default {
   margin-left: 0.5%;
 }
 .table {
-  margin-left: 5%;
-  margin-top: 5%;
+  margin-top: 6%;
 }
 .search {
-  margin-right: 10%;
+  margin-right: 2%;
 }
 .btnModal {
   background-color: #64b5f6 !important;
