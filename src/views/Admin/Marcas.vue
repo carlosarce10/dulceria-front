@@ -146,7 +146,7 @@
     </div>
 
     <div>
-      <sui-modal v-model="open">
+      <sui-modal class="modal-small" v-model="open">
         <sui-modal-header >Registrar nueva marca</sui-modal-header>
         <sui-modal-content>
           <sui-form id="formRegistro">
@@ -332,7 +332,6 @@ export default {
 </script>
 
 <style scoped>
-
 .funciones {
   color: #64b5f6;
   line-height: 50px;

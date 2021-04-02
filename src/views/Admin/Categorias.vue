@@ -144,21 +144,24 @@
 
     <div>
       <sui-modal v-model="open">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Registrar nueva categoría</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formRegistro"
-          >
+        <sui-modal-header>Registrar nueva categoría</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre de la categoría:</label>
               <input v-model="name" />
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions style="margin-bottom: 3%">
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button
+            id="registrar"
+            negative
+            @click.native="toggle"
+            type="button"
+          >
+            Cancelar
+          </sui-button>
           <sui-button
             id="registrar"
             @click="register"
