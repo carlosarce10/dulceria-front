@@ -16,7 +16,7 @@
         <div class="face face2">
           <div class="content">
             <h3>
-              <a href="Venta">Venta</a>
+              <a href="cajero/venta">Venta</a>
             </h3>
             <p>This is where I network and build my professional protfolio.</p>
           </div>
@@ -33,7 +33,7 @@
         <div class="face face2">
           <div class="content">
             <h3>
-              <a href="Retiro">Hacer retiro</a>
+              <a href="cajero/retiro">Hacer retiro</a>
             </h3>
             <p>This is where I network and build my professional protfolio.</p>
           </div>
@@ -52,7 +52,7 @@
         <div class="face face2">
           <div class="content">
             <h3>
-              <a href="Consultar">Consultar</a>
+              <a href="cajero/consultar">Consultar</a>
             </h3>
             <p>This is where I network and build my professional protfolio.</p>
           </div>
@@ -69,7 +69,7 @@
         <div class="face face2">
           <div class="content">
             <h3>
-              <a href="CerrarCaja">Cerrar caja</a>
+              <a href="cajero/cerrar-caja">Cerrar caja</a>
             </h3>
             <p>This is where I network and build my professional protfolio.</p>
           </div>

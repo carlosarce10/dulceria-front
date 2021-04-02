@@ -6,14 +6,14 @@
           <img class="logo" src="../assets/V1.png" />
         </div>
         <div class="right menu">
-          <a class="item" href="/Admin">Productos</a>
-          <a class="item" href="/Inventario">Inventario</a>
-          <a class="item" href="/CajeroAdmin">Cajeros</a>
-          <a class="item" href="/Marcas">Marcas</a>
-          <a class="item" href="/Categorias">Categorías</a>
-          <a class="item" href="/Ventas">Ventas</a>
-          <a class="item" href="/Paquetes">Paquetes</a>
-          <a class="item" href="/Descuentos">Descuentos</a>
+          <a class="item" href="/admin">Productos</a>
+          <a class="item" href="/admin/inventario">Inventario</a>
+          <a class="item" href="/admin/cajeros">Cajeros</a>
+          <a class="item" href="/admin/marcas">Marcas</a>
+          <a class="item" href="/admin/categorias">Categorías</a>
+          <a class="item" href="/admin/ventas">Ventas</a>
+          <a class="item" href="/admin/paquetes">Paquetes</a>
+          <a class="item" href="/admin/descuentos">Descuentos</a>
           <a class="item" href="/">Salir</a>
         </div>
       </div>
@@ -22,8 +22,8 @@
 </template>
 
 <style scoped>
-.mymenu{
-  background: #2286C3 !important;
+.mymenu {
+  background: #2286c3 !important;
   border-radius: 0 !important;
 }
 .item {

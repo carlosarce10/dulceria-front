@@ -71,7 +71,7 @@ export default {
             localStorage.setItem("token", token);
 
             console.log(localStorage.getItem("authority"));
-            this.$router.push("Admin");
+            this.$router.push("admin/productos");
           }
         })
         .catch((error) => {
