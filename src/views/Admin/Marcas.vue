@@ -146,7 +146,7 @@
     </div>
 
     <div>
-      <sui-modal v-model="open">
+      <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar nueva marca</sui-modal-header>
         <sui-modal-content>
           <sui-form id="formRegistro">
