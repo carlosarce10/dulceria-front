@@ -2,7 +2,7 @@
   <div class="border">
     <form v-on:submit.prevent="onSubmit" class="formulario">
       <div class="fondoForm">
-        <h2 class="login">Login</h2>
+        <h2 class="login">Inicio</h2>
         <div class="field" style="padding-top: 5%">
           <div class="ui left icon input">
             <input
@@ -70,8 +70,14 @@ export default {
             localStorage.setItem("username", username);
             localStorage.setItem("token", token);
 
-            console.log(localStorage.getItem("authority"));
-            this.$router.push("admin/productos");
+            
+            if(authority === "ROLE_ADMIN"){
+              this.$router.push("admin/productos");
+            }else if(authority === "ROLE_CASHIER"){
+              this.$router.push("cajero");
+            }
+
+            
           }
         })
         .catch((error) => {

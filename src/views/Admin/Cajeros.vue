@@ -31,10 +31,7 @@
                       >Nombre de usuario</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
-                      >última conexión</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Rol</sui-table-header-cell
+                      >Última conexión</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
                       >Acciones</sui-table-header-cell
@@ -51,9 +48,6 @@
                     }}</sui-table-cell>
                     <sui-table-cell text-align="center">{{
                       listaUserTrue.lastLogin
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      listaUserTrue.role.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -291,7 +285,7 @@ export default {
       api
         .doPost("/user/save", this.user)
         .then((response) => {
-          this.$swal("Usuario registrado exitosamente!");
+          this.$swal("¡Usuario registrado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -300,7 +294,7 @@ export default {
     },
     eliminar(id) {
       Swal.fire({
-        title: "Estás seguro de eliminar este producto?",
+        title: "¿Estás seguro de eliminar este usuario?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -312,7 +306,7 @@ export default {
           api
             .doDelete("/user/del/" + id)
             .then((response) => {
-              Swal.fire("Usuario eliminado exitosamente!");
+              Swal.fire("¡Usuario eliminado exitosamente!");
               console.log(response);
               this.getLists();
             })
@@ -325,7 +319,7 @@ export default {
       api
         .doPost("/user/save", this.userEdit)
         .then((response) => {
-          this.$swal("Usuario modificado exitosamente!");
+          this.$swal("¡Usuario modificado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -338,7 +332,7 @@ export default {
       api
         .doPut("/user/put/" + id)
         .then((response) => {
-          this.$swal("Usuario recuperado!");
+          this.$swal("¡Usuario recuperado!");
           console.log(response);
           this.getLists();
         })

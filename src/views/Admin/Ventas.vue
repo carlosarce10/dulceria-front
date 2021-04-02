@@ -67,10 +67,41 @@
         <sui-modal v-model="open">
           <sui-modal-header>Detalle de venta</sui-modal-header>
           <sui-modal-content scrolling>
-            <sui-label basic size="big" >Total: {{venta.total}}</sui-label>
-            <sui-label basic size="big">No. Caja: {{venta.cashbox.cashboxNumber}}</sui-label>
-            <sui-label basic size="big">Cajero: {{venta.user.username}}</sui-label>
-            <sui-label basic size="big">Fecha: {{venta.date}}</sui-label>
+
+          <sui-grid :columns="3" divided>
+            <sui-grid-row stretched>
+              <sui-grid-column>
+                <sui-segment color="violet">
+                  <sui-grid>
+                    <sui-grid-row>
+                      <sui-grid-column :width="8">
+                        <sui-segment color="blue" aligned="center" compact>
+                          <sui-icon name="cube" size="large" color="blue" circular /> 
+                          <sui-divider />
+                          Producto
+                        </sui-segment>
+                      </sui-grid-column>
+                      <sui-grid-column :width="8">
+                        <sui-segment color="red" aligned="center" compact>
+                          <sui-icon name="cubes" size="large" color="red" circular /> 
+                          <sui-divider />
+                          Paquete
+                        </sui-segment>
+                      </sui-grid-column>
+                    </sui-grid-row>
+                  </sui-grid>
+                </sui-segment>
+              </sui-grid-column>
+              <sui-grid-column>
+                <sui-segment color="green" aligned="center"><b>Total: {{venta.total}}</b></sui-segment>
+                <sui-segment color="teal" aligned="center"><b>Cajero: {{venta.user.username}}</b></sui-segment>
+              </sui-grid-column>
+              <sui-grid-column>
+                <sui-segment color="orange" aligned="center"><b>No. Caja: #{{venta.cashbox.cashboxNumber}}</b></sui-segment>
+                <sui-segment color="yellow" aligned="center"><b>Fecha: {{venta.date}}</b></sui-segment>
+              </sui-grid-column>
+            </sui-grid-row>
+          </sui-grid>
             <sui-table color="blue">
               <sui-table-header>
                 <sui-table-row>
@@ -93,8 +124,14 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row v-for="detail in venta.details" :key="detail.id">
-                  <sui-table-cell v-if="detail.product !== null" text-align="center">{{detail.product.name}}</sui-table-cell>
-                  <sui-table-cell v-if="detail.packagee !== null" text-align="center">{{detail.packagee.name}}</sui-table-cell>
+                  <sui-table-cell v-if="detail.product !== null" text-align="center">
+                    <sui-icon color="blue" name="cube" circular />
+                    {{detail.product.name}}
+                  </sui-table-cell>
+                  <sui-table-cell v-if="detail.packagee !== null" text-align="center">
+                    <sui-icon color="red" name="cubes" circular />
+                    {{detail.packagee.name}}
+                  </sui-table-cell>
                   <sui-table-cell text-align="center">{{detail.quantity}}</sui-table-cell>
                   <sui-table-cell text-align="center">${{detail.subtotal}}</sui-table-cell>
                   <sui-table-cell text-align="center">{{detail.discount}}%</sui-table-cell>
