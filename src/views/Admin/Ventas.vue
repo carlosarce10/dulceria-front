@@ -189,6 +189,13 @@ export default {
 </script>
 
 <style>
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
+}
+
 .funciones {
   color: #64b5f6;
   line-height: 50px;
@@ -202,14 +209,6 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
-}
-
-.table {
-  margin-left: 5%;
-  margin-top: 5%;
-}
-.search {
-  margin-right: 10%;
 }
 
 .btnModal {
