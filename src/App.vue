@@ -9,6 +9,18 @@
   width: 30% !important;
 }
 
+.panel{
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.panel-small{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

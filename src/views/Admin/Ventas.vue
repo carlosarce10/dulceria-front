@@ -5,6 +5,11 @@
     <div class="funciones">
       <h3>Ventas</h3>
     </div>
+
+    <sui-tab class="panel">
+
+    <sui-tab-pane title="Todas las ventas">
+
     <div class="table">
       <div class="search">
         <div class="ui fluid category search">
@@ -12,7 +17,7 @@
             <input
               class="prompt"
               type="text"
-              placeholder="Buscar productos..."
+              placeholder="Buscar venta..."
             />
             <i class="search icon"></i>
           </div>
@@ -24,7 +29,7 @@
           <sui-table-header>
             <sui-table-row>
               <sui-table-header-cell text-align="center"
-                >Caja</sui-table-header-cell
+                >No. caja</sui-table-header-cell
               >
               <sui-table-header-cell text-align="center"
                 >Fecha</sui-table-header-cell
@@ -33,50 +38,24 @@
                 >Total</sui-table-header-cell
               >
               <sui-table-header-cell text-align="center"
+                >Cajero</sui-table-header-cell
+              >
+              <sui-table-header-cell text-align="center"
                 >Detalles de venta</sui-table-header-cell
               >
             </sui-table-row>
           </sui-table-header>
           <sui-table-body>
-            <sui-table-row>
-              <sui-table-cell text-align="center">#5</sui-table-cell>
-              <sui-table-cell text-align="center">2021-03-11</sui-table-cell>
-              <sui-table-cell text-align="center">$3,515</sui-table-cell>
+            <sui-table-row v-for="venta in ventas" :key="venta.id">
+              <sui-table-cell text-align="center">{{venta.cashbox.cashboxNumber}}</sui-table-cell>
+              <sui-table-cell text-align="center">{{venta.date}}</sui-table-cell>
+              <sui-table-cell text-align="center">${{venta.total}}</sui-table-cell>
+              <sui-table-cell text-align="center">{{venta.user.username}}</sui-table-cell>
               <sui-table-cell
                 ><sui-button
                   style="display: block; margin-left: auto; margin-right: auto"
                   class="btnModal"
-                  @click.native="toggle"
-                  >Ver</sui-button
-                ></sui-table-cell
-              >
-            </sui-table-row>
-          </sui-table-body>
-          <sui-table-body>
-            <sui-table-row>
-              <sui-table-cell text-align="center">#8</sui-table-cell>
-              <sui-table-cell text-align="center">2021-03-09</sui-table-cell>
-              <sui-table-cell text-align="center">$2,150</sui-table-cell>
-              <sui-table-cell
-                ><sui-button
-                  style="display: block; margin-left: auto; margin-right: auto"
-                  class="btnModal"
-                  @click.native="toggle"
-                  >Ver</sui-button
-                ></sui-table-cell
-              >
-            </sui-table-row>
-          </sui-table-body>
-          <sui-table-body>
-            <sui-table-row>
-              <sui-table-cell text-align="center">#2</sui-table-cell>
-              <sui-table-cell text-align="center">2021-03-03</sui-table-cell>
-              <sui-table-cell text-align="center">$6,253</sui-table-cell>
-              <sui-table-cell
-                ><sui-button
-                  style="display: block; margin-left: auto; margin-right: auto"
-                  class="btnModal"
-                  @click.native="toggle"
+                  @click.native="getVenta(venta.id)"
                   >Ver</sui-button
                 ></sui-table-cell
               >
@@ -86,13 +65,17 @@
       </sui-container>
       <div>
         <sui-modal v-model="open">
-          <sui-modal-header>Ventas del día</sui-modal-header>
-          <sui-modal-body>
+          <sui-modal-header>Detalle de venta</sui-modal-header>
+          <sui-modal-content scrolling>
+            <sui-label basic size="big" >Total: {{venta.total}}</sui-label>
+            <sui-label basic size="big">No. Caja: {{venta.cashbox.cashboxNumber}}</sui-label>
+            <sui-label basic size="big">Cajero: {{venta.user.username}}</sui-label>
+            <sui-label basic size="big">Fecha: {{venta.date}}</sui-label>
             <sui-table color="blue">
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
-                    >Empleado</sui-table-header-cell
+                    >Producto/Paquete</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
                     >Cantidad</sui-table-header-cell
@@ -106,31 +89,34 @@
                   <sui-table-header-cell text-align="center"
                     >Descuento de monto</sui-table-header-cell
                   >
-                  <sui-table-header-cell text-align="center"
-                    >Producto</sui-table-header-cell
-                  >
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row>
-                  <sui-table-cell text-align="center"
-                    >Diego Calderón</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center">10</sui-table-cell>
-                  <sui-table-cell text-align="center">$3,900</sui-table-cell>
-                  <sui-table-cell text-align="center">$400</sui-table-cell>
-                  <sui-table-cell text-align="center">$0</sui-table-cell>
-                  <sui-table-cell text-align="center">Papas</sui-table-cell>
+                <sui-table-row v-for="detail in venta.details" :key="detail.id">
+                  <sui-table-cell v-if="detail.product !== null" text-align="center">{{detail.product.name}}</sui-table-cell>
+                  <sui-table-cell v-if="detail.packagee !== null" text-align="center">{{detail.packagee.name}}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{detail.quantity}}</sui-table-cell>
+                  <sui-table-cell text-align="center">${{detail.subtotal}}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{detail.discount}}%</sui-table-cell>
+                  <sui-table-cell text-align="center">${{detail.discountAmount}}</sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
-          </sui-modal-body>
+          </sui-modal-content>
           <sui-modal-actions>
-            <sui-button positive @click.native="toggle"> OK </sui-button>
+            <sui-button positive @click.native="toggle()"> OK </sui-button>
           </sui-modal-actions>
         </sui-modal>
       </div>
     </div>
+
+    </sui-tab-pane>
+
+    <sui-tab-pane title="Ventas del día">
+    </sui-tab-pane>
+
+    </sui-tab>
+
     <fondo />
   </div>
 </template>
@@ -140,6 +126,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
+import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
@@ -149,10 +136,52 @@ export default {
     cabecera,
   },
   data() {
-    return { open: false };
+    return {
+      open: false,
+      ventas:[],
+      venta:{
+        id:0,
+        date:{},
+        total:0,
+        user:{},
+        cashbox:{},
+        details:[]
+      }
+    };
+  },
+  mounted(){
+    this.startup();
   },
   methods: {
+    startup(){
+      api
+        .doGet("sales/list")
+        .then(response=>{
+          this.ventas = response.data;
+        })
+        .catch(error=>{
+          this.$swal(error.message);
+        })
+    },
     toggle() {
+      this.open = !this.open;
+    },
+    getVenta(id) {
+
+      api
+        .doGet("sales/get/"+id)
+        .then(response=>{
+          console.log(response.data);
+          this.venta.details = response.data.saleDetails;
+          this.venta.date = response.data.sale.date;
+          this.venta.total = response.data.sale.total;
+          this.venta.user.username = response.data.sale.user.username;
+          this.venta.cashbox.cashboxNumber = response.data.sale.cashbox.cashboxNumber;
+        })
+        .catch(error=>{
+          this.$swal(error.message);
+        })
+
       this.open = !this.open;
     },
   },
