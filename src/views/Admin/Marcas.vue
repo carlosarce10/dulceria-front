@@ -5,141 +5,141 @@
     <div class="funciones">
       <h3>Marcas</h3>
     </div>
-      <sui-tab class="panel-small">
-        <sui-tab-pane title="Marcas Activas">
-          <div class="table">
-            <div class="search">
-              <div
-                style="margin-top: 1%; margin-bottom: 1%"
-                class="ui fluid category search"
-              >
-                <div class="ui icon input">
-                  <div style="margin-right: 5%">
+    <sui-tab class="panel-small">
+      <sui-tab-pane title="Marcas Activas">
+        <div class="table">
+          <div class="search">
+            <div
+              style="margin-top: 1%; margin-bottom: 1%"
+              class="ui fluid category search"
+            >
+              <div class="ui icon input">
+                <div style="margin-right: 5%">
+                  <sui-button
+                    @click.native="toggle"
+                    style="background: #64b5f6"
+                    negative
+                    circular
+                    icon="plus"
+                  />
+                </div>
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+          </div>
+          <sui-container>
+            <sui-table color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >Marca</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Acciones</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="resultTrue in resultTrue"
+                  :key="resultTrue.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    resultTrue.name
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
                     <sui-button
-                      @click.native="toggle"
+                      @click.native="toggleEdit(resultTrue.id)"
+                      id="editar"
                       style="background: #64b5f6"
                       negative
                       circular
-                      icon="plus"
+                      icon="edit"
                     />
-                  </div>
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
+                    <sui-button
+                      id="delete"
+                      v-on:click="eliminar(resultTrue.id)"
+                      negative
+                      circular
+                      icon="times"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+      <sui-tab-pane title="Marcas Inactivas">
+        <div class="table">
+          <div class="search">
+            <div class="ui fluid category search">
+              <div class="ui icon input">
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
               </div>
+              <div class="results"></div>
             </div>
-            <sui-container >
-              <sui-table color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Marca</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="resultTrue in resultTrue"
-                    :key="resultTrue.id"
-                  >
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        @click.native="toggleEdit(resultTrue.id)"
-                        id="editar"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="edit"
-                      />
-                      <sui-button
-                        id="delete"
-                        v-on:click="eliminar(resultTrue.id)"
-                        negative
-                        circular
-                        icon="times"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
           </div>
-        </sui-tab-pane>
-        <sui-tab-pane title="Marcas Inactivas">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
-            </div>
-            <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Marca</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Recuperar</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="resultFalse in resultFalse"
-                    :key="resultFalse.id"
+          <sui-container style="margin-top: 2%">
+            <sui-table color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >Marca</sui-table-header-cell
                   >
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        id="recuperar"
-                        v-on:click="recuperar(resultFalse.id)"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="redo"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
-          </div>
-        </sui-tab-pane>
-      </sui-tab>
+                  <sui-table-header-cell text-align="center"
+                    >Recuperar</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="resultFalse in resultFalse"
+                  :key="resultFalse.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    resultFalse.name
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <sui-button
+                      id="recuperar"
+                      v-on:click="recuperar(resultFalse.id)"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="redo"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
 
     <div>
       <sui-modal class="modal-small" v-model="open">
@@ -205,6 +205,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -266,6 +267,7 @@ export default {
       api
         .doPost("/brand/save", this.marcaEdit)
         .then((response) => {
+          this.$swal("Marca modificada exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -279,6 +281,7 @@ export default {
           name: this.name,
         })
         .then((response) => {
+          this.$swal("Marca registrada exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -289,21 +292,36 @@ export default {
     },
     eliminar(id) {
       console.log(id);
-      api
-        .doDelete("/brand/del/" + id)
-        .then((response) => {
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      Swal.fire({
+        title: "Estás seguro de eliminar esta marca?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doDelete("/brand/del/" + id)
+            .then((response) => {
+              Swal.fire("Marca eliminada exitosamente!");
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
 
     recuperar(id) {
       console.log(id);
+
       api
         .doPut("/brand/put/" + id)
         .then((response) => {
+          this.$swal("Marca recuperada!");
           console.log(response);
           this.getLists();
         })
