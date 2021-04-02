@@ -173,7 +173,6 @@
           <sui-form
             style="margin-bottom: 5%; width: 50%; margin-left: 25%"
             id="formRegistro"
-            :class="{ 'form-group--error': $v.name.$error }"
           >
             <sui-form-field>
               <label>Nombre del paquete:</label>
@@ -208,30 +207,15 @@
         >
         <sui-modal-body>
           <sui-form
-            @submit.prevent="submit"
             style="margin-bottom: 5%; width: 50%; margin-left: 25%"
             id="formEdit"
           >
             <sui-form-field>
-              <div
-                class="form-group"
-                :class="{ 'form-group--error': $v.name.$error }"
-              >
-                <label class="form__label">Name</label>
-                <input class="form__input" v-model.trim="$v.name.$model" />
+              <div>
+                <label>Name</label>
+                <input v-model="packages.name" />
               </div>
-              <div class="error" v-if="!$v.name.required">Name is required</div>
-              <div class="error" v-if="!$v.name.minLength">
-                Name must have at least
-                {{ $v.name.$params.minLength.min }} letters.
-              </div>
-              <button
-                class="button"
-                type="submit"
-                :disabled="submitStatus === 'PENDING'"
-              >
-                Submit!
-              </button>
+              <button class="button" type="submit">Submit!</button>
             </sui-form-field>
             <sui-form-field>
               <label>Precio del paquete:</label>
@@ -251,23 +235,9 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    <form @submit.prevent="submit">
-      <div>
-        <label class="form__label">Name</label>
-        <input class="form__input" v-model.trim="$v.name.$model" />
-      </div>
-      <div class="error" v-if="!$v.name.required">Name is required</div>
-      <div class="error" v-if="!$v.name.minLength">
-        Name must have at least {{ $v.name.$params.minLength.min }} letters.
-      </div>
-      <button
-        class="button"
-        type="submit"
-        :disabled="submitStatus === 'PENDING'"
-      >
-        Submit!
-      </button>
-    </form>
+    <div id="app">
+      <input v-model="$v.text.$model" :class="status($v.text)" />
+    </div>
     <fondo />
   </div>
 </template>
@@ -279,8 +249,8 @@ import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
 import { required, minLength } from "vuelidate/lib/validators";
-
 Vue.use(Particles);
+
 export default {
   name: "Paquetes",
   components: {
@@ -303,6 +273,7 @@ export default {
       name: "",
       age: 0,
       submitStatus: null,
+      text: "",
     };
   },
   mounted() {
@@ -381,30 +352,17 @@ export default {
       this.obtenerDatosF();
     },
     showAlert() {},
-    checkForm: function(e) {
-      if (this.name && this.age) return true;
-      this.errors = [];
-      if (!this.name) this.errors.push("Name required.");
-      if (!this.age) this.errors.push("Age required.");
-      e.preventDefault();
-    },
-    submit() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        this.submitStatus = "ERROR";
-      } else {
-        // do your submit logic here
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-        }, 500);
-      }
+    status(validation) {
+      return {
+        error: validation.$error,
+        dirty: validation.$dirty,
+      };
     },
   },
   validations: {
-    name: {
+    text: {
       required,
-      minLength: minLength(4),
+      minLength: minLength(5),
     },
   },
 };
