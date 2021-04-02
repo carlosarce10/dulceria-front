@@ -145,7 +145,7 @@
     </div>
 
     <div>
-      <sui-modal v-model="open">
+      <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar nueva categoría</sui-modal-header>
         <sui-modal-content>
           <sui-form>
@@ -177,7 +177,7 @@
       </sui-modal>
     </div>
     <div>
-      <sui-modal v-model="openEdit">
+      <sui-modal class="modal-small" v-model="openEdit">
         <sui-modal-header>Modificar categoría</sui-modal-header>
         <sui-modal-content>
           <sui-form>
@@ -320,7 +320,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
