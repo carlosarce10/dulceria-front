@@ -147,7 +147,7 @@
 
     <div>
       <sui-modal v-model="open">
-        <sui-modal-header >Registrar nueva marca</sui-modal-header>
+        <sui-modal-header>Registrar nueva marca</sui-modal-header>
         <sui-modal-content>
           <sui-form id="formRegistro">
             <sui-form-field>
@@ -156,12 +156,8 @@
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
-        <sui-modal-actions >
-          <sui-button
-            negative
-            @click.native="toggle"
-            type="submit"
-          >
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggle" type="submit">
             Cancelar
           </sui-button>
           <sui-button
@@ -298,12 +294,6 @@ export default {
       //this.$router.push("/Marcas");
       //location.reload();
     },
-    getId(id) {
-      api
-        .doGet("/brand/get/" + id)
-        .then((resultEdit) => (this.resultEdit = resultEdit.data))
-        .catch((error) => console.log(error));
-    },
     eliminar(id) {
       console.log(id);
       api
@@ -332,7 +322,6 @@ export default {
 </script>
 
 <style scoped>
-
 .funciones {
   color: #64b5f6;
   line-height: 50px;

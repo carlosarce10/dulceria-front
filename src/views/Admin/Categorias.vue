@@ -63,6 +63,8 @@
                       "
                     >
                       <sui-button
+                        @click.native="toggleEdit(resultTrue.id)"
+                        id="editar"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -144,21 +146,19 @@
 
     <div>
       <sui-modal v-model="open">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Registrar nueva categoría</sui-modal-header
-        >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formRegistro"
-          >
+        <sui-modal-header>Registrar nueva categoría</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre de la categoría:</label>
               <input v-model="name" />
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
-        <sui-modal-actions style="margin-bottom: 3%">
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggle" type="button">
+            CANCEL
+          </sui-button>
           <sui-button
             id="registrar"
             @click="register"
@@ -171,7 +171,33 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-
+    <div>
+      <sui-modal v-model="openEdit">
+        <sui-modal-header>Modificar categoría</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
+            <sui-form-field>
+              <label>Nombre de la marca:</label>
+              <input v-model="categoriaEdit.name" />
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="toggleEdit" type="button">
+            CANCEL
+          </sui-button>
+          <sui-button
+            id="editar"
+            v-on:click="editar()"
+            positive
+            @click.native="toggleEdit"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
     <fondo />
   </div>
 </template>
@@ -193,11 +219,16 @@ export default {
   data() {
     return {
       open: false,
+      openEdit: false,
       resultTrue: null,
       resultFalse: null,
       id: null,
       loading: true,
-      name: null,
+      name: "",
+      categoriaEdit: {
+        id: 0,
+        name: "",
+      },
     };
   },
   beforeMount() {
@@ -220,15 +251,38 @@ export default {
     toggle() {
       this.open = !this.open;
     },
+    toggleEdit(id) {
+      api
+        .doGet("/category/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.categoriaEdit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
+      this.openEdit = !this.openEdit;
+    },
+    editar() {
+      api
+        .doPost("category/save", this.categoriaEdit)
+        .then((response) => {
+          console.log(response);
+          this.getLists();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     register() {
       api
         .doPost("/category/save", {
           name: this.name,
         })
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -240,8 +294,8 @@ export default {
         .doDelete("/category/del/" + id)
         .catch((error) => console.log(error))
         .then((response) => {
-          this.resultFalse.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .finally(() => (this.loading = false));
     },
@@ -251,8 +305,8 @@ export default {
       api
         .doPut("/category/put/" + id)
         .then((response) => {
-          this.resultTrue.push(response.data);
-          window.location.reload();
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
