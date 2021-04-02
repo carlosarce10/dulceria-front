@@ -169,23 +169,54 @@
         <sui-modal-header style="margin-bottom: 3%"
           >Registrar paquete</sui-modal-header
         >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formRegistro"
-          >
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <label>Nombre del paquete:</label>
-              <input type="text" v-model="packages.name" />
+              <input
+                type="text"
+                v-model="$v.name.$model"
+                :class="status($v.name)"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.required && $v.name.$dirty"
+              >
+                El nombre del paquete no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.minLength && $v.name.maxLength"
+              >
+                El nombre del paquete debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Precio del paquete:</label>
-              <input type="number" v-model="packages.price" />
+              <input
+                type="number"
+                v-model="$v.price.$model"
+                :class="status($v.price)"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.price.required && $v.price.$dirty"
+              >
+                El precio del paquete no debe estar en blanco
+              </div>
+              <div class="error errorMsg" v-if="!$v.price.minValue">
+                El precio del paquete debe ser positivo
+              </div>
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
+        </sui-modal-content>
         <sui-modal-actions>
-          <sui-button type="button" negative @click.native="toggle">
+          <sui-button
+            type="button"
+            negative
+            @click.native="toggle"
+            @click="onReset()"
+          >
             Cancelar
           </sui-button>
           <sui-button
@@ -194,6 +225,7 @@
             type="submit"
             positive
             @click.native="toggle"
+            :disabled="!(!$v.$invalid && $v.$dirty)"
           >
             OK
           </sui-button>
@@ -205,24 +237,21 @@
         <sui-modal-header style="margin-bottom: 3%"
           >Editar paquete</sui-modal-header
         >
-        <sui-modal-body>
-          <sui-form
-            style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-            id="formEdit"
-          >
+        <sui-modal-content>
+          <sui-form>
             <sui-form-field>
               <div>
                 <label>Name</label>
                 <input v-model="packages.name" />
               </div>
-              <button class="button" type="submit">Submit!</button>
+              <button class="button" type="submit"></button>
             </sui-form-field>
             <sui-form-field>
               <label>Precio del paquete:</label>
               <input type="number" v-model="packages.price" />
             </sui-form-field>
           </sui-form>
-        </sui-modal-body>
+        </sui-modal-content>
         <sui-modal-actions>
           <sui-button
             id="editar"
@@ -235,9 +264,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    <div id="app">
-      <input v-model="$v.text.$model" :class="status($v.text)" />
-    </div>
     <fondo />
   </div>
 </template>
@@ -248,7 +274,12 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import { required, minLength } from "vuelidate/lib/validators";
+import {
+  required,
+  minLength,
+  maxLength,
+  minValue,
+} from "vuelidate/lib/validators";
 Vue.use(Particles);
 
 export default {
@@ -265,15 +296,13 @@ export default {
       loading: true,
       elegido: {},
       packages: {
-        name: null,
-        price: null,
+        name: "",
+        price: false,
       },
       listPackage: null,
       listPackageFalse: null,
       name: "",
-      age: 0,
-      submitStatus: null,
-      text: "",
+      price: false,
     };
   },
   mounted() {
@@ -301,6 +330,11 @@ export default {
         .finally(() => (this.loading = false));
     },
     register() {
+      this.packages = {
+        name: this.name,
+        price: this.price,
+      };
+
       api
         .doPost("package/save", this.packages)
         .then((response) => {
@@ -346,8 +380,8 @@ export default {
         .finally(() => (this.loading = false));
     },
     onReset() {
-      this.packages.name = "";
-      this.packages.price = "";
+      this.name = "";
+      this.price = "";
       this.obtenerDatos();
       this.obtenerDatosF();
     },
@@ -360,9 +394,14 @@ export default {
     },
   },
   validations: {
-    text: {
+    name: {
       required,
-      minLength: minLength(5),
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    },
+    price: {
+      minValue: minValue(0),
+      required,
     },
   },
 };

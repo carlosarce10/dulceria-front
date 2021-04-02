@@ -44,18 +44,24 @@
 
 /* Validaciones */
 .dirty {
-  border-color: #8e8;
+  border-color: #8e8 !important;
 }
 
 .dirty:focus {
-  outline-color: #8e8;
+  outline-color: #8e8 !important;
 }
 
 .error {
-  border-color: #f99;
+  border-color: #f99 !important;
 }
 
 .error:focus {
-  outline-color: #f99;
+  outline-color: #f99 !important;
+}
+
+.errorMsg {
+  color: #f99;
+  margin-top: 2%;
+  font-size: small;
 }
 </style>
