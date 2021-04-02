@@ -6,7 +6,7 @@
           <img class="logo" src="../assets/V1.png" />
         </div>
         <div class="right menu">
-          <a class="item" href="/admin">Productos</a>
+          <a class="item" href="/admin/productos">Productos</a>
           <a class="item" href="/admin/inventario">Inventario</a>
           <a class="item" href="/admin/cajeros">Cajeros</a>
           <a class="item" href="/admin/marcas">Marcas</a>

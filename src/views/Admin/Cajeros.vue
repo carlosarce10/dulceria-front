@@ -142,7 +142,7 @@
     </div>
     <div>
       <sui-modal class="modal-small" v-model="open">
-        <sui-modal-header>Registrar nuevo producto</sui-modal-header>
+        <sui-modal-header>Registrar usuario</sui-modal-header>
         <sui-modal-content>
           <sui-form>
             <sui-form-field>
@@ -151,7 +151,7 @@
             </sui-form-field>
             <sui-form-field>
               <label>Contraseña:</label>
-              <input v-model="user.password" />
+              <input type="password" v-model="user.password" />
             </sui-form-field>
             <sui-form-field>
               <label>Rol:</label>
@@ -225,6 +225,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -290,6 +291,7 @@ export default {
       api
         .doPost("/user/save", this.user)
         .then((response) => {
+          this.$swal("Usuario registrado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -297,19 +299,33 @@ export default {
         .finally(() => (this.loading = false));
     },
     eliminar(id) {
-      api
-        .doDelete("user/del/" + id)
-        .then((response) => {
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      Swal.fire({
+        title: "Estás seguro de eliminar este producto?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doDelete("/user/del/" + id)
+            .then((response) => {
+              Swal.fire("Usuario eliminado exitosamente!");
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
     editar() {
       api
         .doPost("/user/save", this.userEdit)
         .then((response) => {
+          this.$swal("Usuario modificado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -322,6 +338,7 @@ export default {
       api
         .doPut("/user/put/" + id)
         .then((response) => {
+          this.$swal("Usuario recuperado!");
           console.log(response);
           this.getLists();
         })

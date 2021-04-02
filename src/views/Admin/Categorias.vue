@@ -213,6 +213,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -271,8 +272,9 @@ export default {
     },
     editar() {
       api
-        .doPost("category/save", this.categoriaEdit)
+        .doPost("/category/save", this.categoriaEdit)
         .then((response) => {
+          this.$swal("Categoría modificada exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -286,6 +288,7 @@ export default {
           name: this.name,
         })
         .then((response) => {
+          this.$swal("Categoría registrada exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -295,14 +298,27 @@ export default {
 
     eliminar(id) {
       console.log(id);
-      api
-        .doDelete("/category/del/" + id)
-        .catch((error) => console.log(error))
-        .then((response) => {
-          console.log(response);
-          this.getLists();
-        })
-        .finally(() => (this.loading = false));
+      Swal.fire({
+        title: "Estás seguro de eliminar esta categoría?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doDelete("/category/del/" + id)
+            .catch((error) => console.log(error))
+            .then((response) => {
+              Swal.fire("Categoría eliminada exitosamente!");
+              console.log(response);
+              this.getLists();
+            })
+            .finally(() => (this.loading = false));
+        }
+      });
     },
 
     recuperar(id) {
@@ -310,6 +326,7 @@ export default {
       api
         .doPut("/category/put/" + id)
         .then((response) => {
+          this.$swal("Categoría recuperada!");
           console.log(response);
           this.getLists();
         })

@@ -7,15 +7,11 @@
     </div>
     <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
-
       <sui-tab>
         <sui-tab-pane title="Productos Activos">
           <div class="table">
             <div class="search">
-              <div
-                style="margin-top: 1%; margin-bottom: 1%"
-                class="ui fluid category search"
-              >
+              <div class="ui fluid category search">
                 <div class="ui icon input">
                   <div style="margin-right: 5%">
                     <sui-button
@@ -26,7 +22,14 @@
                       icon="plus"
                     />
                   </div>
+                  <input
+                    class="prompt"
+                    type="text"
+                    placeholder="Buscar productos..."
+                  />
+                  <i class="search icon"></i>
                 </div>
+                <div class="results"></div>
               </div>
             </div>
             <sui-container style="margin-top: 2%">
@@ -351,6 +354,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -435,6 +439,7 @@ export default {
       api
         .doPost("/product/save", this.product)
         .then((response) => {
+          this.$swal("Producto registrado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -443,19 +448,33 @@ export default {
     },
     eliminar(id) {
       console.log(id);
-      api
-        .doDelete("/product/del/" + id)
-        .then((response) => {
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      Swal.fire({
+        title: "Estás seguro de eliminar este producto?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doDelete("/product/del/" + id)
+            .then((response) => {
+              Swal.fire("Producto eliminado exitosamente!");
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
     editar() {
       api
         .doPost("product/save", this.productEdit)
         .then((response) => {
+          this.$swal("Producto modificado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -468,6 +487,7 @@ export default {
       api
         .doPut("product/put/" + id)
         .then((response) => {
+          this.$swal("Producto recuperado!");
           console.log(response);
           this.getLists();
         })

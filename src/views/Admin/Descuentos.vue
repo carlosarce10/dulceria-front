@@ -258,6 +258,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -319,6 +320,7 @@ export default {
       api
         .doPost("/discount/save", this.discount)
         .then((response) => {
+          this.$swal("Producto registrado exitosamente!");
           console.log(response);
           this.getLists();
         })
@@ -327,19 +329,33 @@ export default {
     },
     eliminar(id) {
       console.log(id);
-      api
-        .doDelete("/discount/del/" + id)
-        .then((response) => {
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      Swal.fire({
+        title: "Estás seguro de eliminar este descuento?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doDelete("/discount/del/" + id)
+            .then((response) => {
+              Swal.fire("Descuento eliminado exitosamente!");
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
     editar() {
       api
         .doPost("/discount/save", this.discountEdit)
         .then((response) => {
+          this.$swal("Descuento modificado exitosamente!");
           console.log(response);
           this.getLists();
         })

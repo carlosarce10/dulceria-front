@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="products">
-        <sui-table basic>
+        <sui-table color="blue">
           <sui-table-header>
             <sui-table-row>
               <sui-table-header-cell text-align="center"
@@ -68,15 +68,10 @@
         </sui-table>
       </div>
       <div>
-        <sui-modal v-model="open">
-          <sui-modal-header style="margin-bottom: 3%"
-            >Registro nuevo lote</sui-modal-header
-          >
-          <sui-modal-body>
-            <sui-form
-              style="margin-bottom: 5%; width: 50%; margin-left: 25%"
-              id="formRegistro"
-            >
+        <sui-modal class="modal-small" v-model="open">
+          <sui-modal-header>Registro nuevo lote</sui-modal-header>
+          <sui-modal-content>
+            <sui-form>
               <sui-form-field>
                 <label>Producto:</label>
                 <select
@@ -106,7 +101,7 @@
                 <input type="number" v-model="stock.batch" />
               </sui-form-field>
             </sui-form>
-          </sui-modal-body>
+          </sui-modal-content>
           <sui-modal-actions style="margin-bottom: 3%">
             <sui-button
               id="registrar"
@@ -172,8 +167,9 @@ export default {
       api
         .doPost("/stock/save", this.stock)
         .then((response) => {
-          this.stock.push(response.data);
-          window.location.reload();
+          this.$swal("Lote registrado exitosamente!");
+          console.log(response);
+          this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
