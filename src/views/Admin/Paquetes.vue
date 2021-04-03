@@ -5,6 +5,7 @@
     <div class="funciones">
       <h3>Paquetes</h3>
     </div>
+    <div>hola kiwi</div>
     <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
       <sui-tab>
