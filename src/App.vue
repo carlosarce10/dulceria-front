@@ -9,6 +9,12 @@
   width: 30% !important;
 }
 
+.custom-search{
+  margin-top: 0% !important;
+  margin-right: 0% !important; 
+  float: none !important;
+}
+
 .panel {
   width: 75%;
   margin-left: auto;

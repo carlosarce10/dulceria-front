@@ -24,7 +24,11 @@
         </div>
       </div>
       <sui-container style="margin-top: 2%">
-        <sui-table color="blue">
+        <sui-segment basic v-if="ventas.length === 0">
+          <i style="color: #6c757d;" class="massive comment icon"></i><br>
+          <small style="color: #6c757d;">No se encontraron registros.</small>
+        </sui-segment>
+        <sui-table v-if="ventas.length > 0" color="blue">
           <sui-table-header>
             <sui-table-row>
               <sui-table-header-cell text-align="center"
@@ -169,6 +173,10 @@
     </sui-tab-pane>
 
     <sui-tab-pane title="Ventas del día">
+        <sui-segment basic v-if="ventasHoy.length === 0">
+          <i style="color: #6c757d;" class="massive comment icon"></i><br>
+          <small style="color: #6c757d;">No se encontraron registros.</small>
+        </sui-segment>
     </sui-tab-pane>
 
     </sui-tab>
@@ -194,6 +202,7 @@ export default {
   data() {
     return {
       open: false,
+      ventasHoy: [],
       ventas:[],
       venta:{
         id:0,

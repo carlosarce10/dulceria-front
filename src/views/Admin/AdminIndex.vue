@@ -33,7 +33,11 @@
               </div>
             </div>
             <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
+              <sui-segment basic v-if="resultTrue.length === 0">
+                <i style="color: #6c757d;" class="massive comment icon"></i><br>
+                <small style="color: #6c757d;">No se encontraron registros.</small>
+              </sui-segment>
+              <sui-table v-if="resultTrue.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
                     <sui-table-header-cell text-align="center"
@@ -128,7 +132,11 @@
               </div>
             </div>
             <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
+              <sui-segment basic v-if="resultFalse.length === 0">
+                <i style="color: #6c757d;" class="massive comment icon"></i><br>
+                <small style="color: #6c757d;">No se encontraron registros.</small>
+              </sui-segment>     
+              <sui-table v-if="resultFalse.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
                     <sui-table-header-cell text-align="center"
@@ -354,7 +362,6 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -439,7 +446,10 @@ export default {
       api
         .doPost("/product/save", this.product)
         .then((response) => {
-          this.$swal("Producto registrado exitosamente!");
+          this.$swal({
+            title : "¡Producto registrado exitosamente!",
+            icon : "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -448,20 +458,22 @@ export default {
     },
     eliminar(id) {
       console.log(id);
-      Swal.fire({
-        title: "Estás seguro de eliminar este producto?",
-        icon: "warning",
+      this.$swal({
+        title: "¿Estás seguro de eliminar este producto?",
+        icon: "question",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
+        reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
           api
             .doDelete("/product/del/" + id)
             .then((response) => {
-              Swal.fire("Producto eliminado exitosamente!");
+              this.$swal({
+                title: "¡Producto eliminado exitosamente!",
+                icon: "success"
+              });
               console.log(response);
               this.getLists();
             })
@@ -474,7 +486,10 @@ export default {
       api
         .doPost("product/save", this.productEdit)
         .then((response) => {
-          this.$swal("Producto modificado exitosamente!");
+          this.$swal({
+            title: "¡Producto modificado exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -484,15 +499,30 @@ export default {
     },
     recuperar(id) {
       console.log(id);
-      api
-        .doPut("product/put/" + id)
-        .then((response) => {
-          this.$swal("Producto recuperado!");
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+
+      this.$swal({
+        title: "¿Estás seguro de recuperar este producto?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true
+      }).then(result=>{
+        if(result.isConfirmed){
+          api
+            .doPut("product/put/" + id)
+            .then((response) => {
+              this.$swal({
+                title: "¡Producto recuperado!",
+                icon: "success"
+              });
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
   },
 };

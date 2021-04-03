@@ -6,14 +6,14 @@
           <img class="logo" src="../assets/V1.png" />
         </div>
         <div class="right menu">
-          <a class="item" href="/admin/productos">Productos</a>
+          <a class="item" href="/admin/ventas">Ventas</a>
           <a class="item" href="/admin/inventario">Inventario</a>
-          <a class="item" href="/admin/cajeros">Cajeros</a>
+          <a class="item" href="/admin/paquetes">Paquetes</a>
+          <a class="item" href="/admin/productos">Productos</a>
           <a class="item" href="/admin/marcas">Marcas</a>
           <a class="item" href="/admin/categorias">Categorías</a>
-          <a class="item" href="/admin/ventas">Ventas</a>
-          <a class="item" href="/admin/paquetes">Paquetes</a>
           <a class="item" href="/admin/descuentos">Descuentos</a>
+          <a class="item" href="/admin/cajeros">Cajeros</a>
           <a class="item" href="/">Salir</a>
         </div>
       </div>

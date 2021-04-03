@@ -36,7 +36,11 @@
               </div>
             </div>
             <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
+              <sui-segment basic v-if="categoriasTrue.length === 0">
+                <i style="color: #6c757d;" class="massive comment icon"></i><br>
+                <small style="color: #6c757d;">No se encontraron registros.</small>
+              </sui-segment>
+              <sui-table v-if="categoriasTrue.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
                     <sui-table-header-cell text-align="center"
@@ -49,11 +53,11 @@
                 </sui-table-header>
                 <sui-table-body>
                   <sui-table-row
-                    v-for="resultTrue in resultTrue"
-                    :key="resultTrue.id"
+                    v-for="categoria in categoriasTrue"
+                    :key="categoria.id"
                   >
                     <sui-table-cell text-align="center">{{
-                      resultTrue.name
+                      categoria.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -63,7 +67,7 @@
                       "
                     >
                       <sui-button
-                        @click.native="toggleEdit(resultTrue.id)"
+                        @click.native="toggleEdit(categoria.id)"
                         id="editar"
                         style="background: #64b5f6"
                         negative
@@ -72,7 +76,7 @@
                       />
                       <sui-button
                         id="delete"
-                        v-on:click="eliminar(resultTrue.id)"
+                        v-on:click="eliminar(categoria.id)"
                         negative
                         circular
                         icon="times"
@@ -100,7 +104,11 @@
               </div>
             </div>
             <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
+              <sui-segment basic v-if="categoriasFalse.length === 0">
+                <i style="color: #6c757d;" class="massive comment icon"></i><br>
+                <small style="color: #6c757d;">No se encontraron registros.</small>
+              </sui-segment>
+              <sui-table v-if="categoriasFalse.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
                     <sui-table-header-cell text-align="center"
@@ -113,11 +121,11 @@
                 </sui-table-header>
                 <sui-table-body>
                   <sui-table-row
-                    v-for="resultFalse in resultFalse"
-                    :key="resultFalse.id"
+                    v-for="categoria in categoriasFalse"
+                    :key="categoria.id"
                   >
                     <sui-table-cell text-align="center">{{
-                      resultFalse.name
+                      categoria.name
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -128,7 +136,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="recuperar(resultFalse.id)"
+                        v-on:click="recuperar(categoria.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -189,7 +197,7 @@
         </sui-modal-content>
         <sui-modal-actions>
           <sui-button negative @click.native="toggleEdit" type="button">
-            CANCEL
+            Cancelar
           </sui-button>
           <sui-button
             id="editar"
@@ -213,7 +221,6 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -226,8 +233,8 @@ export default {
     return {
       open: false,
       openEdit: false,
-      resultTrue: null,
-      resultFalse: null,
+      categoriasTrue: [],
+      categoriasFalse: [],
       id: null,
       loading: true,
       name: "",
@@ -244,13 +251,13 @@ export default {
     getLists() {
       api
         .doGet("/category/list/true")
-        .then((resultTrue) => (this.resultTrue = resultTrue.data))
+        .then((response) => (this.categoriasTrue = response.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
 
       api
         .doGet("/category/list/false")
-        .then((resultFalse) => (this.resultFalse = resultFalse.data))
+        .then((response) => (this.categoriasFalse = response.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
@@ -274,7 +281,10 @@ export default {
       api
         .doPost("/category/save", this.categoriaEdit)
         .then((response) => {
-          this.$swal("Categoría modificada exitosamente!");
+          this.$swal({
+            title: "¡Categoría modificada exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -288,7 +298,10 @@ export default {
           name: this.name,
         })
         .then((response) => {
-          this.$swal("Categoría registrada exitosamente!");
+          this.$swal({
+            title: "¡Categoría registrada exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -298,21 +311,23 @@ export default {
 
     eliminar(id) {
       console.log(id);
-      Swal.fire({
-        title: "Estás seguro de eliminar esta categoría?",
-        icon: "warning",
+      this.$swal({
+        title: "¿Estás seguro de eliminar esta categoría?",
+        icon: "question",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
+        reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
           api
             .doDelete("/category/del/" + id)
             .catch((error) => console.log(error))
             .then((response) => {
-              Swal.fire("Categoría eliminada exitosamente!");
+              this.$swal({
+                title: "¡Categoría eliminada exitosamente!",
+                icon: "success"
+              });
               console.log(response);
               this.getLists();
             })
@@ -320,18 +335,32 @@ export default {
         }
       });
     },
-
     recuperar(id) {
       console.log(id);
-      api
-        .doPut("/category/put/" + id)
-        .then((response) => {
-          this.$swal("Categoría recuperada!");
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      this.$swal({
+        title: "¿Estás seguro de recuperar esta categoría?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+      }).then(result=>{
+        if(result.isConfirmed){
+          api
+            .doPut("/category/put/" + id)
+            .then((response) => {
+              this.$swal({
+                title: "¡Categoría recuperada!",
+                icon: "success"
+              });
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
+
     },
   },
 };
