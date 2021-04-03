@@ -8,6 +8,7 @@ import VueAxios from "vue-axios";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Vuelidate from "vuelidate";
+import PortalVue from 'portal-vue';
 
 const options = {
   confirmButtonColor: "#64b5f6",
@@ -16,6 +17,7 @@ const options = {
 
 Vue.config.productionTip = false;
 Vue.use(SuiVue);
+Vue.use(PortalVue);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2, options);
 Vue.use(Vuelidate);

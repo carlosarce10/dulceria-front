@@ -5,117 +5,130 @@
     <div class="funciones">
       <h3>Inventario</h3>
     </div>
-    <div class="table">
-      <div class="search">
-        <div
-          style="margin-top: 1%; margin-bottom: 1%"
-          class="ui fluid category search"
-        >
-          <div class="ui icon input">
-            <div style="margin-right: 5%">
-              <sui-button
-                @click.native="toggle"
-                style="background: #64b5f6"
-                negative
-                circular
-                icon="plus"
-              />
-            </div>
-            <input
-              class="prompt"
-              type="text"
-              placeholder="Buscar productos..."
-            />
-            <i class="search icon"></i>
-          </div>
-          <div class="results"></div>
-        </div>
-      </div>
-      <div class="products">
-        <sui-table color="blue">
-          <sui-table-header>
-            <sui-table-row>
-              <sui-table-header-cell text-align="center"
-                >Producto</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Lote</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Fecha de caducidad</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Cantidad en existencia</sui-table-header-cell
-              >
-            </sui-table-row>
-          </sui-table-header>
-          <sui-table-body>
-            <sui-table-row v-for="listStock in listStock" :key="listStock.id">
-              <sui-table-cell text-align="center">{{
-                listStock.product.name
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listStock.batch
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listStock.dateExpire
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listStock.quantityStock
-              }}</sui-table-cell>
-            </sui-table-row>
-          </sui-table-body>
-        </sui-table>
-      </div>
-      <div>
-        <sui-modal class="modal-small" v-model="open">
-          <sui-modal-header>Registro nuevo lote</sui-modal-header>
-          <sui-modal-content>
-            <sui-form>
-              <sui-form-field>
-                <label>Producto:</label>
-                <select
-                  class="ui dropdown"
-                  ref="seleccionado"
-                  v-model="stock.product.id"
-                >
-                  <option
-                    v-for="listProduct in listProduct"
-                    :key="listProduct.id"
-                    :value="listProduct.id"
-                  >
-                    {{ listProduct.name }}
-                  </option>
-                </select>
-              </sui-form-field>
-              <sui-form-field>
-                <label>Cantidad:</label>
-                <input type="number" v-model="stock.quantityStock" />
-              </sui-form-field>
-              <sui-form-field>
-                <label>Fecha de expiración:</label>
-                <input type="date" v-model="stock.dateExpire" />
-              </sui-form-field>
-              <sui-form-field>
-                <label>Número de lote:</label>
-                <input type="number" v-model="stock.batch" />
-              </sui-form-field>
-            </sui-form>
-          </sui-modal-content>
-          <sui-modal-actions style="margin-bottom: 3%">
-            <sui-button
-              id="registrar"
-              @click="register"
-              positive
-              @click.native="toggle"
-              type="submit"
+
+    <sui-tab class="panel">
+      <sui-tab-pane title="Inventario">
+        <div class="table">
+          <div class="search">
+            <div
+              style="margin-top: 1%; margin-bottom: 1%"
+              class="ui fluid category search"
             >
-              OK
-            </sui-button>
-          </sui-modal-actions>
-        </sui-modal>
-      </div>
-    </div>
+              <div class="ui icon input">
+                <div style="margin-right: 5%">
+                  <sui-button
+                    @click.native="toggle"
+                    style="background: #64b5f6"
+                    negative
+                    circular
+                    icon="plus"
+                  />
+                </div>
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+          </div>
+          <div class="products">
+            <sui-segment basic v-if="listStock.length === 0">
+              <i style="color: #6c757d;" class="massive comment icon"></i><br>
+              <small style="color: #6c757d;">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="listStock.length > 0" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >Producto</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Lote</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Fecha de caducidad</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Cantidad en existencia</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row v-for="listStock in listStock" :key="listStock.id">
+                  <sui-table-cell text-align="center">{{
+                    listStock.product.name
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    listStock.batch
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    listStock.dateExpire
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    listStock.quantityStock
+                  }}</sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </div>
+          <div>
+            <sui-modal class="modal-small" v-model="open">
+              <sui-modal-header>Registro nuevo lote</sui-modal-header>
+              <sui-modal-content>
+                <sui-form>
+                  <sui-form-field>
+                    <label>Producto:</label>
+                    <sui-dropdown class="custom-search"
+                      :options="listSelectProduct"
+                      placeholder="Producto"
+                      search
+                      selection
+                      v-model="stock.product.id"
+                    />
+                  </sui-form-field>
+
+                  <sui-form-field>
+                    <label>Cantidad:</label>
+                    <input type="number" v-model="stock.quantityStock" />
+                  </sui-form-field>
+                  <sui-form-field>
+                    <label>Fecha de expiración:</label>
+                    <input type="date" v-model="stock.dateExpire" />
+                  </sui-form-field>
+                  <sui-form-field>
+                    <label>Número de lote:</label>
+                    <input type="number" v-model="stock.batch" />
+                  </sui-form-field>
+                </sui-form>
+              </sui-modal-content>
+              <sui-modal-actions style="margin-bottom: 3%">
+                <sui-button
+                  negative
+                  @click.native="toggle"
+                  type="button"
+                >
+                  Cancelar
+                </sui-button>
+                <sui-button
+                  id="registrar"
+                  @click="register"
+                  positive
+                  @click.native="toggle"
+                  type="submit"
+                >
+                  OK
+                </sui-button>
+              </sui-modal-actions>
+            </sui-modal>
+          </div>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
+
+
     <fondo />
   </div>
 </template>
@@ -136,6 +149,7 @@ export default {
   },
   data() {
     return {
+      listSelectProduct:[],
       stock: {
         batch: "",
         dateExpire: "",
@@ -159,15 +173,36 @@ export default {
 
       api
         .doGet("/product/list/true")
-        .then((listProduct) => (this.listProduct = listProduct.data))
+        .then((response) => {
+          this.listProduct = response.data
+
+          for(let myproducto of this.listProduct){
+            let item = {
+              key : 0,
+              value : 0,
+              text : ""
+            }
+            item.key = myproducto.id;
+            item.value = myproducto.id;
+            item.text = myproducto.name;
+
+            this.listSelectProduct.push(item);
+          }
+
+        })
         .catch((error) => console.log(error));
+
+
     },
     register() {
       console.log(this.stock);
       api
         .doPost("/stock/save", this.stock)
         .then((response) => {
-          this.$swal("Lote registrado exitosamente!");
+          this.$swal({
+            title: "¡Lote registrado exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })

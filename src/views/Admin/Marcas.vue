@@ -34,7 +34,11 @@
             </div>
           </div>
           <sui-container>
-            <sui-table color="blue">
+            <sui-segment basic v-if="marcasTrue.length === 0">
+              <i style="color: #6c757d;" class="massive comment icon"></i><br>
+              <small style="color: #6c757d;">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="marcasTrue.length > 0" color="blue">
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
@@ -47,11 +51,11 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="resultTrue in resultTrue"
-                  :key="resultTrue.id"
+                  v-for="marca in marcasTrue"
+                  :key="marca.id"
                 >
                   <sui-table-cell text-align="center">{{
-                    resultTrue.name
+                    marca.name
                   }}</sui-table-cell>
                   <sui-table-cell
                     style="
@@ -61,7 +65,7 @@
                     "
                   >
                     <sui-button
-                      @click.native="toggleEdit(resultTrue.id)"
+                      @click.native="toggleEdit(marca.id)"
                       id="editar"
                       style="background: #64b5f6"
                       negative
@@ -70,7 +74,7 @@
                     />
                     <sui-button
                       id="delete"
-                      v-on:click="eliminar(resultTrue.id)"
+                      v-on:click="eliminar(marca.id)"
                       negative
                       circular
                       icon="times"
@@ -82,6 +86,7 @@
           </sui-container>
         </div>
       </sui-tab-pane>
+
       <sui-tab-pane title="Marcas Inactivas">
         <div class="table">
           <div class="search">
@@ -98,7 +103,11 @@
             </div>
           </div>
           <sui-container style="margin-top: 2%">
-            <sui-table color="blue">
+            <sui-segment basic v-if="marcasFalse.length === 0">
+              <i style="color: #6c757d;" class="massive comment icon"></i><br>
+              <small style="color: #6c757d;">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="marcasFalse.length > 0" color="blue">
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
@@ -111,11 +120,11 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="resultFalse in resultFalse"
-                  :key="resultFalse.id"
+                  v-for="marca in marcasFalse"
+                  :key="marca.id"
                 >
                   <sui-table-cell text-align="center">{{
-                    resultFalse.name
+                    marca.name
                   }}</sui-table-cell>
                   <sui-table-cell
                     style="
@@ -126,7 +135,7 @@
                   >
                     <sui-button
                       id="recuperar"
-                      v-on:click="recuperar(resultFalse.id)"
+                      v-on:click="recuperar(marca.id)"
                       style="background: #64b5f6"
                       negative
                       circular
@@ -218,8 +227,8 @@ export default {
     return {
       open: false,
       openEdit: false,
-      resultTrue: null,
-      resultFalse: null,
+      marcasTrue: [],
+      marcasFalse: [],
       resultEdit: null,
       //id: null,
       loading: true,
@@ -232,20 +241,22 @@ export default {
   },
   beforeMount() {
     this.getLists();
+    
   },
   methods: {
     getLists() {
       api
         .doGet("/brand/list/true")
-        .then((resultTrue) => (this.resultTrue = resultTrue.data))
+        .then((response) => (this.marcasTrue = response.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
 
       api
         .doGet("/brand/list/false")
-        .then((resultFalse) => (this.resultFalse = resultFalse.data))
+        .then((response) => (this.marcasFalse = response.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
+
     },
     toggle() {
       this.open = !this.open;
@@ -267,7 +278,10 @@ export default {
       api
         .doPost("/brand/save", this.marcaEdit)
         .then((response) => {
-          this.$swal("Marca modificada exitosamente!");
+          this.$swal({
+            title: "¡Marca modificada exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -281,7 +295,10 @@ export default {
           name: this.name,
         })
         .then((response) => {
-          this.$swal("Marca registrada exitosamente!");
+          this.$swal({
+            title: "¡Marca registrada exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -293,19 +310,23 @@ export default {
     eliminar(id) {
       console.log(id);
       Swal.fire({
-        title: "Estás seguro de eliminar esta marca?",
-        icon: "warning",
+        title: "¿Estás seguro de eliminar esta marca?",
+        icon: "question",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
+        confirmButtonColor: "#64b5f6",
+        cancelButtonColor: "#ff7674",
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
+        reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
           api
             .doDelete("/brand/del/" + id)
             .then((response) => {
-              Swal.fire("Marca eliminada exitosamente!");
+              Swal.fire({
+                title: "¡Marca eliminada exitosamente!",
+                icon: "success"
+              });
               console.log(response);
               this.getLists();
             })
@@ -314,19 +335,32 @@ export default {
         }
       });
     },
-
     recuperar(id) {
       console.log(id);
+      this.$swal({
+        title: "¿Estás seguro de recuperar esta marca?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true
+      }).then(result=>{
+        if(result.isConfirmed){
+          api
+            .doPut("/brand/put/" + id)
+            .then((response) => {
+              this.$swal({
+                title: "¡Marca recuperada!",
+                icon: "success"
+              });
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
 
-      api
-        .doPut("/brand/put/" + id)
-        .then((response) => {
-          this.$swal("Marca recuperada!");
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
     },
   },
 };
