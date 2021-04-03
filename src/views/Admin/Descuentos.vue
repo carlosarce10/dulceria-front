@@ -5,167 +5,122 @@
     <div class="funciones">
       <h3>Descuentos</h3>
     </div>
-    <div class="table">
-      <div class="search">
-        <div class="ui fluid category search">
-          <div class="ui icon input">
-            <div style="margin-right: 5%">
-              <sui-button
-                @click.native="toggle"
-                style="background: #64b5f6"
-                negative
-                circular
-                icon="plus"
-              />
+
+    <sui-tab class="panel">
+      <sui-tab-pane title="Productos">
+        <div class="table">
+          <div class="search">
+            <div class="ui fluid category search">
+              <div class="ui icon input">
+                <div style="margin-right: 5%">
+                  <sui-button
+                    @click.native="modalDP()"
+                    style="background: #64b5f6"
+                    negative
+                    circular
+                    icon="plus"
+                  />
+                </div>
+              </div>
             </div>
           </div>
+          <sui-container style="margin-top: 2%">
+            <sui-table color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >Producto</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Descuento</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Comentarios</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Acciones</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="descuento in descuentosProductos"
+                  :key="descuento.id"
+                >
+                  <sui-table-cell text-align="center">
+                    {{descuento.product.name}}
+                  </sui-table-cell>
+                  <sui-table-cell text-align="center">
+                    {{ descuento.discount }}%
+                  </sui-table-cell>
+                  <sui-table-cell text-align="center">
+                    {{descuento.comments}}
+                  </sui-table-cell>
+                  
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <sui-button
+                      @click.native="modalDP(descuento.id)"
+                      id="editar"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="edit"
+                    />
+                    <sui-button
+                      id="delete"
+                      v-on:click="eliminar(descuento.id)"
+                      negative
+                      circular
+                      icon="times"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
         </div>
-      </div>
-      <sui-container style="margin-top: 2%">
-        <sui-table color="blue">
-          <sui-table-header>
-            <sui-table-row>
-              <sui-table-header-cell text-align="center"
-                >Descuento</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Comentarios</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Marca</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Categoría</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Producto</sui-table-header-cell
-              >
-              <sui-table-header-cell text-align="center"
-                >Acciones</sui-table-header-cell
-              >
-            </sui-table-row>
-          </sui-table-header>
-          <sui-table-body>
-            <sui-table-row
-              v-for="listDiscounts in listDiscounts"
-              :key="listDiscounts.id"
-            >
-              <sui-table-cell text-align="center">
-                {{ listDiscounts.discount }}%</sui-table-cell
-              >
-              <sui-table-cell text-align="center">{{
-                listDiscounts.comments
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listDiscounts.brand.name
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listDiscounts.category.name
-              }}</sui-table-cell>
-              <sui-table-cell text-align="center">{{
-                listDiscounts.product.name
-              }}</sui-table-cell>
-              <sui-table-cell
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-              >
-                <sui-button
-                  @click.native="toggleEdit(listDiscounts.id)"
-                  id="editar"
-                  style="background: #64b5f6"
-                  negative
-                  circular
-                  icon="edit"
-                />
-                <sui-button
-                  id="delete"
-                  v-on:click="eliminar(listDiscounts.id)"
-                  negative
-                  circular
-                  icon="times"
-                />
-              </sui-table-cell>
-            </sui-table-row>
-          </sui-table-body>
-        </sui-table>
-      </sui-container>
-    </div>
-    <sui-modal class="modal-small" v-model="open">
-      <sui-modal-header>Registrar descuento</sui-modal-header>
+
+      </sui-tab-pane>
+      <sui-tab-pane title="Marcas"></sui-tab-pane>
+      <sui-tab-pane title="Categorías"></sui-tab-pane>
+    </sui-tab>
+
+
+    <!-- MODAL DE REGISTRO DE DESCUENTO PARA PRODUCTO -->
+
+    <sui-modal class="modal-small" v-model="openP">
+      <sui-modal-header>Producto - Registrar descuento</sui-modal-header>
       <sui-modal-content>
         <sui-form>
           <sui-form-field>
-            <label>Cantidad del descuento:</label>
+            <label>Producto:</label>
+            <select class="ui dropdown" ref="seleccionado" v-model="discount.product.id">
+              <option v-for="product in listProduct" :key="product.id" :value="product.id">
+                {{product.name}}
+              </option>
+            </select>
+          </sui-form-field>
+          <sui-form-field>
+            <label>Porcentaje del descuento %:</label>
             <input type="number" v-model="discount.discount" />
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
             <textarea v-model="discount.comments"></textarea>
           </sui-form-field>
-          <sui-form-field>
-            <label>Marca:</label>
-            <select
-              class="ui dropdown"
-              ref="seleccionado"
-              v-model="discount.brand.id"
-            >
-              <option
-                v-for="listBrand in listBrand"
-                :key="listBrand.id"
-                :value="listBrand.id"
-              >
-                {{ listBrand.name }}
-              </option>
-            </select>
-          </sui-form-field>
-          <sui-form-field>
-            <label>Categoría:</label>
-            <select
-              class="ui dropdown"
-              ref="seleccionado"
-              v-model="discount.category.id"
-            >
-              <option
-                v-for="listCategory in listCategory"
-                :key="listCategory.id"
-                :value="listCategory.id"
-              >
-                {{ listCategory.name }}
-              </option>
-            </select>
-          </sui-form-field>
-          <sui-form-field>
-            <label>Producto:</label>
-            <select
-              class="ui dropdown"
-              ref="seleccionado"
-              v-model="discount.product.id"
-            >
-              <option
-                v-for="listProduct in listProduct"
-                :key="listProduct.id"
-                :value="listProduct.id"
-              >
-                {{ listProduct.name }}
-              </option>
-            </select>
-          </sui-form-field>
         </sui-form>
       </sui-modal-content>
       <sui-modal-actions style="margin-bottom: 3%">
-        <sui-button negative @click.native="toggle" type="submit">
+        <sui-button negative @click.native="modalDP()" type="submit">
           Cancelar
         </sui-button>
-        <sui-button
-          id="registrar"
-          @click="register"
-          positive
-          @click.native="toggle"
-          type="submit"
-        >
+        <sui-button id="registrar" @click="register()" positive @click.native="modalDP()" type="submit" >
           OK
         </sui-button>
       </sui-modal-actions>
@@ -184,41 +139,8 @@
             <textarea v-model="discountEdit.comments"></textarea>
           </sui-form-field>
           <sui-form-field>
-            <label>Marca:</label>
-            <select
-              class="ui dropdown"
-              ref="seleccionado"
-              v-model="discountEdit.brand.id"
-            >
-              <option
-                v-for="listBrand in listBrand"
-                :key="listBrand.id"
-                :value="listBrand.id"
-              >
-                {{ listBrand.name }}
-              </option>
-            </select>
-          </sui-form-field>
-          <sui-form-field>
-            <label>Categoría:</label>
-            <select
-              class="ui dropdown"
-              ref="seleccionado"
-              v-model="discountEdit.category.id"
-            >
-              <option
-                v-for="listCategory in listCategory"
-                :key="listCategory.id"
-                :value="listCategory.id"
-              >
-                {{ listCategory.name }}
-              </option>
-            </select>
-          </sui-form-field>
-          <sui-form-field>
             <label>Producto:</label>
-            <select
-              class="ui dropdown"
+            <select class="ui dropdown"
               ref="seleccionado"
               v-model="discountEdit.product.id"
             >
@@ -227,7 +149,7 @@
                 :key="listProduct.id"
                 :value="listProduct.id"
               >
-                {{ listProduct.name }}
+               xxxx
               </option>
             </select>
           </sui-form-field>
@@ -284,11 +206,16 @@ export default {
         category: { id: 0 },
         product: { id: 0 },
       },
-      listCategory: null,
-      listBrand: null,
-      listProduct: null,
-      listDiscounts: null,
-      open: false,
+      descuentosProductos: [],
+      descuentosMarcas: [],
+      descuentosCategorias:[],
+      listCategory: [],
+      listBrand: [],
+      listProduct: [],
+      listDiscounts: [],
+      openP: false,
+      openM: false,
+      openC: false,
       openEdit: false,
     };
   },
@@ -297,10 +224,32 @@ export default {
   },
 
   methods: {
+    modalDP(){
+      this.openP = !this.openP;
+    },
+    modalDM(){
+      this.openM = !this.openM;
+    },
+    modalDC(){
+      this.openC = !this.openC;
+    },
     getLists() {
       api
         .doGet("/discount/list")
-        .then((listDiscounts) => (this.listDiscounts = listDiscounts.data))
+        .then((listDiscounts) => {
+          this.listDiscounts = listDiscounts.data;
+          for(var d of this.listDiscounts){
+            if(d.product !== null){
+              this.descuentosProductos.push(d);
+            }
+            if(d.brand !== null){
+              this.descuentosMarcas.push(d);
+            }
+            if(d.category !== null){
+              this.descuentosCategorias.push(d);
+            }            
+          }
+        })
         .catch((error) => console.log(error));
       api
         .doGet("/category/list/true")
