@@ -18,10 +18,16 @@
                 icon="plus"
               />
             </div>
+            <input
+              class="prompt"
+              type="text"
+              placeholder="Buscar productos..."
+            />
+            <i class="search icon"></i>
           </div>
         </div>
       </div>
-      <sui-container style="margin-top: 2%">
+      <sui-container>
         <sui-table color="blue">
           <sui-table-header>
             <sui-table-row>
@@ -383,14 +389,7 @@ export default {
 };
 </script>
 
-<style>
-.table {
-  margin-top: 6%;
-}
-.search {
-  margin-right: 2%;
-}
-
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
@@ -406,11 +405,11 @@ export default {
   margin-left: 0.5%;
 }
 .table {
-  margin-left: 5%;
-  margin-top: 5%;
+  margin-top: 6%;
 }
 .search {
   margin-right: 10%;
+  margin-bottom: 0.5%;
 }
 .btnModal {
   background-color: #64b5f6 !important;

@@ -26,7 +26,6 @@
             >GO</sui-button
           >
         </div>
-        <label style="color: #a3a3a3" for="">Forgot your password?</label>
       </div>
     </form>
   </div>
@@ -70,14 +69,11 @@ export default {
             localStorage.setItem("username", username);
             localStorage.setItem("token", token);
 
-            
-            if(authority === "ROLE_ADMIN"){
+            if (authority === "ROLE_ADMIN") {
               this.$router.push("admin/productos");
-            }else if(authority === "ROLE_CASHIER"){
+            } else if (authority === "ROLE_CASHIER") {
               this.$router.push("cajero");
             }
-
-            
           }
         })
         .catch((error) => {

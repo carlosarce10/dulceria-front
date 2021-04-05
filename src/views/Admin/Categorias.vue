@@ -11,10 +11,7 @@
         <sui-tab-pane title="Categorías Activas">
           <div class="table">
             <div class="search">
-              <div
-                style="margin-top: 1%; margin-bottom: 1%"
-                class="ui fluid category search"
-              >
+              <div class="ui fluid category search">
                 <div class="ui icon input">
                   <div style="margin-right: 5%">
                     <sui-button
@@ -165,11 +162,7 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la categoría:</label>
-              <input
-                type="text"
-                v-model="$v.name.$model"
-                :class="status($v.name)"
-              />
+              <input v-model="$v.name.$model" :class="status($v.name)" />
               <div
                 class="error errorMsg"
                 v-if="!$v.name.required && $v.name.$dirty"
@@ -240,7 +233,6 @@ import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
-
 Vue.use(Particles);
 export default {
   name: "Categorias",
@@ -386,12 +378,12 @@ export default {
         dirty: validation.$dirty,
       };
     },
-    validations: {
-      name: {
-        required,
-        minLength: minLength(3),
-        maxLength: maxLength(50),
-      },
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
     },
   },
 };
@@ -411,5 +403,11 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
 }
 </style>

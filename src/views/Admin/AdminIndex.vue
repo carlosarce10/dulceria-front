@@ -36,8 +36,11 @@
               <sui-segment basic v-if="resultTrue.length === 0">
                 <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
+                <small style="color: #6c757d" >
+                <i style="color: #6c757d" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d">No se
+                  encontraron registros.</small
                 >
               </sui-segment>
               <sui-table v-if="resultTrue.length > 0" color="blue">
@@ -518,7 +521,6 @@ export default {
     },
     recuperar(id) {
       console.log(id);
-
       this.$swal({
         title: "¿Estás seguro de recuperar este producto?",
         icon: "question",
@@ -547,7 +549,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
@@ -561,5 +563,11 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 1%;
 }
 </style>
