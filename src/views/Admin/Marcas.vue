@@ -5,151 +5,150 @@
     <div class="funciones">
       <h3>Marcas</h3>
     </div>
-    <sui-tab class="panel-small">
-      <sui-tab-pane title="Marcas Activas">
-        <div class="table">
-          <div class="search">
-            <div
-              style="margin-top: 1%; margin-bottom: 1%"
-              class="ui fluid category search"
-            >
-              <div class="ui icon input">
-                <div style="margin-right: 5%">
-                  <sui-button
-                    @click.native="toggle"
-                    style="background: #64b5f6"
-                    negative
-                    circular
-                    icon="plus"
+    <div style="width: 60%; margin-left: 20%">
+      <sui-divider hidden />
+      <sui-tab>
+        <sui-tab-pane title="Marcas Activas">
+          <div class="table">
+            <div class="search">
+              <div class="ui fluid category search">
+                <div class="ui icon input">
+                  <div style="margin-right: 5%">
+                    <sui-button
+                      @click.native="toggle"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="plus"
+                    />
+                  </div>
+                  <input
+                    class="prompt"
+                    type="text"
+                    placeholder="Buscar productos..."
                   />
+                  <i class="search icon"></i>
                 </div>
-                <input
-                  class="prompt"
-                  type="text"
-                  placeholder="Buscar productos..."
-                />
-                <i class="search icon"></i>
+                <div class="results"></div>
               </div>
-              <div class="results"></div>
             </div>
-          </div>
-          <sui-container>
-            <sui-segment basic v-if="marcasTrue.length === 0">
-              <i style="color: #6c757d;" class="massive comment icon"></i><br>
-              <small style="color: #6c757d;">No se encontraron registros.</small>
-            </sui-segment>
-            <sui-table v-if="marcasTrue.length > 0" color="blue">
-              <sui-table-header>
-                <sui-table-row>
-                  <sui-table-header-cell text-align="center"
-                    >Marca</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Acciones</sui-table-header-cell
-                  >
-                </sui-table-row>
-              </sui-table-header>
-              <sui-table-body>
-                <sui-table-row
-                  v-for="marca in marcasTrue"
-                  :key="marca.id"
+            <sui-container>
+              <sui-segment basic v-if="marcasTrue.length === 0">
+                <i style="color: #6c757d;" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d;"
+                  >No se encontraron registros.</small
                 >
-                  <sui-table-cell text-align="center">{{
-                    marca.name
-                  }}</sui-table-cell>
-                  <sui-table-cell
-                    style="
+              </sui-segment>
+              <sui-table v-if="marcasTrue.length > 0" color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Marca</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Acciones</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row v-for="marca in marcasTrue" :key="marca.id">
+                    <sui-table-cell text-align="center">{{
+                      marca.name
+                    }}</sui-table-cell>
+                    <sui-table-cell
+                      style="
                       display: flex;
                       align-items: center;
                       justify-content: center;
                     "
-                  >
-                    <sui-button
-                      @click.native="toggleEdit(marca.id)"
-                      id="editar"
-                      style="background: #64b5f6"
-                      negative
-                      circular
-                      icon="edit"
-                    />
-                    <sui-button
-                      id="delete"
-                      v-on:click="eliminar(marca.id)"
-                      negative
-                      circular
-                      icon="times"
-                    />
-                  </sui-table-cell>
-                </sui-table-row>
-              </sui-table-body>
-            </sui-table>
-          </sui-container>
-        </div>
-      </sui-tab-pane>
-
-      <sui-tab-pane title="Marcas Inactivas">
-        <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <input
-                  class="prompt"
-                  type="text"
-                  placeholder="Buscar productos..."
-                />
-                <i class="search icon"></i>
-              </div>
-              <div class="results"></div>
-            </div>
+                    >
+                      <sui-button
+                        @click.native="toggleEdit(marca.id)"
+                        id="editar"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="edit"
+                      />
+                      <sui-button
+                        id="delete"
+                        v-on:click="eliminar(marca.id)"
+                        negative
+                        circular
+                        icon="times"
+                      />
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-container>
           </div>
-          <sui-container style="margin-top: 2%">
-            <sui-segment basic v-if="marcasFalse.length === 0">
-              <i style="color: #6c757d;" class="massive comment icon"></i><br>
-              <small style="color: #6c757d;">No se encontraron registros.</small>
-            </sui-segment>
-            <sui-table v-if="marcasFalse.length > 0" color="blue">
-              <sui-table-header>
-                <sui-table-row>
-                  <sui-table-header-cell text-align="center"
-                    >Marca</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Recuperar</sui-table-header-cell
-                  >
-                </sui-table-row>
-              </sui-table-header>
-              <sui-table-body>
-                <sui-table-row
-                  v-for="marca in marcasFalse"
-                  :key="marca.id"
+        </sui-tab-pane>
+
+        <sui-tab-pane title="Marcas Inactivas">
+          <div class="table">
+            <div class="search">
+              <div class="ui fluid category search">
+                <div class="ui icon input">
+                  <input
+                    class="prompt"
+                    type="text"
+                    placeholder="Buscar productos..."
+                  />
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </div>
+            <sui-container style="margin-top: 2%">
+              <sui-segment basic v-if="marcasFalse.length === 0">
+                <i style="color: #6c757d;" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d;"
+                  >No se encontraron registros.</small
                 >
-                  <sui-table-cell text-align="center">{{
-                    marca.name
-                  }}</sui-table-cell>
-                  <sui-table-cell
-                    style="
+              </sui-segment>
+              <sui-table v-if="marcasFalse.length > 0" color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Marca</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Recuperar</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row v-for="marca in marcasFalse" :key="marca.id">
+                    <sui-table-cell text-align="center">{{
+                      marca.name
+                    }}</sui-table-cell>
+                    <sui-table-cell
+                      style="
                       display: flex;
                       align-items: center;
                       justify-content: center;
                     "
-                  >
-                    <sui-button
-                      id="recuperar"
-                      v-on:click="recuperar(marca.id)"
-                      style="background: #64b5f6"
-                      negative
-                      circular
-                      icon="redo"
-                    />
-                  </sui-table-cell>
-                </sui-table-row>
-              </sui-table-body>
-            </sui-table>
-          </sui-container>
-        </div>
-      </sui-tab-pane>
-    </sui-tab>
-
+                    >
+                      <sui-button
+                        id="recuperar"
+                        v-on:click="recuperar(marca.id)"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="redo"
+                      />
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-container>
+          </div>
+        </sui-tab-pane>
+      </sui-tab>
+    </div>
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar marca</sui-modal-header>
@@ -157,7 +156,19 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
-              <input v-model="name" />
+              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.required && $v.name.$dirty"
+              >
+                El nombre del paquete no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.minLength && $v.name.maxLength"
+              >
+                El nombre del paquete debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
@@ -171,6 +182,7 @@
             positive
             @click.native="toggle"
             type="submit"
+            :disabled="!(!$v.$invalid && $v.$dirty)"
           >
             OK
           </sui-button>
@@ -214,8 +226,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import Swal from "sweetalert2";
-
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 Vue.use(Particles);
 export default {
   name: "Marcas",
@@ -241,7 +252,6 @@ export default {
   },
   beforeMount() {
     this.getLists();
-    
   },
   methods: {
     getLists() {
@@ -256,7 +266,6 @@ export default {
         .then((response) => (this.marcasFalse = response.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-
     },
     toggle() {
       this.open = !this.open;
@@ -280,7 +289,7 @@ export default {
         .then((response) => {
           this.$swal({
             title: "¡Marca modificada exitosamente!",
-            icon: "success"
+            icon: "success",
           });
           console.log(response);
           this.getLists();
@@ -297,19 +306,17 @@ export default {
         .then((response) => {
           this.$swal({
             title: "¡Marca registrada exitosamente!",
-            icon: "success"
+            icon: "success",
           });
           console.log(response);
           this.getLists();
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-      //this.$router.push("/Marcas");
-      //location.reload();
     },
     eliminar(id) {
       console.log(id);
-      Swal.fire({
+      this.$swal({
         title: "¿Estás seguro de eliminar esta marca?",
         icon: "question",
         showCancelButton: true,
@@ -317,15 +324,15 @@ export default {
         cancelButtonColor: "#ff7674",
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
-        reverseButtons: true
+        reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
           api
             .doDelete("/brand/del/" + id)
             .then((response) => {
-              Swal.fire({
+              this.$swal({
                 title: "¡Marca eliminada exitosamente!",
-                icon: "success"
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -343,15 +350,15 @@ export default {
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
-        reverseButtons: true
-      }).then(result=>{
-        if(result.isConfirmed){
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
           api
             .doPut("/brand/put/" + id)
             .then((response) => {
               this.$swal({
                 title: "¡Marca recuperada!",
-                icon: "success"
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -360,7 +367,19 @@ export default {
             .finally(() => (this.loading = false));
         }
       });
-
+    },
+    status(validation) {
+      return {
+        error: validation.$error,
+        dirty: validation.$dirty,
+      };
+    },
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
     },
   },
 };
@@ -380,5 +399,12 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
+  margin-bottom: 2%;
 }
 </style>

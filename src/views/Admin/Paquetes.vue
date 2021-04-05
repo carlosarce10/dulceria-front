@@ -5,7 +5,6 @@
     <div class="funciones">
       <h3>Paquetes</h3>
     </div>
-    <div>hola kiwi</div>
     <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
       <sui-tab>
@@ -86,6 +85,7 @@
                         negative
                         circular
                         icon="edit"
+                        @click.native="toggleEdit(listPackage.id)"
                       />
                       <sui-button
                         id="delete"
@@ -236,27 +236,28 @@
     <div>
       <sui-modal v-model="openEdit">
         <sui-modal-header style="margin-bottom: 3%"
-          >Editar paquete</sui-modal-header
+          >Modificar paquete</sui-modal-header
         >
         <sui-modal-content>
           <sui-form>
             <sui-form-field>
-              <div>
-                <label>Name</label>
-                <input v-model="packages.name" />
-              </div>
-              <button class="button" type="submit"></button>
+              <label>Name</label>
+              <input v-model="packagesEdit.name" />
             </sui-form-field>
             <sui-form-field>
               <label>Precio del paquete:</label>
-              <input type="number" v-model="packages.price" />
+              <input type="number" v-model="packagesEdit.price" />
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
+          <sui-button negative @click.native="toggleEdit" type="submit">
+            Cancelar
+          </sui-button>
           <sui-button
             id="editar"
             type="submit"
+            v-on:click="editar()"
             positive
             @click.native="toggleEdit"
           >
@@ -300,6 +301,10 @@ export default {
         name: "",
         price: false,
       },
+      packagesEdit: {
+        name: "",
+        price: false,
+      },
       listPackage: null,
       listPackageFalse: null,
       name: "",
@@ -339,46 +344,93 @@ export default {
       api
         .doPost("package/save", this.packages)
         .then((response) => {
-          this.$swal("Se ha registrado exitosamente");
+          this.$swal({
+            title: "¡Producto registrado exitosamente!",
+            icon: "success",
+          });
           this.onReset();
           console.log(response);
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
-    editar(id) {
+    toggleEdit(id) {
       api
-        .doPost("package/get/" + id, {
-          name: this.name,
-          price: this.price,
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
-      this.$swal("Se ha registrado exitosamente");
-      this.onReset();
-    },
-    eliminar(id) {
-      api
-        .doDelete("package/del/" + id)
+        .doGet("package/get/" + id)
         .then((res) => {
           console.log(res);
-          this.$swal("Se ha eliminado exitosamente");
+          this.packagesEdit = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      this.openEdit = !this.openEdit;
+    },
+    editar() {
+      api
+        .doPost("package/save", this.packagesEdit)
+        .then((response) => {
+          this.$swal({
+            title: "¡Marca modificada exitosamente!",
+            icon: "success",
+          });
+          console.log(response);
           this.onReset();
         })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    eliminar(id) {
+      this.$swal({
+        title: "¿Estás seguro de eliminar este producto?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doDelete("package/del/" + id)
+            .then((res) => {
+              this.$swal({
+                title: "¡Producto eliminado exitosamente!",
+                icon: "success",
+              });
+              console.log(res);
+              this.onReset();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
     recuperar(id) {
       console.log(id);
-      api
-        .doPut("package/put/" + id)
-        .then((res) => {
-          console.log(res);
-          this.$swal("Se ha recuperado exitosamente");
-          this.onReset();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      this.$swal({
+        title: "¿Estás seguro de recuperar este producto?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doPut("package/put/" + id)
+            .then((res) => {
+              this.$swal({
+                title: "¡Producto recuperado!",
+                icon: "success",
+              });
+              this.onReset();
+              console.log(res);
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
     },
     onReset() {
       this.name = "";
@@ -386,7 +438,6 @@ export default {
       this.obtenerDatos();
       this.obtenerDatosF();
     },
-    showAlert() {},
     status(validation) {
       return {
         error: validation.$error,
