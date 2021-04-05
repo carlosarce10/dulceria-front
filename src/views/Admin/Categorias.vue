@@ -34,9 +34,9 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="categoriasTrue.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i
+                <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d;"
+                <small style="color: #6c757d"
                   >No se encontraron registros.</small
                 >
               </sui-segment>
@@ -105,9 +105,9 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="categoriasFalse.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i
+                <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d;"
+                <small style="color: #6c757d"
                   >No se encontraron registros.</small
                 >
               </sui-segment>
@@ -167,13 +167,13 @@
                 class="error errorMsg"
                 v-if="!$v.name.required && $v.name.$dirty"
               >
-                El nombre del paquete no debe estar en blanco
+                El nombre de la categoría no debe estar en blanco
               </div>
               <div
                 class="error errorMsg"
                 v-if="!$v.name.minLength && $v.name.maxLength"
               >
-                El nombre del paquete debe tener entre 3 y 50 carateres
+                El nombre de la categoría debe tener entre 3 y 50 carateres
               </div>
             </sui-form-field>
           </sui-form>
