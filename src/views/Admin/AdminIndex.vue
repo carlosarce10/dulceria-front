@@ -34,8 +34,11 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="resultTrue.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i><br>
-                <small style="color: #6c757d;">No se encontraron registros.</small>
+                <i style="color: #6c757d;" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d;"
+                  >No se encontraron registros.</small
+                >
               </sui-segment>
               <sui-table v-if="resultTrue.length > 0" color="blue">
                 <sui-table-header>
@@ -133,9 +136,12 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="resultFalse.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i><br>
-                <small style="color: #6c757d;">No se encontraron registros.</small>
-              </sui-segment>     
+                <i style="color: #6c757d;" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d;"
+                  >No se encontraron registros.</small
+                >
+              </sui-segment>
               <sui-table v-if="resultFalse.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
@@ -447,8 +453,8 @@ export default {
         .doPost("/product/save", this.product)
         .then((response) => {
           this.$swal({
-            title : "¡Producto registrado exitosamente!",
-            icon : "success"
+            title: "¡Producto registrado exitosamente!",
+            icon: "success",
           });
           console.log(response);
           this.getLists();
@@ -464,7 +470,7 @@ export default {
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
-        reverseButtons: true
+        reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
           api
@@ -472,7 +478,7 @@ export default {
             .then((response) => {
               this.$swal({
                 title: "¡Producto eliminado exitosamente!",
-                icon: "success"
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -488,7 +494,7 @@ export default {
         .then((response) => {
           this.$swal({
             title: "¡Producto modificado exitosamente!",
-            icon: "success"
+            icon: "success",
           });
           console.log(response);
           this.getLists();
@@ -499,22 +505,21 @@ export default {
     },
     recuperar(id) {
       console.log(id);
-
       this.$swal({
         title: "¿Estás seguro de recuperar este producto?",
         icon: "question",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
-        reverseButtons: true
-      }).then(result=>{
-        if(result.isConfirmed){
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
           api
             .doPut("product/put/" + id)
             .then((response) => {
               this.$swal({
                 title: "¡Producto recuperado!",
-                icon: "success"
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -528,7 +533,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
@@ -542,5 +547,11 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 1%;
 }
 </style>

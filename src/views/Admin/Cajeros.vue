@@ -8,74 +8,86 @@
 
     <div>
       <div style="width: 60%; margin-left: 20%">
+        <sui-divider hidden />
         <sui-tab>
           <sui-tab-pane title="Usuarios Activos">
-            <div style="margin-top: 1%; margin-bottom: 1%; margin-left: 55%">
-              <div class="ui icon input">
-                <div style="margin-right: 5%">
-                  <sui-button
-                    @click.native="toggle"
-                    style="background: #64b5f6"
-                    negative
-                    circular
-                    icon="plus"
-                  />
+            <div class="table">
+              <div class="search">
+                <div class="ui fluid category search">
+                  <div class="ui icon input">
+                    <div style="margin-right: 5%">
+                      <sui-button
+                        @click.native="toggle"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="plus"
+                      />
+                    </div>
+                    <input
+                      class="prompt"
+                      type="text"
+                      placeholder="Buscar productos..."
+                    />
+                    <i class="search icon"></i>
+                  </div>
+                  <div class="results"></div>
                 </div>
               </div>
-            </div>
-            <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Nombre de usuario</sui-table-header-cell
+              <sui-container style="margin-top: 2%">
+                <sui-table color="blue">
+                  <sui-table-header>
+                    <sui-table-row>
+                      <sui-table-header-cell text-align="center"
+                        >Nombre de usuario</sui-table-header-cell
+                      >
+                      <sui-table-header-cell text-align="center"
+                        >Última conexión</sui-table-header-cell
+                      >
+                      <sui-table-header-cell text-align="center"
+                        >Acciones</sui-table-header-cell
+                      >
+                    </sui-table-row>
+                  </sui-table-header>
+                  <sui-table-body>
+                    <sui-table-row
+                      v-for="listaUserTrue in listaUserTrue"
+                      :key="listaUserTrue.id"
                     >
-                    <sui-table-header-cell text-align="center"
-                      >Última conexión</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="listaUserTrue in listaUserTrue"
-                    :key="listaUserTrue.id"
-                  >
-                    <sui-table-cell text-align="center">{{
-                      listaUserTrue.username
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      listaUserTrue.lastLogin
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
+                      <sui-table-cell text-align="center">{{
+                        listaUserTrue.username
+                      }}</sui-table-cell>
+                      <sui-table-cell text-align="center">{{
+                        listaUserTrue.lastLogin
+                      }}</sui-table-cell>
+                      <sui-table-cell
+                        style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
                       "
-                    >
-                      <sui-button
-                        @click.native="toggleEdit(listaUserTrue.id)"
-                        id="editar"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="edit"
-                      />
-                      <sui-button
-                        id="delete"
-                        v-on:click="eliminar(listaUserTrue.id)"
-                        negative
-                        circular
-                        icon="times"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
+                      >
+                        <sui-button
+                          @click.native="toggleEdit(listaUserTrue.id)"
+                          id="editar"
+                          style="background: #64b5f6"
+                          negative
+                          circular
+                          icon="edit"
+                        />
+                        <sui-button
+                          id="delete"
+                          v-on:click="eliminar(listaUserTrue.id)"
+                          negative
+                          circular
+                          icon="times"
+                        />
+                      </sui-table-cell>
+                    </sui-table-row>
+                  </sui-table-body>
+                </sui-table>
+              </sui-container>
+            </div>
           </sui-tab-pane>
           <sui-tab-pane title="Usuarios Inactivos">
             <sui-container style="margin-top: 2%">
@@ -208,7 +220,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-    <!--<button @click="showAlert">Hello world</button>-->
     <fondo />
   </div>
 </template>
@@ -347,7 +358,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
   line-height: 50px;
@@ -361,5 +372,11 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
 }
 </style>

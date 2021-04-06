@@ -11,10 +11,7 @@
         <sui-tab-pane title="Categorías Activas">
           <div class="table">
             <div class="search">
-              <div
-                style="margin-top: 1%; margin-bottom: 1%"
-                class="ui fluid category search"
-              >
+              <div class="ui fluid category search">
                 <div class="ui icon input">
                   <div style="margin-right: 5%">
                     <sui-button
@@ -37,8 +34,11 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="categoriasTrue.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i><br>
-                <small style="color: #6c757d;">No se encontraron registros.</small>
+                <i style="color: #6c757d" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d"
+                  >No se encontraron registros.</small
+                >
               </sui-segment>
               <sui-table v-if="categoriasTrue.length > 0" color="blue">
                 <sui-table-header>
@@ -105,8 +105,11 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="categoriasFalse.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i><br>
-                <small style="color: #6c757d;">No se encontraron registros.</small>
+                <i style="color: #6c757d" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d"
+                  >No se encontraron registros.</small
+                >
               </sui-segment>
               <sui-table v-if="categoriasFalse.length > 0" color="blue">
                 <sui-table-header>
@@ -159,7 +162,19 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la categoría:</label>
-              <input v-model="name" />
+              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.required && $v.name.$dirty"
+              >
+                El nombre de la categoría no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.minLength && $v.name.maxLength"
+              >
+                El nombre de la categoría debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
@@ -178,6 +193,7 @@
             positive
             @click.native="toggle"
             type="submit"
+            :disabled="!(!$v.$invalid && $v.$dirty)"
           >
             OK
           </sui-button>
@@ -221,7 +237,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 Vue.use(Particles);
 export default {
   name: "Categorias",
@@ -283,7 +299,7 @@ export default {
         .then((response) => {
           this.$swal({
             title: "¡Categoría modificada exitosamente!",
-            icon: "success"
+            icon: "success",
           });
           console.log(response);
           this.getLists();
@@ -300,7 +316,7 @@ export default {
         .then((response) => {
           this.$swal({
             title: "¡Categoría registrada exitosamente!",
-            icon: "success"
+            icon: "success",
           });
           console.log(response);
           this.getLists();
@@ -317,7 +333,7 @@ export default {
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
-        reverseButtons: true
+        reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
           api
@@ -326,7 +342,7 @@ export default {
             .then((response) => {
               this.$swal({
                 title: "¡Categoría eliminada exitosamente!",
-                icon: "success"
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -344,14 +360,14 @@ export default {
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
         reverseButtons: true,
-      }).then(result=>{
-        if(result.isConfirmed){
+      }).then((result) => {
+        if (result.isConfirmed) {
           api
             .doPut("/category/put/" + id)
             .then((response) => {
               this.$swal({
                 title: "¡Categoría recuperada!",
-                icon: "success"
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -360,7 +376,19 @@ export default {
             .finally(() => (this.loading = false));
         }
       });
-
+    },
+    status(validation) {
+      return {
+        error: validation.$error,
+        dirty: validation.$dirty,
+      };
+    },
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
     },
   },
 };
@@ -380,5 +408,11 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
 }
 </style>
