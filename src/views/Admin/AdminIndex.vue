@@ -43,87 +43,53 @@
                   >No se encontraron registros.</small
                 >
               </sui-segment>
-              <sui-table v-if="resultTrue.length > 0" color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Imágen</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Producto</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Contenido neto</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio Mayoreo</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio menudeo</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Marca</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Categoría</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
+              <div>
+                <sui-grid :columns="3">
+                  <sui-grid-column
                     v-for="resultTrue in resultTrue"
                     :key="resultTrue.id"
                   >
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.image
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.name
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.netContent
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center"
-                      >${{ resultTrue.wholesalePrice }}</sui-table-cell
-                    >
-                    <sui-table-cell text-align="center"
-                      >${{ resultTrue.retailPrice }}</sui-table-cell
-                    >
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.brand.name
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultTrue.category.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        @click.native="toggleEdit(resultTrue.id)"
-                        id="editar"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="edit"
-                      />
-                      <sui-button
-                        id="delete"
-                        v-on:click="eliminar(resultTrue.id)"
-                        negative
-                        circular
-                        icon="times"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
+                    <sui-card class="fluid">
+                      <img src="../../assets/default.png" />
+                      <sui-card-content>
+                        <sui-card-header>{{ resultTrue.name }}</sui-card-header>
+                        <sui-card-description>{{
+                          resultTrue.netContent
+                        }}</sui-card-description>
+                        <sui-card-description
+                          >${{ resultTrue.retailPrice }}</sui-card-description
+                        >
+                      </sui-card-content>
+                      <sui-card-content extra>
+                        <sui-container align="center" text-align="center">
+                          <sui-button-group>
+                            <sui-button
+                              basic
+                              @click.native="toggleEdit(resultTrue.id)"
+                              id="editar"
+                              primary
+                              content="Editar"
+                            />
+                            <sui-button
+                              basic
+                              id="delete"
+                              v-on:click="eliminar(resultTrue.id)"
+                              content="Ver detalle"
+                            />
+                            <sui-button
+                              basic
+                              id="delete"
+                              v-on:click="eliminar(resultTrue.id)"
+                              negative
+                              content="Eliminar"
+                            />
+                          </sui-button-group>
+                        </sui-container>
+                      </sui-card-content>
+                    </sui-card>
+                  </sui-grid-column>
+                </sui-grid>
+              </div>
             </sui-container>
           </div>
         </sui-tab-pane>
