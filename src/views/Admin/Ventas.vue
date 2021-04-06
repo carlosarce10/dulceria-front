@@ -349,12 +349,6 @@ export default {
 </script>
 
 <style scoped>
-.table {
-  margin-top: 6%;
-}
-.search {
-  margin-right: 1%;
-}
 
 .funciones {
   color: #64b5f6;
@@ -369,6 +363,13 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
 }
 
 .btnModal {

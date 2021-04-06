@@ -787,7 +787,7 @@ export default {
   margin-top: 6%;
 }
 .search {
-  margin-right: 10%;
+  margin-right: 2%;
   margin-bottom: 0.5%;
 }
 .btnModal {
