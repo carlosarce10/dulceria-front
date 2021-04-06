@@ -17,7 +17,7 @@
                   <div class="ui icon input">
                     <div style="margin-right: 5%">
                       <sui-button
-                        @click.native="toggle"
+                        @click.native="toggle()"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -51,14 +51,14 @@
                   </sui-table-header>
                   <sui-table-body>
                     <sui-table-row
-                      v-for="listaUserTrue in listaUserTrue"
-                      :key="listaUserTrue.id"
+                      v-for="user in listaUserTrue"
+                      :key="user.id"
                     >
                       <sui-table-cell text-align="center">{{
-                        listaUserTrue.username
+                        user.username
                       }}</sui-table-cell>
                       <sui-table-cell text-align="center">{{
-                        listaUserTrue.lastLogin
+                        user.lastLogin
                       }}</sui-table-cell>
                       <sui-table-cell
                         style="
@@ -68,7 +68,7 @@
                         "
                       >
                         <sui-button
-                          @click.native="toggleEdit(listaUserTrue.id)"
+                          @click.native="toggleEdit(user.id)"
                           id="editar"
                           style="background: #64b5f6"
                           negative
@@ -77,7 +77,7 @@
                         />
                         <sui-button
                           id="delete"
-                          v-on:click="eliminar(listaUserTrue.id)"
+                          v-on:click="eliminar(user.id)"
                           negative
                           circular
                           icon="times"
@@ -101,26 +101,20 @@
                       >última conexión</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
-                      >Rol</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
                       >Acciones</sui-table-header-cell
                     >
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
                   <sui-table-row
-                    v-for="listaUserFalse in listaUserFalse"
-                    :key="listaUserFalse.id"
+                    v-for="user in listaUserFalse"
+                    :key="user.id"
                   >
                     <sui-table-cell text-align="center">{{
-                      listaUserFalse.username
+                      user.username
                     }}</sui-table-cell>
                     <sui-table-cell text-align="center">{{
-                      listaUserFalse.lastLogin
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      listaUserFalse.role.name
+                      user.lastLogin
                     }}</sui-table-cell>
                     <sui-table-cell
                       style="
@@ -153,39 +147,24 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de usuario:</label>
-              <input v-model="user.username" />
+              <input type="text" v-model="user.username" />
             </sui-form-field>
             <sui-form-field>
               <label>Contraseña:</label>
               <input type="password" v-model="user.password" />
             </sui-form-field>
-            <sui-form-field>
-              <label>Rol:</label>
-              <select
-                class="ui dropdown"
-                ref="seleccionado"
-                v-model="user.role.id"
-              >
-                <option
-                  v-for="listaRoles in listaRoles"
-                  :key="listaRoles.id"
-                  :value="listaRoles.id"
-                >
-                  {{ listaRoles.name }}
-                </option>
-              </select>
-            </sui-form-field>
+
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
-          <sui-button negative @click.native="toggle" type="submit">
+          <sui-button negative @click.native="toggle()" type="submit">
             Cancelar
           </sui-button>
           <sui-button
             id="registrar"
-            @click="register"
+            @click="register()"
             positive
-            @click.native="toggle"
+            @click.native="toggle()"
             type="submit"
           >
             OK
@@ -205,14 +184,14 @@
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
-          <sui-button negative @click.native="toggleEdit" type="submit">
+          <sui-button negative @click.native="toggleEdit()" type="submit">
             Cancelar
           </sui-button>
           <sui-button
             id="editar"
             v-on:click="editar()"
             positive
-            @click.native="toggleEdit"
+            @click.native="toggleEdit()"
             type="submit"
           >
             OK
@@ -230,7 +209,6 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import Swal from "sweetalert2";
 
 Vue.use(Particles);
 export default {
@@ -243,18 +221,17 @@ export default {
     return {
       open: false,
       openEdit: false,
-      listaUserTrue: null,
-      listaUserFalse: null,
-      listaRoles: null,
+      listaUserTrue: [],
+      listaUserFalse: [],
+      listaRoles: [],
       user: {
         username: "",
-        passrod: "",
-        lastLogin: "",
-        role: { id: "", name: "" },
+        password: "",
+        lastLogin: ""
       },
       userEdit: {
         id: 0,
-        username: "",
+        username: ""
       },
     };
   },
@@ -294,9 +271,12 @@ export default {
     },
     register() {
       api
-        .doPost("/user/save", this.user)
+        .doPost("/user/save/cashier", this.user)
         .then((response) => {
-          this.$swal("¡Usuario registrado exitosamente!");
+          this.$swal({
+            title: "¡Usuario registrado exitosamente!",
+            icon: "success"
+          });
           console.log(response);
           this.getLists();
         })
@@ -304,12 +284,10 @@ export default {
         .finally(() => (this.loading = false));
     },
     eliminar(id) {
-      Swal.fire({
+      this.$swal({
         title: "¿Estás seguro de eliminar este usuario?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
       }).then((result) => {
@@ -317,7 +295,7 @@ export default {
           api
             .doDelete("/user/del/" + id)
             .then((response) => {
-              Swal.fire("¡Usuario eliminado exitosamente!");
+              this.$swal("¡Usuario eliminado exitosamente!");
               console.log(response);
               this.getLists();
             })
