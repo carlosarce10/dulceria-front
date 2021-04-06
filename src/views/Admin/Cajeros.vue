@@ -228,6 +228,7 @@
       </sui-modal>
     </div>
 
+
     <div>
       <sui-modal class="modal-small" v-model="openPass">
         <sui-modal-header>Modificar contraseña de usuario</sui-modal-header>
