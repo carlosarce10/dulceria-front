@@ -21,15 +21,18 @@
                     icon="plus"
                   />
                 </div>
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
               </div>
+              <div class="results"></div>
             </div>
-            <input
-              class="prompt"
-              type="text"
-              placeholder="Buscar productos..."
-            />
-            <i class="search icon"></i>
+
           </div>
+
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosProductos.length === 0">
               <i style="color: #6c757d;" class="massive comment icon"></i><br>
