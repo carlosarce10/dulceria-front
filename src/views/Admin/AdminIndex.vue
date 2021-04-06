@@ -34,15 +34,21 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="resultTrue.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i
+                <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d;"
+                <small style="color: #6c757d"></small>
+                <i style="color: #6c757d" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d"
                   >No se encontraron registros.</small
                 >
               </sui-segment>
               <sui-table v-if="resultTrue.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Imágen</sui-table-header-cell
+                    >
                     <sui-table-header-cell text-align="center"
                       >Producto</sui-table-header-cell
                     >
@@ -71,6 +77,9 @@
                     v-for="resultTrue in resultTrue"
                     :key="resultTrue.id"
                   >
+                    <sui-table-cell text-align="center">{{
+                      resultTrue.image
+                    }}</sui-table-cell>
                     <sui-table-cell text-align="center">{{
                       resultTrue.name
                     }}</sui-table-cell>
@@ -136,9 +145,9 @@
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="resultFalse.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i
+                <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d;"
+                <small style="color: #6c757d"
                   >No se encontraron registros.</small
                 >
               </sui-segment>
@@ -236,6 +245,10 @@
             <sui-form-field>
               <label>Precio mayoreo:</label>
               <input type="number" v-model="product.wholesalePrice" />
+            </sui-form-field>
+            <sui-form-field>
+              <label>Imágen:</label>
+              <input type="file" @change="onFileSelected" />
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
@@ -383,6 +396,7 @@ export default {
         netContent: "",
         retailPrice: "",
         wholesalePrice: "",
+        image: null,
         brand: { id: 0 },
         category: { id: 0 },
       },
@@ -447,8 +461,10 @@ export default {
 
       this.openEdit = !this.openEdit;
     },
+    onFileSelected(event) {
+      this.product.image = event.target.files[0];
+    },
     register() {
-      console.log(this.product);
       api
         .doPost("/product/save", this.product)
         .then((response) => {

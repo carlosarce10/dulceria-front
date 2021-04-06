@@ -179,12 +179,7 @@
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
-          <sui-button
-            id="registrar"
-            negative
-            @click.native="toggle"
-            type="button"
-          >
+          <sui-button negative @click.native="toggle" type="button">
             Cancelar
           </sui-button>
           <sui-button
