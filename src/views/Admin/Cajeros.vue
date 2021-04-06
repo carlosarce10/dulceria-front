@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
     <br />
     <div class="funciones">

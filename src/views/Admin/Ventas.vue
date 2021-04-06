@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
     <br />
     <div class="funciones">
@@ -318,6 +318,11 @@ export default {
         .doGet("sales/list")
         .then((response) => {
           this.ventas = response.data;
+          for(let u of this.ventas){
+            u.date = u.date.split(".")[0];
+            u.date = u.date.replace("T"," ");
+            u.date = u.date + " hrs."    
+          }
         })
         .catch((error) => {
           this.$swal(error.message);
@@ -333,6 +338,9 @@ export default {
           console.log(response.data);
           this.venta.details = response.data.saleDetails;
           this.venta.date = response.data.sale.date;
+            this.venta.date = this.venta.date.split(".")[0];
+            this.venta.date = this.venta.date.replace("T"," ");
+            this.venta.date = this.venta.date + " hrs." 
           this.venta.total = response.data.sale.total;
           this.venta.user.username = response.data.sale.user.username;
           this.venta.cashbox.cashboxNumber =
