@@ -15,11 +15,15 @@
   float: none !important;
 }
 
+.area {
+  margin-left: 220px;
+}
+
 .panel {
   width: 60%;
   margin-left: 20%;
   margin-right: auto;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .panel-small {
@@ -34,7 +38,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-left: 220px;
+  
 }
 
 #nav {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
     <br />
     <div class="funciones">
@@ -394,7 +394,6 @@ export default {
   line-height: 50px;
   width: 100%;
   text-align: left;
-  margin-left: 5%;
   border-left: 3px solid #64b5f6;
   height: 45px;
 }
