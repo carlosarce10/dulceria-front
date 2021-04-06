@@ -8,7 +8,7 @@
     <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
       <sui-tab>
-        <sui-tab-pane title="Inventario">
+        <sui-tab-pane icon="database icon" title="Inventario">
           <div class="table">
             <div class="search">
               <div class="ui fluid category search">
@@ -34,9 +34,9 @@
             </div>
             <div>
               <sui-segment basic v-if="listStock.length === 0">
-                <i style="color: #6c757d;" class="massive comment icon"></i
+                <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d;"
+                <small style="color: #6c757d"
                   >No se encontraron registros.</small
                 >
               </sui-segment>

@@ -7,7 +7,7 @@
     </div>
 
     <sui-tab class="panel">
-      <sui-tab-pane title="Productos">
+      <sui-tab-pane icon="shopping basket icon" title="Productos">
         <div class="table">
           <div class="search">
             <div class="ui fluid category search">
@@ -32,8 +32,8 @@
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosProductos.length === 0">
-              <i style="color: #6c757d;" class="massive comment icon"></i><br>
-              <small style="color: #6c757d;">No se encontraron registros.</small>
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <sui-table v-if="descuentosProductos.length > 0" color="blue">
               <sui-table-header>
@@ -58,15 +58,15 @@
                   :key="descuento.id"
                 >
                   <sui-table-cell text-align="center">
-                    {{descuento.product.name}}
+                    {{ descuento.product.name }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
                     {{ descuento.discount }}%
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{descuento.comments}}
+                    {{ descuento.comments }}
                   </sui-table-cell>
-                  
+
                   <sui-table-cell
                     style="
                       display: flex;
@@ -95,10 +95,8 @@
             </sui-table>
           </sui-container>
         </div>
-
       </sui-tab-pane>
-      <sui-tab-pane title="Marcas">
-
+      <sui-tab-pane icon="tags icon" title="Marcas">
         <div class="table">
           <div class="search">
             <div class="ui fluid category search">
@@ -117,8 +115,8 @@
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosMarcas.length === 0">
-              <i style="color: #6c757d;" class="massive comment icon"></i><br>
-              <small style="color: #6c757d;">No se encontraron registros.</small>
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <sui-table v-if="descuentosMarcas.length > 0" color="green">
               <sui-table-header>
@@ -143,15 +141,15 @@
                   :key="descuento.id"
                 >
                   <sui-table-cell text-align="center">
-                    {{descuento.brand.name}}
+                    {{ descuento.brand.name }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
                     {{ descuento.discount }}%
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{descuento.comments}}
+                    {{ descuento.comments }}
                   </sui-table-cell>
-                  
+
                   <sui-table-cell
                     style="
                       display: flex;
@@ -180,11 +178,8 @@
             </sui-table>
           </sui-container>
         </div>
-
-
       </sui-tab-pane>
-      <sui-tab-pane title="Categorías">
-
+      <sui-tab-pane icon="table icon" title="Categorías">
         <div class="table">
           <div class="search">
             <div class="ui fluid category search">
@@ -203,8 +198,8 @@
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosCategorias.length === 0">
-              <i style="color: #6c757d;" class="massive comment icon"></i><br>
-              <small style="color: #6c757d;">No se encontraron registros.</small>
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <sui-table v-if="descuentosCategorias.length > 0" color="orange">
               <sui-table-header>
@@ -229,15 +224,15 @@
                   :key="descuento.id"
                 >
                   <sui-table-cell text-align="center">
-                    {{descuento.category.name}}
+                    {{ descuento.category.name }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
                     {{ descuento.discount }}%
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{descuento.comments}}
+                    {{ descuento.comments }}
                   </sui-table-cell>
-                  
+
                   <sui-table-cell
                     style="
                       display: flex;
@@ -266,10 +261,8 @@
             </sui-table>
           </sui-container>
         </div>
-
       </sui-tab-pane>
     </sui-tab>
-
 
     <!-- MODAL DE REGISTRO DE DESCUENTO PARA PRODUCTO -->
 
@@ -280,9 +273,8 @@
           <sui-form-field>
             <label>Producto:</label>
 
-
-
-            <sui-dropdown class="custom-search"
+            <sui-dropdown
+              class="custom-search"
               :options="listSelectProduct"
               placeholder="Producto"
               search
@@ -304,7 +296,13 @@
         <sui-button negative @click.native="modalDP()" type="submit">
           Cancelar
         </sui-button>
-        <sui-button id="registrar" @click="registerDP()" positive @click.native="modalDP()" type="submit" >
+        <sui-button
+          id="registrar"
+          @click="registerDP()"
+          positive
+          @click.native="modalDP()"
+          type="submit"
+        >
           OK
         </sui-button>
       </sui-modal-actions>
@@ -318,9 +316,17 @@
         <sui-form>
           <sui-form-field>
             <label>Marca:</label>
-            <select class="ui dropdown custom-search" ref="seleccionado" v-model="discount.brand.id">
-              <option v-for="brand in listBrand" :key="brand.id" :value="brand.id">
-                {{brand.name}}
+            <select
+              class="ui dropdown custom-search"
+              ref="seleccionado"
+              v-model="discount.brand.id"
+            >
+              <option
+                v-for="brand in listBrand"
+                :key="brand.id"
+                :value="brand.id"
+              >
+                {{ brand.name }}
               </option>
             </select>
           </sui-form-field>
@@ -338,7 +344,13 @@
         <sui-button negative @click.native="modalDM()" type="submit">
           Cancelar
         </sui-button>
-        <sui-button id="registrar" @click="registerDM()" positive @click.native="modalDM()" type="submit" >
+        <sui-button
+          id="registrar"
+          @click="registerDM()"
+          positive
+          @click.native="modalDM()"
+          type="submit"
+        >
           OK
         </sui-button>
       </sui-modal-actions>
@@ -352,9 +364,17 @@
         <sui-form>
           <sui-form-field>
             <label>Categoría:</label>
-            <select class="ui dropdown" ref="seleccionado" v-model="discount.category.id">
-              <option v-for="category in listCategory" :key="category.id" :value="category.id">
-                {{category.name}}
+            <select
+              class="ui dropdown"
+              ref="seleccionado"
+              v-model="discount.category.id"
+            >
+              <option
+                v-for="category in listCategory"
+                :key="category.id"
+                :value="category.id"
+              >
+                {{ category.name }}
               </option>
             </select>
           </sui-form-field>
@@ -372,7 +392,13 @@
         <sui-button negative @click.native="modalDC()" type="submit">
           Cancelar
         </sui-button>
-        <sui-button id="registrar" @click="registerDC()" positive @click.native="modalDC()" type="submit" >
+        <sui-button
+          id="registrar"
+          @click="registerDC()"
+          positive
+          @click.native="modalDC()"
+          type="submit"
+        >
           OK
         </sui-button>
       </sui-modal-actions>
@@ -384,17 +410,17 @@
         <sui-form>
           <sui-form-field v-if="discountEdit.product !== null">
             <sui-segment color="blue">
-              <label>Producto: {{discountEdit.product.name}}</label>
+              <label>Producto: {{ discountEdit.product.name }}</label>
             </sui-segment>
           </sui-form-field>
           <sui-form-field v-if="discountEdit.brand !== null">
             <sui-segment color="green">
-              <label>Marca: {{discountEdit.brand.name}}</label>
+              <label>Marca: {{ discountEdit.brand.name }}</label>
             </sui-segment>
           </sui-form-field>
           <sui-form-field v-if="discountEdit.category !== null">
             <sui-segment color="orange">
-              <label>Categoría: {{discountEdit.category.name}}</label>
+              <label>Categoría: {{ discountEdit.category.name }}</label>
             </sui-segment>
           </sui-form-field>
           <sui-form-field>
@@ -422,9 +448,6 @@
         </sui-button>
       </sui-modal-actions>
     </sui-modal>
-
-
-
 
     <fondo />
   </div>
@@ -463,7 +486,7 @@ export default {
       },
       descuentosProductos: [],
       descuentosMarcas: [],
-      descuentosCategorias:[],
+      descuentosCategorias: [],
       listCategory: [],
       listBrand: [],
       listProduct: [],
@@ -479,16 +502,16 @@ export default {
     this.getLists();
   },
   methods: {
-    modalDP(){
+    modalDP() {
       this.openP = !this.openP;
     },
-    modalDM(){
+    modalDM() {
       this.openM = !this.openM;
     },
-    modalDC(){
+    modalDC() {
       this.openC = !this.openC;
     },
-    getEdit(id){
+    getEdit(id) {
       api
         .doGet("/discount/get/" + id)
         .then((response) => {
@@ -508,16 +531,16 @@ export default {
           this.descuentosMarcas = [];
           this.descuentosCategorias = [];
           this.listDiscounts = listDiscounts.data;
-          for(var d of this.listDiscounts){
-            if(d.product !== null){
+          for (var d of this.listDiscounts) {
+            if (d.product !== null) {
               this.descuentosProductos.push(d);
             }
-            if(d.brand !== null){
+            if (d.brand !== null) {
               this.descuentosMarcas.push(d);
             }
-            if(d.category !== null){
+            if (d.category !== null) {
               this.descuentosCategorias.push(d);
-            }            
+            }
           }
         })
         .catch((error) => console.log(error));
@@ -532,10 +555,10 @@ export default {
       api
         .doGet("/product/list/true")
         .then((listProduct) => {
-          this.listProduct = listProduct.data
+          this.listProduct = listProduct.data;
 
-          for(let myproduct of this.listProduct){
-            let p = {text: "", key: 0, value: 0};
+          for (let myproduct of this.listProduct) {
+            let p = { text: "", key: 0, value: 0 };
 
             p.text = myproduct.name;
             p.key = myproduct.id;
@@ -543,34 +566,33 @@ export default {
 
             this.listSelectProduct.push(p);
           }
-
         })
         .catch((error) => console.log(error));
     },
-    registerDP(){
+    registerDP() {
       console.log(this.discount);
       let obj = {};
-      Object.assign(obj,this.discount);
+      Object.assign(obj, this.discount);
       obj.brand = null;
       obj.category = null;
       console.log("I hopeP: ", obj);
       api
-        .doGet("/discount/has/product/"+this.discount.product.id)
-        .then(res=>{
+        .doGet("/discount/has/product/" + this.discount.product.id)
+        .then((res) => {
           console.log(res);
-          if(res.data){
+          if (res.data) {
             this.$swal({
               title: "¡Este producto ya tiene un descuento!",
-              icon: "warning"
+              icon: "warning",
             });
-          }else{
+          } else {
             api
               .doPost("/discount/save", obj)
-              .then(res=>{
+              .then((res) => {
                 console.log(res);
                 this.$swal({
                   title: "¡El descuento ha sido registrado exitosamente!",
-                  icon: "success"
+                  icon: "success",
                 });
                 this.getLists();
                 this.discount = {
@@ -581,49 +603,45 @@ export default {
                   product: { id: 0 },
                 };
               })
-              .catch(e=>{
+              .catch((e) => {
                 this.$swal({
                   title: "Ha ocurrido un error en el servidor.",
-                  text: e.message+" Por favor conacte, a su operador para más detalles.",
-                  icon: "error"
+                  text:
+                    e.message +
+                    " Por favor conacte, a su operador para más detalles.",
+                  icon: "error",
                 });
-              })
-              ;
+              });
           }
-
         })
-        .catch(e=>{
+        .catch((e) => {
           console.log(e);
-        })
-      
-      ;
-
-
+        });
     },
-    registerDM(){
+    registerDM() {
       console.log(this.discount);
       let obj = {};
-      Object.assign(obj,this.discount);
+      Object.assign(obj, this.discount);
       obj.product = null;
       obj.category = null;
       console.log("I hopeM: ", obj);
       api
-        .doGet("/discount/has/brand/"+this.discount.brand.id)
-        .then(res=>{
+        .doGet("/discount/has/brand/" + this.discount.brand.id)
+        .then((res) => {
           console.log(res);
-          if(res.data){
+          if (res.data) {
             this.$swal({
               title: "¡Esta marca ya tiene un descuento!",
-              icon: "warning"
+              icon: "warning",
             });
-          }else{
+          } else {
             api
               .doPost("/discount/save", obj)
-              .then(res=>{
+              .then((res) => {
                 console.log(res);
                 this.$swal({
                   title: "¡El descuento ha sido registrado exitosamente!",
-                  icon: "success"
+                  icon: "success",
                 });
                 this.getLists();
                 this.discount = {
@@ -634,50 +652,46 @@ export default {
                   product: { id: 0 },
                 };
               })
-              .catch(e=>{
+              .catch((e) => {
                 console.log(e);
                 this.$swal({
                   title: "Ha ocurrido un error en el servidor.",
-                  text: e.message+" Por favor, conacte a su operador para más detalles.",
-                  icon: "error"
+                  text:
+                    e.message +
+                    " Por favor, conacte a su operador para más detalles.",
+                  icon: "error",
                 });
-              })
-              ;
+              });
           }
-
         })
-        .catch(e=>{
+        .catch((e) => {
           console.log(e);
-        })
-      
-      ;
-
-
+        });
     },
-    registerDC(){
+    registerDC() {
       console.log(this.discount);
       let obj = {};
-      Object.assign(obj,this.discount);
+      Object.assign(obj, this.discount);
       obj.brand = null;
       obj.product = null;
       console.log("I hopeC: ", obj);
       api
-        .doGet("/discount/has/category/"+this.discount.category.id)
-        .then(res=>{
+        .doGet("/discount/has/category/" + this.discount.category.id)
+        .then((res) => {
           console.log(res);
-          if(res.data){
+          if (res.data) {
             this.$swal({
               title: "¡Esta categoría ya tiene un descuento!",
-              icon: "warning"
+              icon: "warning",
             });
-          }else{
+          } else {
             api
               .doPost("/discount/save", obj)
-              .then(res=>{
+              .then((res) => {
                 console.log(res);
                 this.$swal({
                   title: "¡El descuento ha sido registrado exitosamente!",
-                  icon: "success"
+                  icon: "success",
                 });
                 this.getLists();
                 this.discount = {
@@ -688,24 +702,20 @@ export default {
                   product: { id: 0 },
                 };
               })
-              .catch(e=>{
+              .catch((e) => {
                 this.$swal({
                   title: "Ha ocurrido un error en el servidor.",
-                  text: e.message+" Por favor, conacte a su operador para más detalles.",
-                  icon: "error"
+                  text:
+                    e.message +
+                    " Por favor, conacte a su operador para más detalles.",
+                  icon: "error",
                 });
-              })
-              ;
+              });
           }
-
         })
-        .catch(e=>{
+        .catch((e) => {
           console.log(e);
-        })
-      
-      ;
-
-
+        });
     },
     eliminar(id) {
       console.log(id);
@@ -715,7 +725,7 @@ export default {
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
-        reverseButtons: true
+        reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
           api
@@ -723,7 +733,7 @@ export default {
             .then((response) => {
               this.$swal({
                 title: "¡Descuento eliminado exitosamente!",
-                icon: "success" 
+                icon: "success",
               });
               console.log(response);
               this.getLists();
@@ -739,7 +749,7 @@ export default {
         .then((response) => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
-            icon: "success"
+            icon: "success",
           });
           console.log(response);
           this.getLists();

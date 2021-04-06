@@ -10,7 +10,7 @@
       <div style="width: 60%; margin-left: 20%">
         <sui-divider hidden />
         <sui-tab>
-          <sui-tab-pane title="Usuarios Activos">
+          <sui-tab-pane icon="check icon" title="Usuarios Activos">
             <div class="table">
               <div class="search">
                 <div class="ui fluid category search">
@@ -62,10 +62,10 @@
                       }}</sui-table-cell>
                       <sui-table-cell
                         style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
                       >
                         <sui-button
                           @click.native="toggleEdit(listaUserTrue.id)"
@@ -89,7 +89,7 @@
               </sui-container>
             </div>
           </sui-tab-pane>
-          <sui-tab-pane title="Usuarios Inactivos">
+          <sui-tab-pane icon="ban icon" title="Usuarios Inactivos">
             <sui-container style="margin-top: 2%">
               <sui-table color="blue">
                 <sui-table-header>
