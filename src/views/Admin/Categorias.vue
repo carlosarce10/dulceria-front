@@ -8,7 +8,7 @@
     <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
       <sui-tab>
-        <sui-tab-pane title="Categorías Activas">
+        <sui-tab-pane icon="check icon" title="Categorías Activas">
           <div class="table">
             <div class="search">
               <div class="ui fluid category search">
@@ -88,7 +88,7 @@
             </sui-container>
           </div>
         </sui-tab-pane>
-        <sui-tab-pane title="Categorías Inactivas">
+        <sui-tab-pane icon="ban icon" title="Categorías Inactivas">
           <div class="table">
             <div class="search">
               <div class="ui fluid category search">

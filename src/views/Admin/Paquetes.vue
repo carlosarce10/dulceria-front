@@ -8,7 +8,7 @@
     <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
       <sui-tab>
-        <sui-tab-pane title="Paquetes Activos">
+        <sui-tab-pane icon="check icon" title="Paquetes Activos">
           <div class="table">
             <div class="search">
               <div class="ui fluid category search">
@@ -101,7 +101,7 @@
             </sui-container>
           </div>
         </sui-tab-pane>
-        <sui-tab-pane title="Paquetes Inactivos">
+        <sui-tab-pane icon="ban icon" title="Paquetes Inactivos">
           <div class="table">
             <div class="search">
               <div class="ui fluid category search">

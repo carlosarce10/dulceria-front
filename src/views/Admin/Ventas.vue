@@ -7,7 +7,7 @@
     </div>
 
     <sui-tab class="panel">
-      <sui-tab-pane title="Todas las ventas">
+      <sui-tab-pane icon="chart bar outline icon" title="Todas las ventas">
         <div class="table">
           <div class="search">
             <div class="ui fluid category search">
@@ -24,10 +24,8 @@
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="ventas.length === 0">
-              <i style="color: #6c757d;" class="massive comment icon"></i><br />
-              <small style="color: #6c757d;"
-                >No se encontraron registros.</small
-              >
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <sui-table v-if="ventas.length > 0" color="blue">
               <sui-table-header>
@@ -65,7 +63,11 @@
                   }}</sui-table-cell>
                   <sui-table-cell
                     ><sui-button
-                      style="display: block; margin-left: auto; margin-right: auto"
+                      style="
+                        display: block;
+                        margin-left: auto;
+                        margin-right: auto;
+                      "
                       class="btnModal"
                       @click.native="getVenta(venta.id)"
                       >Ver</sui-button
@@ -251,7 +253,7 @@
           </div>
         </div>
       </sui-tab-pane>
-      <sui-tab-pane title="Ventas del día">
+      <sui-tab-pane icon="chart line icon" title="Ventas del día">
         <div class="table">
           <div class="search">
             <div class="ui fluid category search">
@@ -267,8 +269,8 @@
             </div>
           </div>
           <sui-segment basic v-if="ventasHoy.length === 0">
-            <i style="color: #6c757d;" class="massive comment icon"></i><br />
-            <small style="color: #6c757d;">No se encontraron registros.</small>
+            <i style="color: #6c757d" class="massive comment icon"></i><br />
+            <small style="color: #6c757d">No se encontraron registros.</small>
           </sui-segment>
         </div>
       </sui-tab-pane>
