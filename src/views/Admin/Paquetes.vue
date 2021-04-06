@@ -5,9 +5,8 @@
     <div class="funciones">
       <h3>Paquetes</h3>
     </div>
-    <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
-      <sui-tab>
+      <sui-tab class="panel"> 
         <sui-tab-pane icon="check icon" title="Paquetes Activos">
           <div class="table">
             <div class="search">
@@ -164,7 +163,6 @@
           </div>
         </sui-tab-pane>
       </sui-tab>
-    </div>
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header style="margin-bottom: 3%"
@@ -479,6 +477,7 @@ export default {
 }
 .search {
   margin-right: 2%;
+  margin-bottom: 2%;
 }
 .btnModal {
   background-color: #64b5f6 !important;

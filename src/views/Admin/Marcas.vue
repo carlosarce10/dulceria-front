@@ -5,9 +5,8 @@
     <div class="funciones">
       <h3>Marcas</h3>
     </div>
-    <div style="width: 60%; margin-left: 20%">
       <sui-divider hidden />
-      <sui-tab>
+      <sui-tab class="panel"> 
         <sui-tab-pane icon="check icon" title="Marcas Activas">
           <div class="table">
             <div class="search">
@@ -148,7 +147,6 @@
           </div>
         </sui-tab-pane>
       </sui-tab>
-    </div>
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar marca</sui-modal-header>
