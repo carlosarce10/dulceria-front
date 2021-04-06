@@ -534,6 +534,6 @@ export default {
   margin-top: 6%;
 }
 .search {
-  margin-right: 1%;
+  margin-right: 2%;
 }
 </style>
