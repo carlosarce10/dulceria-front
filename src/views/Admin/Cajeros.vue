@@ -35,7 +35,14 @@
                 </div>
               </div>
               <sui-container style="margin-top: 2%">
-                <sui-table color="blue">
+                <sui-segment basic v-if="listaUserTrue.length === 0">
+                  <i style="color: #6c757d" class="massive comment icon"></i
+                  ><br />
+                  <small style="color: #6c757d"
+                    >No se encontraron registros.</small
+                  >
+                </sui-segment>
+                <sui-table v-if="listaUserTrue.length > 0" color="blue">
                   <sui-table-header>
                     <sui-table-row>
                       <sui-table-header-cell text-align="center"
@@ -68,7 +75,17 @@
                         "
                       >
                         <sui-button
-                          @click.native="toggleEdit(user.id)"
+                          @click="getUserPass(user.id)"
+                          @click.native="togglePass()"
+                          id="pass"
+                          style="background: #FFC300"
+                          negative
+                          circular
+                          icon="key"
+                        />
+                        <sui-button
+                          @click="getUser(user.id)"
+                          @click.native="toggleEdit()"
                           id="editar"
                           style="background: #64b5f6"
                           negative
@@ -91,14 +108,21 @@
           </sui-tab-pane>
           <sui-tab-pane icon="ban icon" title="Usuarios Inactivos">
             <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
+                <sui-segment basic v-if="listaUserFalse.length === 0">
+                  <i style="color: #6c757d" class="massive comment icon"></i
+                  ><br />
+                  <small style="color: #6c757d"
+                    >No se encontraron registros.</small
+                  >
+                </sui-segment>
+              <sui-table v-if="listaUserFalse.length > 0" color="blue">
                 <sui-table-header>
                   <sui-table-row>
                     <sui-table-header-cell text-align="center"
                       >Nombre de usuario</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
-                      >última conexión</sui-table-header-cell
+                      >Última conexión</sui-table-header-cell
                     >
                     <sui-table-header-cell text-align="center"
                       >Acciones</sui-table-header-cell
@@ -125,7 +149,7 @@
                     >
                       <sui-button
                         id="recuperar"
-                        v-on:click="recuperar(listaUserFalse.id)"
+                        v-on:click="recuperar(user.id)"
                         style="background: #64b5f6"
                         negative
                         circular
@@ -153,7 +177,10 @@
               <label>Contraseña:</label>
               <input type="password" v-model="user.password" />
             </sui-form-field>
-
+            <sui-form-field>
+              <label>Confirma tu contraseña:</label>
+              <input type="password" v-model="user.confirmPassword" />
+            </sui-form-field>
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
@@ -172,6 +199,7 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+
     <div>
       <sui-modal class="modal-small" v-model="openEdit">
         <sui-modal-header>Modificar usuario</sui-modal-header>
@@ -199,6 +227,44 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+
+
+    <div>
+      <sui-modal class="modal-small" v-model="openPass">
+        <sui-modal-header>Modificar contraseña de usuario</sui-modal-header>
+        <sui-modal-content>
+          <sui-form>
+            <sui-form-field>
+              <sui-segment color="blue">
+                <label>Usuario: {{userPass.username}}</label>
+              </sui-segment>
+            </sui-form-field>
+            <sui-form-field>
+              <label>Nueva contraseña</label>
+              <input type="password" v-model="userPass.password"/>
+            </sui-form-field>
+            <sui-form-field>
+              <label>Confirmar nueva contraseña</label>
+              <input type="password" v-model="userPass.confirmPassword"/>
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button negative @click.native="togglePass()" type="submit">
+            Cancelar
+          </sui-button>
+          <sui-button
+            id="editar"
+            v-on:click="changePassword()"
+            positive
+            @click.native="togglePass()"
+            type="submit"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+    </div>
     <fondo />
   </div>
 </template>
@@ -215,18 +281,26 @@ export default {
   name: "CajeroAdmin",
   components: {
     fondo,
-    cabecera,
+    cabecera
   },
   data() {
     return {
       open: false,
       openEdit: false,
+      openPass: false,
+      userPass: {
+        id: 0,
+        username: "",
+        password: "",
+        confirmPassword: ""
+      },
       listaUserTrue: [],
       listaUserFalse: [],
       listaRoles: [],
       user: {
         username: "",
         password: "",
+        confirmPassword:"",
         lastLogin: ""
       },
       userEdit: {
@@ -242,21 +316,41 @@ export default {
     getLists() {
       api
         .doGet("/user/list/true")
-        .then((listaUserTrue) => (this.listaUserTrue = listaUserTrue.data))
+        .then((response) => {
+          this.listaUserTrue = response.data;
+          for(let u of this.listaUserTrue){
+            if(u.lastLogin !== null){
+              u.lastLogin = u.lastLogin.split(".")[0];
+              u.lastLogin = u.lastLogin.replace("T"," ");
+              u.lastLogin = u.lastLogin + " hrs."
+            }
+          }
+        })
         .catch((error) => console.log(error));
       api
         .doGet("/user/list/false")
-        .then((listaUserFalse) => (this.listaUserFalse = listaUserFalse.data))
-        .catch((error) => console.log(error));
-      api
-        .doGet("/role/list")
-        .then((listaRoles) => (this.listaRoles = listaRoles.data))
+        .then((response) => {
+          this.listaUserFalse = response.data
+          for(let u of this.listaUserFalse){
+            if(u.lastLogin !== null){
+              u.lastLogin = u.lastLogin.split(".")[0];
+              u.lastLogin = u.lastLogin.replace("T"," ");
+              u.lastLogin = u.lastLogin + " hrs."
+            }
+          }
+        })
         .catch((error) => console.log(error));
     },
     toggle() {
       this.open = !this.open;
     },
-    toggleEdit(id) {
+    togglePass(){
+      this.openPass = !this.openPass;
+    },
+    toggleEdit() {
+      this.openEdit = !this.openEdit;
+    },
+    getUser(id){
       api
         .doGet("/user/get/" + id)
         .then((response) => {
@@ -266,36 +360,76 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-
-      this.openEdit = !this.openEdit;
+    },
+    getUserPass(id){
+      api
+        .doGet("/user/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.userPass.id = response.data.id;
+          this.userPass.username = response.data.username;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     register() {
-      api
-        .doPost("/user/save/cashier", this.user)
-        .then((response) => {
-          this.$swal({
-            title: "¡Usuario registrado exitosamente!",
-            icon: "success"
+
+      if(this.user.password === this.user.confirmPassword){
+        api
+          .doGet("/user/exists/"+this.user.username)
+          .then(res=>{
+            if(res.data){
+              this.$swal({
+                title: "¡Este usuario ya está registrado!",
+                icon: "warning"
+              });
+            }else{
+              api
+                .doPost("/user/save/cashier", this.user)
+                .then((response) => {
+                  this.$swal({
+                    title: "¡Usuario registrado exitosamente!",
+                    icon: "success"
+                  });
+                  console.log(response);
+                  this.getLists();
+                })
+                .catch((error) => console.log(error))
+                .finally(() => (this.loading = false));
+            }
+          })
+          .catch(e=>{
+            console.log(e);
           });
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+      }else{
+        this.$swal({
+          title: "¡Las contraseñas no coinciden!",
+          icon: "warning"
+
+        });
+      }
+
+
+
     },
     eliminar(id) {
       this.$swal({
         title: "¿Estás seguro de eliminar este usuario?",
-        icon: "warning",
+        icon: "question",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
+        reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
           api
             .doDelete("/user/del/" + id)
             .then((response) => {
-              this.$swal("¡Usuario eliminado exitosamente!");
+              this.$swal({
+                title: "¡Usuario eliminado exitosamente!",
+                icon: "success"
+              });
               console.log(response);
               this.getLists();
             })
@@ -306,32 +440,84 @@ export default {
     },
     editar() {
       api
-        .doPost("/user/save", this.userEdit)
-        .then((response) => {
-          this.$swal("¡Usuario modificado exitosamente!");
-          console.log(response);
-          this.getLists();
+        .doGet("/user/exists/"+this.userEdit.username)
+        .then(res=>{
+          if(res.data){
+            this.$swal({
+              title: "¡Este usuario ya está registrado!",
+              icon: "warning"
+            });
+          }else{
+            api
+              .doPut("/user/change/"+this.userEdit.username+"/"+this.userEdit.id)
+              .then((response) => {
+                this.$swal({
+                  title: "¡Nombre de usuario modificado exitosamente!",
+                  icon: "success"
+                });
+                console.log(response);
+                this.getLists();
+              })
+              .catch((error) => console.log(error))
+              .finally(() => (this.loading = false));
+          }
         })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
-      //location.reload();
+        .catch(e=>{
+          console.log(e);
+        });
+    },
+    changePassword(){
+      if(this.userPass.password === this.userPass.confirmPassword){
+        api
+          .doPost("/user/change/password", this.userPass)
+          .then(res=>{
+            console.log(res);
+            this.$swal({
+              title: "¡La contraseña fue modificada exitosamente!",
+              icon: "success"
+            })
+          })
+          .catch(e=>{
+            console.log(e);
+
+          })
+          ;
+
+      }else{
+        this.$swal({
+          title: "¡Las contraseñas no coinciden!",
+          icon: "warning"
+        });
+      }
     },
     recuperar(id) {
       console.log(id);
-      api
-        .doPut("/user/put/" + id)
-        .then((response) => {
-          this.$swal("¡Usuario recuperado!");
-          console.log(response);
-          this.getLists();
-        })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
-    },
-    showAlert() {
-      // Use sweetalert2
-      this.$swal("Hello Vue world!!!");
-    },
+
+      this.$swal({
+        title: "¿Estás seguro de recuperar este usuario?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true
+      }).then(result=>{
+        if(result.isConfirmed){
+          api
+            .doPut("/user/put/" + id)
+            .then((response) => {
+              this.$swal({
+                title: "¡Usuario recuperado!",
+                icon: "success"
+              });
+              console.log(response);
+              this.getLists();
+            })
+            .catch((error) => console.log(error))
+            .finally(() => (this.loading = false));
+        }
+      });
+
+    }
   },
 };
 </script>
