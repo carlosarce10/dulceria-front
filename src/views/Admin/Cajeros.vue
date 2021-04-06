@@ -7,9 +7,8 @@
     </div>
 
     <div>
-      <div style="width: 60%; margin-left: 20%">
         <sui-divider hidden />
-        <sui-tab>
+        <sui-tab class="panel">
           <sui-tab-pane icon="check icon" title="Usuarios Activos">
             <div class="table">
               <div class="search">
@@ -162,7 +161,6 @@
             </sui-container>
           </sui-tab-pane>
         </sui-tab>
-      </div>
     </div>
     <div>
       <sui-modal class="modal-small" v-model="open">
@@ -542,5 +540,6 @@ export default {
 }
 .search {
   margin-right: 2%;
+  margin-bottom: 2%;
 }
 </style>
