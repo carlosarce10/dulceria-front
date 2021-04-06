@@ -36,11 +36,11 @@
               <sui-segment basic v-if="resultTrue.length === 0">
                 <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d" >
+                <small style="color: #6c757d"></small>
                 <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
-                <small style="color: #6c757d">No se
-                  encontraron registros.</small
+                <small style="color: #6c757d"
+                  >No se encontraron registros.</small
                 >
               </sui-segment>
               <sui-table v-if="resultTrue.length > 0" color="blue">

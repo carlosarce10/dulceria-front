@@ -1,20 +1,38 @@
 <template>
   <div>
     <header>
-      <div class="ui stackable menu mymenu">
+      <div class="ui left fixed vertical menu mymenu">
         <div class="item">
-          <img class="logo" src="../assets/V1.png" />
+          <img class="ui centered tiny image" src="../assets/V1.png" />
         </div>
-        <div class="right menu">
-          <a class="item" href="/admin/ventas">Ventas</a>
-          <a class="item" href="/admin/inventario">Inventario</a>
-          <a class="item" href="/admin/paquetes">Paquetes</a>
-          <a class="item" href="/admin/productos">Productos</a>
-          <a class="item" href="/admin/marcas">Marcas</a>
-          <a class="item" href="/admin/categorias">Categorías</a>
-          <a class="item" href="/admin/descuentos">Descuentos</a>
-          <a class="item" href="/admin/cajeros">Cajeros</a>
-          <a class="item" href="/">Salir</a>
+        <div class="">
+          <a class="item" href="/admin/ventas"
+            ><i class="money bill alternate outline icon"></i>Ventas</a
+          >
+          <a class="item" href="/admin/inventario"
+            ><i class="clipboard list icon"></i>Inventario</a
+          >
+          <a class="item" href="/admin/paquetes"
+            ><i class="boxes icon"></i>Paquetes</a
+          >
+          <a class="item" href="/admin/productos"
+            ><i class="shopping basket icon"></i>Productos</a
+          >
+          <a class="item" href="/admin/marcas"
+            ><i class="tags icon"></i>Marcas</a
+          >
+          <a class="item" href="/admin/categorias">
+            <i class="table icon"></i>Categorías</a
+          >
+          <a class="item" href="/admin/descuentos"
+            ><i class="percent icon"></i>Descuentos</a
+          >
+          <a class="item" href="/admin/cajeros"
+            ><i class="user circle outline icon"></i> Cajeros</a
+          >
+          <a class="item" href="/"
+            ><i class="share square outline icon"></i>Salir</a
+          >
         </div>
       </div>
     </header>
