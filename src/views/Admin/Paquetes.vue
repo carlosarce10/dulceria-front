@@ -64,7 +64,7 @@
                         negative
                         circular
                         icon="eye"
-                        @click.native="test()"
+                        @click.native="query(listPackage.id)"
                       />
                       <sui-button
                         id="delete"
@@ -297,8 +297,8 @@ export default {
     test(){
       this.$router.push({name:"DetallesPaquete"});
     },
-    query() {
-      this.$router.push({name:"DetallesPaquete", params: {id: "this.id"}});
+    query(idp) {
+      this.$router.push({name:"DetallesPaquete", params: {id: idp}});
     },
     toggle() {
       this.open = !this.open;
