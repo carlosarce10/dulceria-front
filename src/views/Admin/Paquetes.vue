@@ -14,7 +14,7 @@
                 <div class="ui icon input">
                   <div style="margin-right: 5%">
                     <sui-button
-                      @click.native="toggle"
+                      @click.native="test()"
                       style="background: #64b5f6"
                       negative
                       circular
@@ -35,18 +35,9 @@
               <sui-table color="blue">
                 <sui-table-header>
                   <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Paquete</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Detalles de paquete</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
-                    >
+                    <sui-table-header-cell text-align="center">Paquete</sui-table-header-cell> 
+                    <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Acciones</sui-table-header-cell>
                   </sui-table-row>
                 </sui-table-header>
                 <sui-table-body>
@@ -60,18 +51,7 @@
                     <sui-table-cell text-align="center">${{
                       listPackage.price
                     }}</sui-table-cell>
-                    <sui-table-cell
-                      ><sui-button
-                        style="
-                          display: block;
-                          margin-left: auto;
-                          margin-right: auto;
-                        "
-                        class="btnModal"
-                        @click.native="toggle"
-                        >Ver</sui-button
-                      ></sui-table-cell
-                    >
+                    
                     <sui-table-cell
                       style="
                         display: flex;
@@ -83,8 +63,8 @@
                         style="background: #64b5f6"
                         negative
                         circular
-                        icon="edit"
-                        @click.native="toggleEdit(listPackage.id)"
+                        icon="eye"
+                        @click.native="query(listPackage.id)"
                       />
                       <sui-button
                         id="delete"
@@ -165,9 +145,7 @@
       </sui-tab>
     <div>
       <sui-modal class="modal-small" v-model="open">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Registrar paquete</sui-modal-header
-        >
+        <sui-modal-header style="margin-bottom: 3%">Registrar paquete</sui-modal-header>
         <sui-modal-content>
           <sui-form>
             <sui-form-field>
@@ -233,9 +211,7 @@
     </div>
     <div>
       <sui-modal v-model="openEdit">
-        <sui-modal-header style="margin-bottom: 3%"
-          >Modificar paquete</sui-modal-header
-        >
+        <sui-modal-header style="margin-bottom: 3%">Modificar paquete</sui-modal-header>
         <sui-modal-content>
           <sui-form>
             <sui-form-field>
@@ -264,10 +240,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-
-    <sui-button negative @click.native="test()" type="button">
-      Registrar/Ver
-    </sui-button>
 
 
     <fondo />
@@ -324,7 +296,9 @@ export default {
   methods: {
     test(){
       this.$router.push({name:"DetallesPaquete"});
-      //this.$router.push({name:"DetallesPaquete", params: {id: "4"}});
+    },
+    query(idp) {
+      this.$router.push({name:"DetallesPaquete", params: {id: idp}});
     },
     toggle() {
       this.open = !this.open;
