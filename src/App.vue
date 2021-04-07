@@ -9,6 +9,10 @@
   width: 30% !important;
 }
 
+.c-radius > input{
+  border-radius: 20px !important;
+}
+
 .custom-search{
   margin-top: 0% !important;
   margin-right: 0% !important; 

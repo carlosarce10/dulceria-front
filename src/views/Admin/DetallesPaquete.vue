@@ -7,18 +7,42 @@
       </div>
       <sui-tab class="panel">
           <sui-tab-pane icon="boxes" title="Productos">
-                <sui-segments horizontal>
-                    <sui-segment>
-                        Nombre del paquete <sui-input type="text"/>
-                    </sui-segment>
-                    <sui-segment>Precio sugerido: $x MXN</sui-segment>
-                    <sui-segment>
-                        Precio del paquete
+              <sui-divider horizontal>PAQUETE</sui-divider>
+            <sui-grid :columns="3">
+                <sui-grid-row>
+                    <sui-grid-column>
+                        <label class="my-label">Nombre del paqute</label>
                         <sui-input type="text"/>
-                    </sui-segment>
-                </sui-segments>
+                    </sui-grid-column>
+                    <sui-grid-column>
+                        <label class="my-label">Precio</label>
+                        <sui-input type="text" :placeholder="sugerido"/>
+                    </sui-grid-column>
+                    <sui-grid-column>
+                        <label style="color:transparent;" class="my-label">.</label>
+                        <sui-button style="background: #64b5f6" negative>Registrar paquete</sui-button>
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
+            <sui-divider hidden/>
+            <sui-divider horizontal>PRODUCTOS</sui-divider>
                 <sui-container style="margin-top: 2%">
-                <sui-input icon="search"/>
+                    <sui-grid :columns="3">
+                        <sui-grid-row>
+                            <sui-grid-column>
+                                <label class="my-label">Producto</label>
+                                <sui-input type="text"/>
+                            </sui-grid-column>
+                            <sui-grid-column>
+                                <label style="color:transparent;" class="my-label">.</label>
+                                <sui-button style="float:left;" circular icon="plus"/>
+                            </sui-grid-column>
+                            <sui-grid-column>
+                                <label style="color:transparent;" class="my-label">.</label>
+                                <sui-input placeholder="Buscar..." class="c-radius" icon="search"/>
+                            </sui-grid-column>
+                        </sui-grid-row>
+                    </sui-grid>
                 <sui-table color="blue">
                     <sui-table-header>
                     <sui-table-row>
@@ -69,13 +93,25 @@ export default {
     components:{fondo,cabecera},
     data(){
         return{
-            a:""
+            sugerido:"Precio sugerido $120"
         }
     }
 }
 </script>
 
 <style scoped>
+
+
+
+.my-label{
+    display: block;
+    margin: 0 0 .28571429rem 0;
+    color: rgba(0,0,0,.87);
+    font-size: .92857143em;
+    font-weight: 700;
+    text-transform: none;
+}
+
 .funciones {
   color: #64b5f6;
   line-height: 50px;
