@@ -6,8 +6,8 @@
       <h3>Inventario</h3>
     </div>
       <sui-divider hidden />
-      <sui-tab class="panel"> 
-        <sui-tab-pane icon="database icon" title="Inventario">
+      <sui-tab class="panel">
+        <sui-tab-pane icon="calendar check icon" title="No caducos">
           <div class="table">
             <div class="search">
               <div class="ui fluid category search">
@@ -126,6 +126,69 @@
             </div>
           </div>
         </sui-tab-pane>
+        <sui-tab-pane icon="calendar times icon" title="Caducos">
+          <div class="table">
+            <div class="search">
+              <div class="ui fluid category search">
+                <div class="ui icon input">
+                  <input
+                    class="prompt"
+                    type="text"
+                    placeholder="Buscar productos..."
+                  />
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </div>
+            <div>
+              <sui-segment basic v-if="listStockEx.length === 0">
+                <i style="color: #6c757d" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d"
+                  >No se encontraron registros.</small
+                >
+              </sui-segment>
+              <sui-table v-if="listStockEx.length > 0" color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >Producto</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Lote</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Fecha de caducidad</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Cantidad en existencia</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row
+                    v-for="listStockEx in listStockEx"
+                    :key="listStockEx.id"
+                  >
+                    <sui-table-cell text-align="center">{{
+                      listStockEx.product.name
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listStockEx.batch
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listStockEx.dateExpire
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      listStockEx.quantityStock
+                    }}</sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </div>
+          </div>
+        </sui-tab-pane>
       </sui-tab>
     <fondo />
   </div>
@@ -165,8 +228,13 @@ export default {
   methods: {
     getLists() {
       api
-        .doGet("/stock/list")
+        .doGet("/stock/list/notExpired")
         .then((listStock) => (this.listStock = listStock.data))
+        .catch((error) => console.log(error));
+
+      api
+        .doGet("/stock/list/expired")
+        .then((listStockEx) => (this.listStockEx = listStockEx.data))
         .catch((error) => console.log(error));
 
       api
