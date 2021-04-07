@@ -14,6 +14,7 @@ import Categorias from "../views/Admin/Categorias.vue";
 import Ventas from "../views/Admin/Ventas.vue";
 import Paquetes from "../views/Admin/Paquetes.vue";
 import Descuentos from "../views/Admin/Descuentos.vue";
+import DetallesPaquete from "../views/Admin/DetallesPaquete.vue";
 
 Vue.use(VueRouter);
 
@@ -83,6 +84,12 @@ const routes = [
     path: "/admin/paquetes",
     name: "Paquetes",
     component: Paquetes,
+  },
+  {
+    path: "/admin/paquete/detalles",
+    name: "DetallesPaquete",
+    component: DetallesPaquete,
+    props: true
   },
   {
     path: "/admin/descuentos",

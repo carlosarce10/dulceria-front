@@ -57,7 +57,7 @@
                     <sui-table-cell text-align="center">{{
                       listPackage.name
                     }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
+                    <sui-table-cell text-align="center">${{
                       listPackage.price
                     }}</sui-table-cell>
                     <sui-table-cell
@@ -264,6 +264,12 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+
+    <sui-button negative @click.native="test()" type="button">
+      Registrar/Ver
+    </sui-button>
+
+
     <fondo />
   </div>
 </template>
@@ -307,6 +313,8 @@ export default {
       listPackageFalse: null,
       name: "",
       price: false,
+      xd: false,
+      xd2: false
     };
   },
   mounted() {
@@ -314,6 +322,10 @@ export default {
     this.obtenerDatos();
   },
   methods: {
+    test(){
+      this.$router.push({name:"DetallesPaquete"});
+      //this.$router.push({name:"DetallesPaquete", params: {id: "4"}});
+    },
     toggle() {
       this.open = !this.open;
     },
