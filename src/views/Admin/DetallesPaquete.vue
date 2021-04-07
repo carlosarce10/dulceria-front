@@ -11,12 +11,12 @@
             <sui-grid :columns="3">
                 <sui-grid-row>
                     <sui-grid-column>
-                        <label class="my-label">Nombre del paqute</label>
-                        <sui-input type="text"/>
+                        <label class="my-label">Nombre del paquete</label>
+                        <sui-input type="text" :value="nombre" />
                     </sui-grid-column>
                     <sui-grid-column>
                         <label class="my-label">Precio</label>
-                        <sui-input type="text" :placeholder="sugerido"/>
+                        <sui-input type="text" :placeholder="sugerido +precio"/>
                     </sui-grid-column>
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
@@ -54,12 +54,12 @@
                     </sui-table-row>
                     </sui-table-header>
                     <sui-table-body>
-                    <sui-table-row>
+                    <sui-table-row v-for="p in productos" :key="p.id">
                         <sui-table-cell text-align="center">1</sui-table-cell>
-                        <sui-table-cell text-align="center">Bubbaloo</sui-table-cell>
-                        <sui-table-cell text-align="center">$15</sui-table-cell>
+                        <sui-table-cell text-align="center">{{p.nombre}}</sui-table-cell>
+                        <sui-table-cell text-align="center">${{p.precio}}</sui-table-cell>
                         <sui-table-cell  text-align="center">
-                            <sui-input style="width: 6rem;" type="number"/>
+                            <sui-input style="width: 6rem;" type="number" :value="p.cantidad"/>
                         </sui-table-cell>
                         <sui-table-cell style="display: flex;align-items: center;justify-content: center;" text-align="center">
                             <sui-button style="background: #64b5f6" negative circular icon="eye" @click.native="x()"/>
@@ -81,6 +81,8 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
+import api from "../../util/api";
+
 Vue.use(Particles);
 export default {
     name:"DetallesPaquete",
@@ -91,17 +93,30 @@ export default {
         }
     },
     components:{fondo,cabecera},
+    mounted(){
+        this.startup();
+    },
     data(){
         return{
-            sugerido:"Precio sugerido $120"
+            nombre:"",
+            precio:10,
+            sugerido:"Precio sugerido $",
+            productos: []
+        }
+    },
+    methods:{
+        startup(){
+            api.doGet("/package/get/"+this.id).then(response=>{
+                let algo = response.data;
+                console.log(algo);
+
+            })
         }
     }
 }
 </script>
 
 <style scoped>
-
-
 
 .my-label{
     display: block;
