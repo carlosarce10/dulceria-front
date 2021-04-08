@@ -15,6 +15,7 @@ import Ventas from "../views/Admin/Ventas.vue";
 import Paquetes from "../views/Admin/Paquetes.vue";
 import Descuentos from "../views/Admin/Descuentos.vue";
 import DetallesPaquete from "../views/Admin/DetallesPaquete.vue";
+import NotFound from "../views/NotFound.vue"
 
 Vue.use(VueRouter);
 
@@ -95,7 +96,11 @@ const routes = [
     path: "/admin/descuentos",
     name: "Descuentos",
     component: Descuentos,
-  },
+  },{
+    path: "*",
+    name: "NotFound",
+    component: NotFound
+  }
 ];
 const router = new VueRouter({
   mode: "history",
