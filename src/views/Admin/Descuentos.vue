@@ -30,7 +30,6 @@
               </div>
               <div class="results"></div>
             </div>
-
           </div>
 
           <sui-container style="margin-top: 2%">
@@ -41,6 +40,9 @@
             <sui-table v-if="descuentosProductos.length > 0" color="blue">
               <sui-table-header>
                 <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
                   <sui-table-header-cell text-align="center"
                     >Producto</sui-table-header-cell
                   >
@@ -57,9 +59,12 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="descuento in descuentosProductos"
+                  v-for="(descuento, item) in descuentosProductos"
                   :key="descuento.id"
                 >
+                  <sui-table-cell text-align="center">
+                    {{ item + 1 }}
+                  </sui-table-cell>
                   <sui-table-cell text-align="center">
                     {{ descuento.product.name }}
                   </sui-table-cell>
@@ -125,6 +130,9 @@
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
                     >Marca</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
@@ -140,9 +148,12 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="descuento in descuentosMarcas"
+                  v-for="(descuento, item) in descuentosMarcas"
                   :key="descuento.id"
                 >
+                  <sui-table-cell text-align="center">
+                    {{ item + 1 }}
+                  </sui-table-cell>
                   <sui-table-cell text-align="center">
                     {{ descuento.brand.name }}
                   </sui-table-cell>
@@ -208,6 +219,9 @@
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
                     >Categoría</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
@@ -223,9 +237,12 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="descuento in descuentosCategorias"
+                  v-for="(descuento, item) in descuentosCategorias"
                   :key="descuento.id"
                 >
+                  <sui-table-cell text-align="center">
+                    {{ item + 1 }}
+                  </sui-table-cell>
                   <sui-table-cell text-align="center">
                     {{ descuento.category.name }}
                   </sui-table-cell>
