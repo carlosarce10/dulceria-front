@@ -1,11 +1,13 @@
 <template>
-  <center>
-    <h1>Not Found!</h1>
+  
+  <div>
+    <img style="margin-top:1%; margin-bottom:1%" class="ui centered small image" src="../assets/V1.png" />
+    <img style="margin-top:1%" class="ui centered large image" src="../assets/page_not_found.png" />
+    <h1>¡Página no encontrada!</h1>
+    <p>La página a la que intentas acceder no existe,</p> 
+    <p>prueba nuevamente en: <a href="/">Inicio</a></p>
     <fondo />
-    <p>
-      <a href="/">Go home?</a>
-    </p>
-  </center>
+  </div>
 </template>
 
 <script>
