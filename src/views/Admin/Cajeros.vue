@@ -122,14 +122,14 @@
                 <input
                   class="prompt"
                   type="text"
-                  placeholder="Buscar usuario"
+                  placeholder="Buscar usuarios"
                   v-model="searchD"
                 />
                 <i class="search icon"></i>
               </div>
               <div class="results"></div>
             </div>
-            <sui-container style="margin-top: 2%">
+            <sui-container>
               <sui-segment basic v-if="listaUserFalse.length === 0">
                 <i style="color: #6c757d" class="massive comment icon"></i
                 ><br />
@@ -585,5 +585,6 @@ export default {
 }
 .search {
   margin-right: 2%;
+  margin-bottom: 5px;
 }
 </style>

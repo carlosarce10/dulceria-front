@@ -1,5 +1,5 @@
 <template>
-  <div class="area" >
+  <div class="area">
     <cabecera />
     <br />
     <div class="funciones">
@@ -7,7 +7,7 @@
     </div>
 
     <sui-divider hidden />
-    <sui-tab class="panel" >
+    <sui-tab class="panel">
       <sui-tab-pane icon="check icon" title="Productos Activos">
         <div class="table">
           <div class="ui search">
@@ -513,6 +513,7 @@ export default {
 }
 .search {
   margin-right: 2%;
+  margin-bottom: 5px;
 }
 .cards {
   width: 90%;
