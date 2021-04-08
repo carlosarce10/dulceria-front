@@ -16,7 +16,7 @@
                     </sui-grid-column>
                     <sui-grid-column>
                         <label class="my-label">Precio</label>
-                        <sui-input type="text" :placeholder="sugerido" v-model="precio"/>
+                        <sui-input type="text" :placeholder="getSugerido" v-model="precio"/>
                     </sui-grid-column>
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
@@ -131,13 +131,21 @@ export default {
         }
     },
     components:{fondo,cabecera},
+    computed:{
+        getSugerido(){
+            let sugerido = 0;
+            for(let d of this.detalles){
+                sugerido = sugerido + (d.product.retailPrice*d.quantityPackage);
+            }
+            return "Precio sugerido $"+sugerido;
+        }
+    },
     mounted(){
         this.startup();
     },
     data(){
         return{
             openP: false,
-            sugerido:"Precio sugerido $",
             nombre:"",
             precio:"",
             detalles: [],
