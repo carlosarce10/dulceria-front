@@ -9,29 +9,25 @@
     <sui-tab class="panel">
       <sui-tab-pane icon="shopping basket icon" title="Productos">
         <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <div style="margin-right: 5%">
-                  <sui-button
-                    @click.native="modalDP()"
-                    style="background: #64b5f6"
-                    negative
-                    circular
-                    icon="plus"
-                  />
-                </div>
-                <input
-                  class="prompt"
-                  type="text"
-                  placeholder="Buscar productos..."
-                />
-                <i class="search icon"></i>
-              </div>
-              <div class="results"></div>
+          <div class="ui search">
+            <sui-button
+              @click.native="modalDP()"
+              style="background: #64b5f6"
+              negative
+              circular
+              icon="plus"
+            />
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar por producto"
+                v-model="search"
+              />
+              <i class="search icon"></i>
             </div>
+            <div class="results"></div>
           </div>
-
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosProductos.length === 0">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
@@ -59,7 +55,7 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="(descuento, item) in descuentosProductos"
+                  v-for="(descuento, item) in filteredDiscountP"
                   :key="descuento.id"
                 >
                   <sui-table-cell text-align="center">
@@ -106,20 +102,24 @@
       </sui-tab-pane>
       <sui-tab-pane icon="tags icon" title="Marcas">
         <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <div style="margin-right: 5%">
-                  <sui-button
-                    @click.native="modalDM()"
-                    style="background: #64b5f6"
-                    negative
-                    circular
-                    icon="plus"
-                  />
-                </div>
-              </div>
+          <div class="ui search">
+            <sui-button
+              @click.native="modalDM()"
+              style="background: #64b5f6"
+              negative
+              circular
+              icon="plus"
+            />
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar por producto"
+                v-model="searchM"
+              />
+              <i class="search icon"></i>
             </div>
+            <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosMarcas.length === 0">
@@ -148,7 +148,7 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="(descuento, item) in descuentosMarcas"
+                  v-for="(descuento, item) in filteredDiscountM"
                   :key="descuento.id"
                 >
                   <sui-table-cell text-align="center">
@@ -195,20 +195,24 @@
       </sui-tab-pane>
       <sui-tab-pane icon="table icon" title="Categorías">
         <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <div style="margin-right: 5%">
-                  <sui-button
-                    @click.native="modalDC()"
-                    style="background: #64b5f6"
-                    negative
-                    circular
-                    icon="plus"
-                  />
-                </div>
-              </div>
+          <div class="ui search">
+            <sui-button
+              @click.native="modalDC()"
+              style="background: #64b5f6"
+              negative
+              circular
+              icon="plus"
+            />
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar por producto"
+                v-model="searchC"
+              />
+              <i class="search icon"></i>
             </div>
+            <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="descuentosCategorias.length === 0">
@@ -237,7 +241,7 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="(descuento, item) in descuentosCategorias"
+                  v-for="(descuento, item) in filteredDiscountC"
                   :key="descuento.id"
                 >
                   <sui-table-cell text-align="center">
@@ -516,10 +520,37 @@ export default {
       openM: false,
       openC: false,
       openEdit: false,
+      search: "",
+      searchM: "",
+      searchC: "",
     };
   },
   beforeMount() {
     this.getLists();
+  },
+  computed: {
+    filteredDiscountP: function() {
+      return this.descuentosProductos.filter((discount) => {
+        return discount.product.name
+          .toLowerCase()
+          .match(this.search.toLowerCase());
+      });
+    },
+    filteredDiscountM: function() {
+      return this.descuentosMarcas.filter((discount) => {
+        console.log(discount.brand.name);
+        return discount.brand.name
+          .toLowerCase()
+          .match(this.searchM.toLowerCase());
+      });
+    },
+    filteredDiscountC: function() {
+      return this.descuentosCategorias.filter((discount) => {
+        return discount.category.name
+          .toLowerCase()
+          .match(this.searchC.toLowerCase());
+      });
+    },
   },
   methods: {
     modalDP() {
