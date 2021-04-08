@@ -16,7 +16,7 @@
                     </sui-grid-column>
                     <sui-grid-column>
                         <label class="my-label">Precio</label>
-                        <sui-input type="text" :placeholder="sugerido +precio"/>
+                        <sui-input type="text" :placeholder="sugerido" v-model="precio"/>
                     </sui-grid-column>
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
@@ -31,11 +31,18 @@
                         <sui-grid-row>
                             <sui-grid-column>
                                 <label class="my-label">Producto</label>
-                                <sui-input type="text"/>
+                                <sui-dropdown
+                                class="custom-search"
+                                :options="productos"
+                                placeholder="Producto"
+                                search
+                                selection
+                                v-model="idProducto"
+                                />
                             </sui-grid-column>
                             <sui-grid-column>
                                 <label style="color:transparent;" class="my-label">.</label>
-                                <sui-button style="float:left;" circular icon="plus"/>
+                                <sui-button style="float:left;background-color:#64b5f6" negative circular @click="addProductToDetails()" icon="plus"/>
                             </sui-grid-column>
                             <sui-grid-column>
                                 <label style="color:transparent;" class="my-label">.</label>
@@ -54,16 +61,16 @@
                     </sui-table-row>
                     </sui-table-header>
                     <sui-table-body>
-                    <sui-table-row v-for="p in productos" :key="p.id">
-                        <sui-table-cell text-align="center">1</sui-table-cell>
-                        <sui-table-cell text-align="center">{{p.nombre}}</sui-table-cell>
-                        <sui-table-cell text-align="center">${{p.precio}}</sui-table-cell>
+                    <sui-table-row v-for="(d,i) in detalles" :key="d.id">
+                        <sui-table-cell text-align="center">{{i+1}}</sui-table-cell>
+                        <sui-table-cell text-align="center">{{d.product.name}}</sui-table-cell>
+                        <sui-table-cell text-align="center">${{d.product.retailPrice}}</sui-table-cell>
                         <sui-table-cell  text-align="center">
-                            <sui-input style="width: 6rem;" type="number" :value="p.cantidad"/>
+                            <sui-input style="width: 6rem;" type="number" :value="d.quantityPackage"/>
                         </sui-table-cell>
                         <sui-table-cell style="display: flex;align-items: center;justify-content: center;" text-align="center">
                             <sui-button style="background: #64b5f6" negative circular icon="eye" @click.native="x()"/>
-                            <sui-button negative circular icon="times" @click.native="x()"/>
+                            <sui-button negative circular icon="times" @click="x()"/>
                         </sui-table-cell>
                     </sui-table-row>
                     </sui-table-body>
@@ -72,6 +79,7 @@
             
           </sui-tab-pane>
       </sui-tab>
+      <br><br><br>
       <fondo />
   </div>
 </template>
@@ -98,19 +106,58 @@ export default {
     },
     data(){
         return{
-            nombre:"",
-            precio:10,
             sugerido:"Precio sugerido $",
-            productos: []
+            nombre:"",
+            precio:0,
+            detalles: [],
+            productos: [],
+            idProducto: 0
         }
     },
     methods:{
         startup(){
-            api.doGet("/package/get/"+this.id).then(response=>{
-                let algo = response.data;
-                console.log(algo);
+            if(this.id !== 0){
+                api.doGet("/package/get/"+this.id).then(response=>{
+                    this.nombre = response.data.name;
+                    this.precio = response.data.price;    
+                })
+                api.doGet("/packageDetails/find/"+this.id).then(response=>{
+                    this.detalles = response.data;
+                })
+            }
+            api
+                .doGet("/product/list/true").then(response=>{
+                    for(let p of response.data){
+                        let producto = {
+                            text: "",
+                            key: 0,
+                            value: 0
+                        };
 
-            })
+                        producto.text = p.name;
+                        producto.key = p.id;
+                        producto.value = p.id;
+
+                        this.productos.push(producto);
+                    }
+                })
+            
+        },
+        addProductToDetails(){
+            console.log(this.idProducto);
+            if(this.idProducto !== 0){
+                api
+                    .doGet("/product/get/"+this.idProducto)
+                    .then(response=>{
+                        let detalle = {
+                            quantityPackage: 1,
+                            product: response.data
+                        };
+                        
+                        this.detalles.push(detalle);
+                    })
+            }
+
         }
     }
 }
