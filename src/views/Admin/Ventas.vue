@@ -31,6 +31,9 @@
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
                     >No. caja</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
@@ -48,7 +51,10 @@
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row v-for="venta in ventas" :key="venta.id">
+                <sui-table-row v-for="(venta, item) in ventas" :key="venta.id">
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
                   <sui-table-cell text-align="center">{{
                     venta.cashbox.cashboxNumber
                   }}</sui-table-cell>
@@ -159,6 +165,9 @@
                   <sui-table-header>
                     <sui-table-row>
                       <sui-table-header-cell text-align="center"
+                        >#</sui-table-header-cell
+                      >
+                      <sui-table-header-cell text-align="center"
                         >Producto/Paquete</sui-table-header-cell
                       >
                       <sui-table-header-cell text-align="center"
@@ -180,9 +189,15 @@
                   </sui-table-header>
                   <sui-table-body>
                     <sui-table-row
-                      v-for="detail in venta.details"
+                      v-for="(detail, item) in venta.details"
                       :key="detail.id"
                     >
+                      <sui-table-cell
+                        v-if="detail.product !== null"
+                        text-align="left"
+                      >
+                        {{ item + 1 }}
+                      </sui-table-cell>
                       <sui-table-cell
                         v-if="detail.product !== null"
                         text-align="left"
@@ -318,10 +333,10 @@ export default {
         .doGet("sales/list")
         .then((response) => {
           this.ventas = response.data;
-          for(let u of this.ventas){
+          for (let u of this.ventas) {
             u.date = u.date.split(".")[0];
-            u.date = u.date.replace("T"," ");
-            u.date = u.date + " hrs."    
+            u.date = u.date.replace("T", " ");
+            u.date = u.date + " hrs.";
           }
         })
         .catch((error) => {
@@ -338,9 +353,9 @@ export default {
           console.log(response.data);
           this.venta.details = response.data.saleDetails;
           this.venta.date = response.data.sale.date;
-            this.venta.date = this.venta.date.split(".")[0];
-            this.venta.date = this.venta.date.replace("T"," ");
-            this.venta.date = this.venta.date + " hrs." 
+          this.venta.date = this.venta.date.split(".")[0];
+          this.venta.date = this.venta.date.replace("T", " ");
+          this.venta.date = this.venta.date + " hrs.";
           this.venta.total = response.data.sale.total;
           this.venta.user.username = response.data.sale.user.username;
           this.venta.cashbox.cashboxNumber =
@@ -357,7 +372,6 @@ export default {
 </script>
 
 <style scoped>
-
 .funciones {
   color: #64b5f6;
   line-height: 50px;
