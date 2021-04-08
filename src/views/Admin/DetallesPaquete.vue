@@ -12,7 +12,7 @@
                 <sui-grid-row>
                     <sui-grid-column>
                         <label class="my-label">Nombre del paquete</label>
-                        <sui-input type="text" :value="nombre" />
+                        <sui-input type="text" v-model="nombre" />
                     </sui-grid-column>
                     <sui-grid-column>
                         <label class="my-label">Precio</label>
@@ -21,7 +21,7 @@
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
                         <sui-button v-if="detalles.length === 0" style="background: #64b5f6" disabled negative>Registrar paquete</sui-button>
-                        <sui-button v-if="detalles.length > 0" style="background: #64b5f6" negative>Registrar paquete</sui-button>
+                        <sui-button v-if="detalles.length > 0" style="background: #64b5f6" negative @click="register()">Registrar paquete</sui-button>
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
@@ -150,6 +150,10 @@ export default {
             precio:"",
             detalles: [],
             productos: [],
+            package:{
+                name:"",
+                price:""
+            },
             producto:{
                 name:"",
                 retailPrice:0,
@@ -259,6 +263,33 @@ export default {
                 .then(response=>{
                     this.producto = response.data;
                 });
+        },
+        register() {
+            this.package = {
+                name: this.nombre,
+                price: this.precio,
+            };
+            console.log(this.package);
+            api
+                .doPost("/package/save", this.package)
+                .then((response) => {
+                    
+                    this.id = response.id;
+                    api
+                        .doPost("/packageDetails/save/many/"+this.id,this.detalles)
+                        .then((response) => {
+                            this.$swal({
+                                title: "¡Paquete registrado exitosamente!",
+                                icon: "success",
+                            });
+                            console.log(response);
+                        })
+                        .catch((error) => console.log(error)).finally(() => (this.loading = false));
+                    this.onReset();
+                    console.log(response);
+                })
+                .catch((error) => console.log(error.response))
+                .finally(() => (this.loading = false));
         }
     }
 }
