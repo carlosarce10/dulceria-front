@@ -5,154 +5,160 @@
     <div class="funciones">
       <h3>Categorías</h3>
     </div>
-    
-      <sui-divider hidden />
-      <sui-tab class="panel"> 
-        <sui-tab-pane icon="check icon" title="Categorías Activas">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <div style="margin-right: 5%">
+
+    <sui-divider hidden />
+    <sui-tab class="panel">
+      <sui-tab-pane icon="check icon" title="Categorías Activas">
+        <div class="table">
+          <div class="search">
+            <div class="ui fluid category search">
+              <div class="ui icon input">
+                <div style="margin-right: 5%">
+                  <sui-button
+                    @click.native="toggle"
+                    style="background: #64b5f6"
+                    negative
+                    circular
+                    icon="plus"
+                  />
+                </div>
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+          </div>
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="categoriasTrue.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="categoriasTrue.length > 0" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Categoría</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Acciones</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(categoria, item) in categoriasTrue"
+                  :key="categoria.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    categoria.name
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
                     <sui-button
-                      @click.native="toggle"
+                      @click.native="toggleEdit(categoria.id)"
+                      id="editar"
                       style="background: #64b5f6"
                       negative
                       circular
-                      icon="plus"
+                      icon="edit"
                     />
-                  </div>
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
+                    <sui-button
+                      id="delete"
+                      v-on:click="eliminar(categoria.id)"
+                      negative
+                      circular
+                      icon="times"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+      <sui-tab-pane icon="ban icon" title="Categorías Inactivas">
+        <div class="table">
+          <div class="search">
+            <div class="ui fluid category search">
+              <div class="ui icon input">
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
               </div>
+              <div class="results"></div>
             </div>
-            <sui-container style="margin-top: 2%">
-              <sui-segment basic v-if="categoriasTrue.length === 0">
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
-                >
-              </sui-segment>
-              <sui-table v-if="categoriasTrue.length > 0" color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Categoría</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="categoria in categoriasTrue"
-                    :key="categoria.id"
-                  >
-                    <sui-table-cell text-align="center">{{
-                      categoria.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        @click.native="toggleEdit(categoria.id)"
-                        id="editar"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="edit"
-                      />
-                      <sui-button
-                        id="delete"
-                        v-on:click="eliminar(categoria.id)"
-                        negative
-                        circular
-                        icon="times"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
           </div>
-        </sui-tab-pane>
-        <sui-tab-pane icon="ban icon" title="Categorías Inactivas">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
-            </div>
-            <sui-container style="margin-top: 2%">
-              <sui-segment basic v-if="categoriasFalse.length === 0">
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
-                >
-              </sui-segment>
-              <sui-table v-if="categoriasFalse.length > 0" color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Categoría</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Recuperar</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="categoria in categoriasFalse"
-                    :key="categoria.id"
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="categoriasFalse.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="categoriasFalse.length > 0" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
                   >
-                    <sui-table-cell text-align="center">{{
-                      categoria.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        id="recuperar"
-                        v-on:click="recuperar(categoria.id)"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="redo"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
-          </div>
-        </sui-tab-pane>
-      </sui-tab>
+                  <sui-table-header-cell text-align="center"
+                    >Categoría</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Recuperar</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(categoria, item) in categoriasFalse"
+                  :key="categoria.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    categoria.name
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <sui-button
+                      id="recuperar"
+                      v-on:click="recuperar(categoria.id)"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="redo"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
 
     <div>
       <sui-modal class="modal-small" v-model="open">

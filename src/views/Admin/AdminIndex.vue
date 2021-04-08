@@ -1,195 +1,154 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
     <br />
     <div class="funciones">
       <h3>Productos</h3>
     </div>
-    <div style="width: 60%; margin-left: 20%">
-      <sui-divider hidden />
-      <sui-tab>
-        <sui-tab-pane icon="check icon" title="Productos Activos">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <div style="margin-right: 5%">
-                    <sui-button
-                      @click.native="toggle"
-                      style="background: #64b5f6"
-                      negative
-                      circular
-                      icon="plus"
-                    />
-                  </div>
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
-            </div>
-            <sui-container style="margin-top: 2%">
-              <sui-segment basic v-if="resultTrue.length === 0">
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"></small>
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
-                >
-              </sui-segment>
-              <div>
-                <sui-grid :columns="3">
-                  <sui-grid-column
-                    v-for="resultTrue in resultTrue"
-                    :key="resultTrue.id"
-                  >
-                    <sui-card class="fluid">
-                      <img src="../../assets/default.png" />
-                      <sui-card-content>
-                        <sui-card-header>{{ resultTrue.name }}</sui-card-header>
-                        <sui-card-description>{{
-                          resultTrue.netContent
-                        }}</sui-card-description>
-                        <sui-card-description
-                          >${{ resultTrue.retailPrice }}</sui-card-description
-                        >
-                      </sui-card-content>
-                      <sui-card-content extra>
-                        <sui-container align="center" text-align="center">
-                          <sui-button-group>
-                            <sui-button
-                              basic
-                              @click.native="toggleEdit(resultTrue.id)"
-                              id="editar"
-                              primary
-                              content="Editar"
-                            />
-                            <sui-button
-                              basic
-                              id="delete"
-                              v-on:click="eliminar(resultTrue.id)"
-                              content="Ver detalle"
-                            />
-                            <sui-button
-                              basic
-                              id="delete"
-                              v-on:click="eliminar(resultTrue.id)"
-                              negative
-                              content="Eliminar"
-                            />
-                          </sui-button-group>
-                        </sui-container>
-                      </sui-card-content>
-                    </sui-card>
-                  </sui-grid-column>
-                </sui-grid>
-              </div>
-            </sui-container>
-          </div>
-        </sui-tab-pane>
 
-        <sui-tab-pane icon="ban icon" title="Productos Inactivos">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
+    <sui-divider hidden />
+    <sui-tab class="panel">
+      <sui-tab-pane icon="check icon" title="Productos Activos">
+        <div class="table">
+          <div class="ui search">
+            <sui-button
+              @click.native="toggle"
+              style="background: #64b5f6"
+              negative
+              circular
+              icon="plus"
+            />
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar producto"
+                v-model="search"
+              />
+              <i class="search icon"></i>
             </div>
-            <sui-container style="margin-top: 2%">
-              <sui-segment basic v-if="resultFalse.length === 0">
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
-                >
-              </sui-segment>
-              <sui-table v-if="resultFalse.length > 0" color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Producto</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Contenido neto</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio Mayoreo</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio menudeo</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Marca</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Categoría</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Recuperar</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="resultFalse in resultFalse"
-                    :key="resultFalse.id"
-                  >
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.name
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.netContent
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center"
-                      >${{ resultFalse.wholesalePrice }}</sui-table-cell
-                    >
-                    <sui-table-cell text-align="center"
-                      >${{ resultFalse.retailPrice }}</sui-table-cell
-                    >
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.brand.name
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      resultFalse.category.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        id="recuperar"
-                        v-on:click="recuperar(resultFalse.id)"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="redo"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
+            <div class="results"></div>
           </div>
-        </sui-tab-pane>
-      </sui-tab>
-    </div>
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="resultTrue.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <div style="padding: 10px">
+              <sui-card-group :items-per-row="3">
+                <sui-card
+                  v-for="resultTrue in filteredProducts"
+                  :key="resultTrue.id"
+                >
+                  <sui-card-content class="pr">
+                    <img
+                      src="https://www.chedraui.com.mx/medias/757528014940-00-CH515Wx515H?context=bWFzdGVyfHJvb3R8ODAwMDB8aW1hZ2UvanBlZ3xoNjgvaGYxLzk1ODk0NTIwNDYzNjYuanBnfGEyNzQ3Y2NiODExYThjY2JmMDkxOWI1MjllMzM5MjIwNzBmZDliY2JlY2U0MzZlMTAxN2I3NjU2OGM3ZTg2MWE"
+                    />
+                  </sui-card-content>
+                  <sui-card-content
+                    style="
+                        height: 200px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                  >
+                    <div>
+                      <sui-card-header>{{ resultTrue.name }}</sui-card-header>
+                      <sui-card-meta
+                        >${{ resultTrue.retailPrice }} MXN</sui-card-meta
+                      >
+                      <sui-card-meta>{{ resultTrue.netContent }}</sui-card-meta>
+                    </div>
+                  </sui-card-content>
+                  <sui-card-content>
+                    <sui-button
+                      positive
+                      @click.native="toggleEdit(resultTrue.id)"
+                      type="submit"
+                      circular
+                      style="background: #64b5f6"
+                      >Editar</sui-button
+                    >
+                    <sui-button
+                      negative
+                      type="button"
+                      circular
+                      v-on:click="eliminar(resultTrue.id)"
+                      >Eliminar</sui-button
+                    >
+                  </sui-card-content>
+                </sui-card>
+              </sui-card-group>
+            </div>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+
+      <sui-tab-pane icon="ban icon" title="Productos Inactivos">
+        <div class="table">
+          <div class="ui search">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar producto"
+                v-model="searchD"
+              />
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="resultFalse.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <div style="padding: 10px" v-if="resultFalse.length > 0">
+              <sui-card-group :items-per-row="3">
+                <sui-card
+                  v-for="resultTrue in filteredProductsDisabled"
+                  :key="resultTrue.id"
+                >
+                  <sui-card-content class="pr">
+                    <img
+                      src="https://www.chedraui.com.mx/medias/757528014940-00-CH515Wx515H?context=bWFzdGVyfHJvb3R8ODAwMDB8aW1hZ2UvanBlZ3xoNjgvaGYxLzk1ODk0NTIwNDYzNjYuanBnfGEyNzQ3Y2NiODExYThjY2JmMDkxOWI1MjllMzM5MjIwNzBmZDliY2JlY2U0MzZlMTAxN2I3NjU2OGM3ZTg2MWE"
+                    />
+                  </sui-card-content>
+                  <sui-card-content
+                    style="
+                        height: 200px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                  >
+                    <div>
+                      <sui-card-header>{{ resultTrue.name }}</sui-card-header>
+                      <sui-card-meta
+                        >${{ resultTrue.retailPrice }} MXN</sui-card-meta
+                      >
+                      <sui-card-meta>{{ resultTrue.netContent }}</sui-card-meta>
+                    </div>
+                  </sui-card-content>
+                  <sui-card-content>
+                    <sui-button
+                      positive
+                      id="recuperar"
+                      v-on:click="recuperar(resultTrue.id)"
+                      type="submit"
+                      circular
+                      style="background: #64b5f6"
+                      >Recuperar</sui-button
+                    >
+                  </sui-card-content>
+                </sui-card>
+              </sui-card-group>
+            </div>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
 
     <div>
       <sui-modal class="modal-small" v-model="open">
@@ -382,10 +341,24 @@ export default {
       resultsBrand: null,
       resultFalse: null,
       id: null,
+      search: "",
+      searchD: "",
     };
   },
   beforeMount() {
     this.getLists();
+  },
+  computed: {
+    filteredProducts: function() {
+      return this.resultTrue.filter((product) => {
+        return product.name.toLowerCase().match(this.search.toLowerCase());
+      });
+    },
+    filteredProductsDisabled: function() {
+      return this.resultFalse.filter((product) => {
+        return product.name.toLowerCase().match(this.searchD.toLowerCase());
+      });
+    },
   },
   methods: {
     getLists() {
@@ -535,5 +508,16 @@ export default {
 }
 .search {
   margin-right: 2%;
+}
+.cards {
+  width: 90%;
+}
+
+.ui.card {
+  height: 300px !important;
+}
+.pr img {
+  width: 50%;
+  height: auto;
 }
 </style>
