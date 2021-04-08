@@ -1,5 +1,5 @@
 <template>
-  <div class="area">
+  <div class="area" >
     <cabecera />
     <br />
     <div class="funciones">
@@ -7,7 +7,7 @@
     </div>
 
     <sui-divider hidden />
-    <sui-tab class="panel">
+    <sui-tab class="panel" >
       <sui-tab-pane icon="check icon" title="Productos Activos">
         <div class="table">
           <div class="ui search">
@@ -502,6 +502,11 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+
+.panel {
+  width: 90%;
+  margin-left: 5%;
 }
 .table {
   margin-top: 6%;
