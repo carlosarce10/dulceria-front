@@ -11,27 +11,24 @@
       <sui-tab class="panel">
         <sui-tab-pane icon="check icon" title="Usuarios Activos">
           <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <div style="margin-right: 5%">
-                    <sui-button
-                      @click.native="toggle()"
-                      style="background: #64b5f6"
-                      negative
-                      circular
-                      icon="plus"
-                    />
-                  </div>
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
+            <div class="ui search">
+              <sui-button
+                @click.native="toggle"
+                style="background: #64b5f6"
+                negative
+                circular
+                icon="plus"
+              />
+              <div class="ui icon input">
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar usuario"
+                  v-model="search"
+                />
+                <i class="search icon"></i>
               </div>
+              <div class="results"></div>
             </div>
             <sui-container style="margin-top: 2%">
               <sui-segment basic v-if="listaUserTrue.length === 0">
@@ -60,7 +57,7 @@
                 </sui-table-header>
                 <sui-table-body>
                   <sui-table-row
-                    v-for="(user, item) in listaUserTrue"
+                    v-for="(user, item) in filteredUsers"
                     :key="user.id"
                   >
                     <sui-table-cell text-align="center">{{
@@ -112,62 +109,86 @@
           </div>
         </sui-tab-pane>
         <sui-tab-pane icon="ban icon" title="Usuarios Inactivos">
-          <sui-container style="margin-top: 2%">
-            <sui-segment basic v-if="listaUserFalse.length === 0">
-              <i style="color: #6c757d" class="massive comment icon"></i><br />
-              <small style="color: #6c757d">No se encontraron registros.</small>
-            </sui-segment>
-            <sui-table v-if="listaUserFalse.length > 0" color="blue">
-              <sui-table-header>
-                <sui-table-row>
-                  <sui-table-header-cell text-align="center"
-                    >#</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Nombre de usuario</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Última conexión</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Acciones</sui-table-header-cell
-                  >
-                </sui-table-row>
-              </sui-table-header>
-              <sui-table-body>
-                <sui-table-row
-                  v-for="(user, item) in listaUserFalse"
-                  :key="user.id"
+          <div class="table">
+            <div class="ui search">
+              <sui-button
+                @click.native="toggle"
+                style="background: #64b5f6"
+                negative
+                circular
+                icon="plus"
+              />
+              <div class="ui icon input">
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar usuario"
+                  v-model="searchD"
+                />
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+            <sui-container style="margin-top: 2%">
+              <sui-segment basic v-if="listaUserFalse.length === 0">
+                <i style="color: #6c757d" class="massive comment icon"></i
+                ><br />
+                <small style="color: #6c757d"
+                  >No se encontraron registros.</small
                 >
-                  <sui-table-cell text-align="center">{{
-                    item + 1
-                  }}</sui-table-cell>
-                  <sui-table-cell text-align="center">{{
-                    user.username
-                  }}</sui-table-cell>
-                  <sui-table-cell text-align="center">{{
-                    user.lastLogin
-                  }}</sui-table-cell>
-                  <sui-table-cell
-                    style="
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    "
+              </sui-segment>
+              <sui-table v-if="listaUserFalse.length > 0" color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center"
+                      >#</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Nombre de usuario</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Última conexión</sui-table-header-cell
+                    >
+                    <sui-table-header-cell text-align="center"
+                      >Acciones</sui-table-header-cell
+                    >
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row
+                    v-for="(user, item) in filteredUsersDisabled"
+                    :key="user.id"
                   >
-                    <sui-button
-                      id="recuperar"
-                      v-on:click="recuperar(user.id)"
-                      style="background: #64b5f6"
-                      negative
-                      circular
-                      icon="redo"
-                    />
-                  </sui-table-cell>
-                </sui-table-row>
-              </sui-table-body>
-            </sui-table>
-          </sui-container>
+                    <sui-table-cell text-align="center">{{
+                      item + 1
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      user.username
+                    }}</sui-table-cell>
+                    <sui-table-cell text-align="center">{{
+                      user.lastLogin
+                    }}</sui-table-cell>
+                    <sui-table-cell
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <sui-button
+                        id="recuperar"
+                        v-on:click="recuperar(user.id)"
+                        style="background: #64b5f6"
+                        negative
+                        circular
+                        icon="redo"
+                      />
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-container>
+          </div>
         </sui-tab-pane>
       </sui-tab>
     </div>
@@ -313,10 +334,24 @@ export default {
         id: 0,
         username: "",
       },
+      search: "",
+      searchD: "",
     };
   },
   beforeMount() {
     this.getLists();
+  },
+  computed: {
+    filteredUsers: function() {
+      return this.listaUserTrue.filter((user) => {
+        return user.username.toLowerCase().match(this.search.toLowerCase());
+      });
+    },
+    filteredUsersDisabled: function() {
+      return this.listaUserFalse.filter((user) => {
+        return user.username.toLowerCase().match(this.searchD.toLowerCase());
+      });
+    },
   },
   methods: {
     getLists() {
@@ -399,6 +434,9 @@ export default {
                   });
                   console.log(response);
                   this.getLists();
+                  this.user.username = "";
+                  this.user.password = "";
+                  this.user.confirmPassword = "";
                 })
                 .catch((error) => console.log(error))
                 .finally(() => (this.loading = false));
@@ -463,6 +501,9 @@ export default {
                 });
                 console.log(response);
                 this.getLists();
+                this.user.username = "";
+                this.user.password = "";
+                this.user.confirmPassword = "";
               })
               .catch((error) => console.log(error))
               .finally(() => (this.loading = false));
@@ -544,6 +585,5 @@ export default {
 }
 .search {
   margin-right: 2%;
-  margin-bottom: 2%;
 }
 </style>
