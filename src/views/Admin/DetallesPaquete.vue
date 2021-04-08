@@ -20,7 +20,8 @@
                     </sui-grid-column>
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
-                        <sui-button style="background: #64b5f6" negative>Registrar paquete</sui-button>
+                        <sui-button v-if="detalles.length === 0" style="background: #64b5f6" disabled negative>Registrar paquete</sui-button>
+                        <sui-button v-if="detalles.length > 0" style="background: #64b5f6" negative>Registrar paquete</sui-button>
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
@@ -154,7 +155,7 @@ export default {
                             product: response.data
                         };
                         
-                        this.detalles.push(detalle);
+                        this.detalles.unshift(detalle);
                     })
             }
 
