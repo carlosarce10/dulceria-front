@@ -67,11 +67,11 @@
                         <sui-table-cell text-align="center">{{d.product.name}}</sui-table-cell>
                         <sui-table-cell text-align="center">${{d.product.retailPrice}}</sui-table-cell>
                         <sui-table-cell  text-align="center">
-                            <sui-input style="width: 6rem;" type="number" :value="d.quantityPackage"/>
+                            <sui-input style="width: 6rem;" min="1" max="99" type="number" :value="d.quantityPackage"/>
                         </sui-table-cell>
                         <sui-table-cell style="display: flex;align-items: center;justify-content: center;" text-align="center">
-                            <sui-button style="background: #64b5f6" negative circular icon="eye" @click.native="x()"/>
-                            <sui-button negative circular icon="times" @click="x()"/>
+                            <sui-button style="background: #64b5f6" negative circular icon="eye" @click="getProduct(d.product.id)" @click.native="modalProduct()"/>
+                            <sui-button negative circular icon="times" @click="dropDetalle(d.product.id, d.product.name)"/>
                         </sui-table-cell>
                     </sui-table-row>
                     </sui-table-body>
@@ -80,6 +80,35 @@
             
           </sui-tab-pane>
       </sui-tab>
+
+      <sui-modal class="modal-small" v-model="openP">
+        <sui-modal-header>Producto</sui-modal-header>
+        <sui-modal-content scrolling>
+          <sui-form>
+            <sui-form-field>
+              <sui-segments>
+                <sui-segment>
+                    <img style="margin-top: 0px;width: 100%;" src="https://mk0lanoticiapwmx1x6a.kinstacdn.com/wp-content/uploads/2019/11/dulce-adiccion.jpeg"/>
+                </sui-segment>
+                <sui-segment><b>Nombre:</b> {{producto.name}}</sui-segment>
+                <sui-segment><b>Precio:</b> {{producto.retailPrice}}</sui-segment>
+                <sui-segment><b>Contenido neto:</b> {{producto.netContent}}</sui-segment>
+                <sui-segment><b>Marca:</b> {{producto.brand.name}}</sui-segment>
+                <sui-segment><b>Categoría:</b> {{producto.category.name}}</sui-segment>
+              </sui-segments>
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button
+            positive
+            @click.native="modalProduct"
+            type="button"
+          >
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
       <br><br><br>
       <fondo />
   </div>
@@ -107,11 +136,23 @@ export default {
     },
     data(){
         return{
+            openP: false,
             sugerido:"Precio sugerido $",
             nombre:"",
-            precio:0,
+            precio:"",
             detalles: [],
             productos: [],
+            producto:{
+                name:"",
+                retailPrice:0,
+                netContent:"",
+                brand: {
+                    name: ""
+                },
+                category: {
+                    name: ""
+                }
+            },
             idProducto: 0
         }
     },
@@ -144,21 +185,72 @@ export default {
                 })
             
         },
+        modalProduct(){
+            this.openP = !this.openP;
+        },
         addProductToDetails(){
             console.log(this.idProducto);
             if(this.idProducto !== 0){
-                api
-                    .doGet("/product/get/"+this.idProducto)
-                    .then(response=>{
-                        let detalle = {
-                            quantityPackage: 1,
-                            product: response.data
-                        };
-                        
-                        this.detalles.unshift(detalle);
-                    })
+
+                let agregar = true;
+
+                for(let d of this.detalles){
+                    if(d.product.id === this.idProducto){
+                        this.$swal({
+                            title: "¡El producto ya se encuentra en el paquete!",
+                            icon: "warning"
+                        });
+                        agregar = false;
+                        break;
+                    }
+                }
+                if(agregar){
+                    api
+                        .doGet("/product/get/"+this.idProducto)
+                        .then(response=>{
+                            let detalle = {
+                                quantityPackage: 1,
+                                product: response.data
+                            };
+                            
+                            this.detalles.unshift(detalle);
+                        })
+                }
+
             }
 
+        },
+        dropDetalle(idProducto, nameProduct){
+            this.$swal({
+                title: "¿Estás seguro que desea eliminar "+nameProduct+" de este paquete?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Confirmar",
+                reverseButtons: true
+            }).then(result=>{
+                if(result.isConfirmed){
+                    for(let i = 0; i<this.detalles.length; i++){
+                        if(this.detalles[i].product.id === idProducto){
+                            this.detalles.splice(i, 1);
+                            this.$swal({
+                                title: "¡El producto se ha removido exitosamente!",
+                                icon: "success"
+                            });
+                            break;
+                        }
+                    }
+                }
+            });
+
+
+        },
+        getProduct(id){
+            api
+                .doGet("/product/get/"+id)
+                .then(response=>{
+                    this.producto = response.data;
+                });
         }
     }
 }
