@@ -5,148 +5,160 @@
     <div class="funciones">
       <h3>Marcas</h3>
     </div>
-      <sui-divider hidden />
-      <sui-tab class="panel"> 
-        <sui-tab-pane icon="check icon" title="Marcas Activas">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <div style="margin-right: 5%">
+    <sui-divider hidden />
+    <sui-tab class="panel">
+      <sui-tab-pane icon="check icon" title="Marcas Activas">
+        <div class="table">
+          <div class="search">
+            <div class="ui fluid category search">
+              <div class="ui icon input">
+                <div style="margin-right: 5%">
+                  <sui-button
+                    @click.native="toggle"
+                    style="background: #64b5f6"
+                    negative
+                    circular
+                    icon="plus"
+                  />
+                </div>
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+          </div>
+          <sui-container>
+            <sui-segment basic v-if="marcasTrue.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="marcasTrue.length > 0" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Marca</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Acciones</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(marca, item) in marcasTrue"
+                  :key="marca.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    marca.name
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
                     <sui-button
-                      @click.native="toggle"
+                      @click.native="toggleEdit(marca.id)"
+                      id="editar"
                       style="background: #64b5f6"
                       negative
                       circular
-                      icon="plus"
+                      icon="edit"
                     />
-                  </div>
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
-            </div>
-            <sui-container>
-              <sui-segment basic v-if="marcasTrue.length === 0">
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
-                >
-              </sui-segment>
-              <sui-table v-if="marcasTrue.length > 0" color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Marca</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Acciones</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row v-for="marca in marcasTrue" :key="marca.id">
-                    <sui-table-cell text-align="center">{{
-                      marca.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        @click.native="toggleEdit(marca.id)"
-                        id="editar"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="edit"
-                      />
-                      <sui-button
-                        id="delete"
-                        v-on:click="eliminar(marca.id)"
-                        negative
-                        circular
-                        icon="times"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
-          </div>
-        </sui-tab-pane>
+                    <sui-button
+                      id="delete"
+                      v-on:click="eliminar(marca.id)"
+                      negative
+                      circular
+                      icon="times"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
 
-        <sui-tab-pane icon="ban icon" title="Marcas Inactivas">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
+      <sui-tab-pane icon="ban icon" title="Marcas Inactivas">
+        <div class="table">
+          <div class="search">
+            <div class="ui fluid category search">
+              <div class="ui icon input">
+                <input
+                  class="prompt"
+                  type="text"
+                  placeholder="Buscar productos..."
+                />
+                <i class="search icon"></i>
               </div>
+              <div class="results"></div>
             </div>
-            <sui-container style="margin-top: 2%">
-              <sui-segment basic v-if="marcasFalse.length === 0">
-                <i style="color: #6c757d" class="massive comment icon"></i
-                ><br />
-                <small style="color: #6c757d"
-                  >No se encontraron registros.</small
-                >
-              </sui-segment>
-              <sui-table v-if="marcasFalse.length > 0" color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Marca</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Recuperar</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row v-for="marca in marcasFalse" :key="marca.id">
-                    <sui-table-cell text-align="center">{{
-                      marca.name
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                    >
-                      <sui-button
-                        id="recuperar"
-                        v-on:click="recuperar(marca.id)"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="redo"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
           </div>
-        </sui-tab-pane>
-      </sui-tab>
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="marcasFalse.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="marcasFalse.length > 0" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Marca</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Recuperar</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(marca, item) in marcasFalse"
+                  :key="marca.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    marca.name
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <sui-button
+                      id="recuperar"
+                      v-on:click="recuperar(marca.id)"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="redo"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar marca</sui-modal-header>
