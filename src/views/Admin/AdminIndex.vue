@@ -33,7 +33,7 @@
             <sui-segment basic v-if="resultTrue.length === 0">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
-            </sui-segment>
+            </sui-segment> 
             <div style="padding: 10px">
               <sui-card-group :items-per-row="3">
                 <sui-card
@@ -41,9 +41,7 @@
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
-                    <img
-                      src="https://www.chedraui.com.mx/medias/757528014940-00-CH515Wx515H?context=bWFzdGVyfHJvb3R8ODAwMDB8aW1hZ2UvanBlZ3xoNjgvaGYxLzk1ODk0NTIwNDYzNjYuanBnfGEyNzQ3Y2NiODExYThjY2JmMDkxOWI1MjllMzM5MjIwNzBmZDliY2JlY2U0MzZlMTAxN2I3NjU2OGM3ZTg2MWE"
-                    />
+                      <img style="width:100px;height:100px;margin:0px" :src="resultTrue.url">
                   </sui-card-content>
                   <sui-card-content
                     style="
@@ -111,9 +109,7 @@
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
-                    <img
-                      src="https://www.chedraui.com.mx/medias/757528014940-00-CH515Wx515H?context=bWFzdGVyfHJvb3R8ODAwMDB8aW1hZ2UvanBlZ3xoNjgvaGYxLzk1ODk0NTIwNDYzNjYuanBnfGEyNzQ3Y2NiODExYThjY2JmMDkxOWI1MjllMzM5MjIwNzBmZDliY2JlY2U0MzZlMTAxN2I3NjU2OGM3ZTg2MWE"
-                    />
+                    <img style="width:100px;height:100px;margin-top:0px" :src="resultTrue.url">
                   </sui-card-content>
                   <sui-card-content
                     style="
@@ -153,7 +149,7 @@
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar producto</sui-modal-header>
-        <sui-modal-content>
+        <sui-modal-content scrolling>
           <sui-form>
             <sui-form-field>
               <label>Nombre del producto:</label>
@@ -170,10 +166,6 @@
             <sui-form-field>
               <label>Precio mayoreo:</label>
               <input type="number" v-model="product.wholesalePrice" />
-            </sui-form-field>
-            <sui-form-field>
-              <label>Imágen:</label>
-              <input type="file" @change="onFileSelected" />
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
@@ -207,6 +199,11 @@
                 </option>
               </select>
             </sui-form-field>
+            <sui-form-field>
+               <label>Imágen:</label>
+              <input @change="onFileSelected($event)" type="file" accept="image/*" />
+            </sui-form-field>
+            <br>
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions style="margin-bottom: 3%">
@@ -228,7 +225,7 @@
     <div>
       <sui-modal class="modal-small" v-model="openEdit">
         <sui-modal-header>Modificar producto</sui-modal-header>
-        <sui-modal-content>
+        <sui-modal-content scrolling>
           <sui-form>
             <sui-form-field>
               <label>Nombre del producto:</label>
@@ -278,6 +275,11 @@
                 </option>
               </select>
             </sui-form-field>
+            <sui-form-field>
+               <label>Imágen:</label>
+              <input @change="onFileSelectedEdit($event)" type="file" accept="image/*" />
+            </sui-form-field>
+            <br>
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
@@ -306,6 +308,9 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import { storage } from '../../firebase';
+
+const ref = storage.ref()
 
 Vue.use(Particles);
 export default {
@@ -316,6 +321,10 @@ export default {
   },
   data() {
     return {
+      imagenes:[],
+      imagen:null,
+      imagenEdit:null,
+      imagendesc:false,
       product: {
         name: "",
         netContent: "",
@@ -364,11 +373,41 @@ export default {
     getLists() {
       api
         .doGet("/product/list/true")
-        .then((resultTrue) => (this.resultTrue = resultTrue.data))
+        .then((response) => {
+          let productos = []
+          for(let p of response.data){
+            p.url = "/img/default.9fda67aa.png"
+            productos.push(p)
+          }
+          this.resultTrue = productos;
+          for(let p of this.resultTrue){
+            if(p.image !== null){
+              ref.child('imagenes/productos/'+p.image).getDownloadURL()
+              .then((url)=>{
+                p.url = url
+              })
+            }
+          }
+        })
         .catch((error) => console.log(error));
       api
         .doGet("/product/list/false")
-        .then((resultFalse) => (this.resultFalse = resultFalse.data))
+        .then((response) => {
+          let productos = []
+          for(let p of response.data){
+            p.url = "/img/default.9fda67aa.png"
+            productos.push(p)
+          }
+          this.resultFalse = productos;
+          for(let p of this.resultFalse){
+            if(p.image !== null){
+              ref.child('imagenes/productos/'+p.image).getDownloadURL()
+              .then((url)=>{
+                p.url = url
+              })
+            }
+          }
+        })
         .catch((error) => console.log(error));
       api
         .doGet("/category/list/true")
@@ -401,16 +440,44 @@ export default {
       this.openEdit = !this.openEdit;
     },
     onFileSelected(event) {
-      this.product.image = event.target.files[0];
+      this.imagen = event.target.files[0];
+      console.log(this.imagen)
+    },
+    onFileSelectedEdit(event) {
+      this.imagenEdit = event.target.files[0];
+      console.log(this.imagenEdit)
+    },
+    subirImagen(){
+      //referencia a donde subir
+      const refImg = ref.child('imagenes/productos/'+this.imagen.name)
+      const metadata = { contentType: 'img/jpeg' }
+      refImg.put(this.imagen, metadata)
+      .then( e=> console.log(e))
+    },
+    subirImagenEdit(){
+      //referencia a donde subir
+      const refImg = ref.child('imagenes/productos/'+this.imagenEdit.name)
+      const metadata = { contentType: 'img/jpeg' }
+      refImg.put(this.imagenEdit, metadata)
+      .then( e=> console.log(e))
     },
     register() {
+      if(this.imagen !== null){
+        this.subirImagen()
+        this.product.image = this.imagen.name
+      }
+      
       api
         .doPost("/product/save", this.product)
         .then((response) => {
           this.$swal({
             title: "¡Producto registrado exitosamente!",
             icon: "success",
-          });
+          })/*.then( result => {
+            if(result.isConfirmed){
+              location.reload();
+            }
+          })*/;
           console.log(response);
           this.getLists();
         })
@@ -444,6 +511,11 @@ export default {
       });
     },
     editar() {
+      if(this.imagenEdit !== null){
+        this.subirImagenEdit()
+        this.productEdit.image = this.imagenEdit.name
+      }
+      
       api
         .doPost("product/save", this.productEdit)
         .then((response) => {
