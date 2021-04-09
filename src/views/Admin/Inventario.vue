@@ -302,7 +302,7 @@ export default {
         .doGet("/product/list/true")
         .then((response) => {
           this.listProduct = response.data;
-
+          this.listSelectProduct = [];
           for (let myproducto of this.listProduct) {
             let item = {
               key: 0,
