@@ -38,6 +38,9 @@
             <sui-table-header>
               <sui-table-row>
                 <sui-table-header-cell text-align="center"
+                  >#</sui-table-header-cell
+                >
+                <sui-table-header-cell text-align="center"
                   >Producto</sui-table-header-cell
                 >
                 <sui-table-header-cell text-align="center"
@@ -53,9 +56,12 @@
             </sui-table-header>
             <sui-table-body>
               <sui-table-row
-                v-for="listStock in filteredStock"
+                v-for="(listStock, item) in filteredStock"
                 :key="listStock.id"
               >
+                <sui-table-cell text-align="center">{{
+                  item + 1
+                }}</sui-table-cell>
                 <sui-table-cell text-align="center">{{
                   listStock.product.name
                 }}</sui-table-cell>
@@ -188,6 +194,9 @@
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
                     >Producto</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
@@ -203,9 +212,12 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="listStockEx in filteredStockDisabled"
+                  v-for="(listStockEx, item) in filteredStockDisabled"
                   :key="listStockEx.id"
                 >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
                   <sui-table-cell text-align="center">{{
                     listStockEx.product.name
                   }}</sui-table-cell>
