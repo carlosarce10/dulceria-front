@@ -5,147 +5,172 @@
     <div class="funciones">
       <h3>Paquetes</h3>
     </div>
-      <sui-divider hidden />
-      <sui-tab class="panel"> 
-        <sui-tab-pane icon="check icon" title="Paquetes Activos">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <div style="margin-right: 5%">
+    <sui-divider hidden />
+    <sui-tab class="panel">
+      <sui-tab-pane icon="check icon" title="Paquetes Activos">
+        <div class="table">
+          <div class="ui search">
+            <sui-button
+              @click.native="test()"
+              style="background: #64b5f6"
+              negative
+              circular
+              icon="plus"
+            />
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar paquete"
+                v-model="search"
+              />
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="listPackage.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table color="blue">
+              <sui-table-header v-if="listPackage.length > 0">
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Paquete</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Precio</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Acciones</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(listPackage, item) in filteredPackage"
+                  :key="listPackage.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    listPackage.name
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center"
+                    >${{ listPackage.price }}</sui-table-cell
+                  >
+
+                  <sui-table-cell
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                  >
                     <sui-button
-                      @click.native="test()"
                       style="background: #64b5f6"
                       negative
                       circular
-                      icon="plus"
+                      icon="eye"
+                      @click.native="query(listPackage.id)"
                     />
-                  </div>
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
+                    <sui-button
+                      id="delete"
+                      v-on:click="eliminar(listPackage.id)"
+                      negative
+                      circular
+                      icon="times"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+      <sui-tab-pane icon="ban icon" title="Paquetes Inactivos">
+        <div class="table">
+          <div class="ui search">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar paquete"
+                v-model="searchD"
+              />
+              <i class="search icon"></i>
             </div>
-            <sui-container style="margin-top: 2%">
-              <sui-table color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center">Paquete</sui-table-header-cell> 
-                    <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Acciones</sui-table-header-cell>
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="listPackage in listPackage"
-                    :key="listPackage.id"
+            <div class="results"></div>
+          </div>
+          <sui-segment basic v-if="listPackageFalse.length === 0">
+            <i style="color: #6c757d" class="massive comment icon"></i><br />
+            <small style="color: #6c757d">No se encontraron registros.</small>
+          </sui-segment>
+
+          <sui-container class="scrolling" style="margin-top: 2%">
+            <sui-table color="blue">
+              <sui-table-header v-if="listPackageFalse.length > 0">
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
                   >
-                    <sui-table-cell text-align="center">{{
-                      listPackage.name
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">${{
-                      listPackage.price
-                    }}</sui-table-cell>
-                    
-                    <sui-table-cell
-                      style="
+                  <sui-table-header-cell text-align="center"
+                    >Paquete</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Precio</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Recuperar</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(listPackageFalse, item) in filteredPackageDisabled"
+                  :key="listPackageFalse.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    listPackageFalse.name
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    listPackageFalse.price
+                  }}</sui-table-cell>
+                  <sui-table-cell
+                    style="
                         display: flex;
                         align-items: center;
                         justify-content: center;
                       "
-                    >
-                      <sui-button
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="eye"
-                        @click.native="query(listPackage.id)"
-                      />
-                      <sui-button
-                        id="delete"
-                        v-on:click="eliminar(listPackage.id)"
-                        negative
-                        circular
-                        icon="times"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
-          </div>
-        </sui-tab-pane>
-        <sui-tab-pane icon="ban icon" title="Paquetes Inactivos">
-          <div class="table">
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
-            </div>
-            <sui-container class="scrolling" style="margin-top: 2%">
-              <sui-table color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Paquete</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Recuperar</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row
-                    v-for="listPackageFalse in listPackageFalse"
-                    :key="listPackageFalse.id"
-                  >
-                    <sui-table-cell text-align="center">{{
-                      listPackageFalse.name
-                    }}</sui-table-cell>
-                    <sui-table-cell text-align="center">{{
-                      listPackageFalse.price
-                    }}</sui-table-cell>
-                    <sui-table-cell
-                      style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                      ><sui-button
-                        id="recuperar"
-                        v-on:click="recuperar(listPackageFalse.id)"
-                        style="background: #64b5f6"
-                        negative
-                        circular
-                        icon="redo"
-                      />
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-container>
-          </div>
-        </sui-tab-pane>
-      </sui-tab>
+                    ><sui-button
+                      id="recuperar"
+                      v-on:click="recuperar(listPackageFalse.id)"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="redo"
+                    />
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
     <div>
       <sui-modal class="modal-small" v-model="open">
-        <sui-modal-header style="margin-bottom: 3%">Registrar paquete</sui-modal-header>
+        <sui-modal-header style="margin-bottom: 3%"
+          >Registrar paquete</sui-modal-header
+        >
         <sui-modal-content>
           <sui-form>
             <sui-form-field>
@@ -211,7 +236,9 @@
     </div>
     <div>
       <sui-modal v-model="openEdit">
-        <sui-modal-header style="margin-bottom: 3%">Modificar paquete</sui-modal-header>
+        <sui-modal-header style="margin-bottom: 3%"
+          >Modificar paquete</sui-modal-header
+        >
         <sui-modal-content>
           <sui-form>
             <sui-form-field>
@@ -240,7 +267,6 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
-
 
     <fondo />
   </div>
@@ -281,24 +307,39 @@ export default {
         name: "",
         price: false,
       },
-      listPackage: null,
-      listPackageFalse: null,
+      listPackage: [],
+      listPackageFalse: [],
       name: "",
       price: false,
       xd: false,
-      xd2: false
+      xd2: false,
+      search: "",
+      searchD: "",
     };
   },
   mounted() {
     this.obtenerDatosF();
     this.obtenerDatos();
   },
+  computed: {
+    filteredPackage: function() {
+      return this.listPackage.filter((paquete) => {
+        console.log(paquete.name);
+        return paquete.name.toLowerCase().match(this.search.toLowerCase());
+      });
+    },
+    filteredPackageDisabled: function() {
+      return this.listPackageFalse.filter((paquete) => {
+        return paquete.name.toLowerCase().match(this.searchD.toLowerCase());
+      });
+    },
+  },
   methods: {
-    test(){
-      this.$router.push({name:"DetallesPaquete"});
+    test() {
+      this.$router.push({ name: "DetallesPaquete" });
     },
     query(idp) {
-      this.$router.push({name:"DetallesPaquete", params: {id: idp}});
+      this.$router.push({ name: "DetallesPaquete", params: { id: idp } });
     },
     toggle() {
       this.open = !this.open;
@@ -463,7 +504,7 @@ export default {
 }
 .search {
   margin-right: 2%;
-  margin-bottom: 2%;
+  margin-bottom: 5px;
 }
 .btnModal {
   background-color: #64b5f6 !important;
