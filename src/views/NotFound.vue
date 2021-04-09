@@ -1,11 +1,17 @@
 <template>
-  
   <div>
-    <img style="margin-top:1%; margin-bottom:1%" class="ui centered small image" src="../assets/V1.png" />
-    <img style="margin-top:1%" class="ui centered large image" src="../assets/page_not_found.png" />
-    <h1>¡Página no encontrada!</h1>
-    <p>La página a la que intentas acceder no existe,</p> 
-    <p>prueba nuevamente en: <a href="/">Inicio</a></p>
+    <div>
+      <div>
+        <img class="ui centered medium image" src="../assets/404.png" />
+
+        <h1>¡Página no encontrada!</h1>
+        <h3>Algo salió mal...</h3>
+        <button icon="home icon" class="ui primary button">
+          <i class="home icon"></i>
+          <a style="color: white" href="/">Volver al inicio</a>
+        </button>
+      </div>
+    </div>
     <fondo />
   </div>
 </template>
@@ -16,24 +22,21 @@ import Particles from "particles.vue";
 import Vue from "vue";
 Vue.use(Particles);
 
-  export default {
-    name: 'NotFound',
-    components: {
-        fondo
-    }
-  }
-
+export default {
+  name: "NotFound",
+  components: {
+    fondo,
+  },
+};
 </script>
 
 <style scoped>
+center {
+  margin: 15vw;
+}
 
-  center {
-    margin: 15vw;
-  }
-
-  h1 {
-    color: var(--border);
-    font-size: 2em;
-  }
-
+h1 {
+  color: var(--border);
+  font-size: 2em;
+}
 </style>
