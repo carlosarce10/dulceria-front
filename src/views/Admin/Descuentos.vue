@@ -296,7 +296,6 @@
         <sui-form>
           <sui-form-field>
             <label>Producto:</label>
-
             <sui-dropdown
               class="custom-search"
               :options="listSelectProduct"
@@ -358,19 +357,15 @@
         <sui-form>
           <sui-form-field>
             <label>Marca:</label>
-            <select
-              class="ui dropdown custom-search"
-              ref="seleccionado"
+            <sui-dropdown
+              class="custom-search"
+              :options="listSelectBrand"
+              placeholder="Marca"
+              search
+              selection
               v-model="discount.brand.id"
-            >
-              <option
-                v-for="brand in listBrand"
-                :key="brand.id"
-                :value="brand.id"
-              >
-                {{ brand.name }}
-              </option>
-            </select>
+            />
+
           </sui-form-field>
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
@@ -406,19 +401,17 @@
         <sui-form>
           <sui-form-field>
             <label>Categoría:</label>
-            <select
-              class="ui dropdown"
-              ref="seleccionado"
+
+            <sui-dropdown
+              class="custom-search"
+              :options="listSelectCategory"
+              placeholder="Categoría"
+              search
+              selection
               v-model="discount.category.id"
-            >
-              <option
-                v-for="category in listCategory"
-                :key="category.id"
-                :value="category.id"
-              >
-                {{ category.name }}
-              </option>
-            </select>
+            />
+
+
           </sui-form-field>
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
@@ -535,6 +528,8 @@ export default {
       listProduct: [],
       listDiscounts: [],
       listSelectProduct: [],
+      listSelectBrand: [],
+      listSelectCategory: [],
       openP: false,
       openM: false,
       openC: false,
@@ -623,17 +618,37 @@ export default {
         .catch((error) => console.log(error));
       api
         .doGet("/category/list/true")
-        .then((listCategory) => (this.listCategory = listCategory.data))
+        .then((listCategory) => {
+          this.listCategory = listCategory.data
+          this.listSelectCategory = [];
+          for(let category of this.listCategory){
+            let c = {text: "", key: 0, value: 0}
+            c.text = category.name;
+            c.key = category.id;
+            c.value = category.id;
+            this.listSelectCategory.push(c);
+          }
+        })
         .catch((error) => console.log(error));
       api
         .doGet("/brand/list/true")
-        .then((listBrand) => (this.listBrand = listBrand.data))
+        .then((listBrand) => {
+          this.listBrand = listBrand.data
+          this.listSelectBrand = [];
+          for(let brand of this.listBrand){
+            let b = {text: "", key: 0, value: 0}
+            b.text = brand.name;
+            b.key = brand.id;
+            b.value = brand.id;
+            this.listSelectBrand.push(b);
+          }
+        })
         .catch((error) => console.log(error));
       api
         .doGet("/product/list/true")
         .then((listProduct) => {
           this.listProduct = listProduct.data;
-
+          this.listSelectProduct = [];
           for (let myproduct of this.listProduct) {
             let p = { text: "", key: 0, value: 0 };
 
@@ -651,7 +666,7 @@ export default {
         product: {
           id: this.product,
         },
-        discountP: this.discountP,
+        discount: this.discountP,
         comments: this.comments,
       };
       console.log(this.discount);
