@@ -1,10 +1,14 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
+    <br/>
     <div class="funciones">
       <h3>Retiro</h3>
     </div>
-    <div class="ui grid container">
+    <sui-tab class="panel">
+      <sui-tab-pane  icon="chart bar outline icon" title="Consulta">
+        <div class="table">
+          <div class="ui grid container">
       <div class="four wide column">
         <div>
           <sui-card>
@@ -78,7 +82,10 @@
           </div>
         </sui-form>
       </div>
-    </div>
+          </div>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
     <div>
       <sui-modal v-model="open">
         <sui-modal-header>Ventas del día</sui-modal-header>

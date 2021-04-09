@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
+    <br/>
     <div class="funciones">
       <h3>Funciones de cajero</h3>
     </div>
-    <div class="container">
+    
+          <div class="container">
       <div class="card">
         <div class="face face1">
           <div class="content">
@@ -39,8 +41,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="container">
+          </div>
+          <div class="container">
       <div class="card">
         <div class="face face1">
           <div class="content">
@@ -75,7 +77,7 @@
           </div>
         </div>
       </div>
-    </div>
+          </div>
     <fondo />
   </div>
 </template>

@@ -1,48 +1,57 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
+    <br/>
     <div class="funciones">
       <h3>Consultar</h3>
     </div>
-    <sui-container style="margin-top: 2%">
-      <sui-table color="blue">
-        <sui-table-header>
-          <sui-table-row>
-            <sui-table-header-cell text-align="center"
-              >Producto</sui-table-header-cell
-            >
-            <sui-table-header-cell text-align="center"
-              >Precio</sui-table-header-cell
-            >
-            <sui-table-header-cell text-align="center"
-              >Precio Mayoreo</sui-table-header-cell
-            >
-            <sui-table-header-cell text-align="center"
-              >Cantidad</sui-table-header-cell
-            >
-            <sui-table-header-cell text-align="center"
-              >Estatus</sui-table-header-cell
-            >
-          </sui-table-row>
-        </sui-table-header>
-        <sui-table-body>
-          <sui-table-row>
-            <sui-table-cell text-align="center">Producto 1</sui-table-cell>
-            <sui-table-cell text-align="center">$20</sui-table-cell>
-            <sui-table-cell text-align="center">$15</sui-table-cell>
-            <sui-table-cell text-align="center">10</sui-table-cell>
-            <sui-table-cell text-align="center">Activo</sui-table-cell>
-          </sui-table-row>
-          <sui-table-row>
-            <sui-table-cell text-align="center">Producto 2</sui-table-cell>
-            <sui-table-cell text-align="center">$15</sui-table-cell>
-            <sui-table-cell text-align="center">$10</sui-table-cell>
-            <sui-table-cell text-align="center">18</sui-table-cell>
-            <sui-table-cell text-align="center">Activo</sui-table-cell>
-          </sui-table-row>
-        </sui-table-body>
-      </sui-table>
-    </sui-container>
+    <sui-tab class="panel">
+      <sui-tab-pane  icon="chart bar outline icon" title="Consulta">
+        <div class="table">
+          <div class="ui search">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar producto"
+                v-model="searchD"
+              />
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+          <sui-container style="margin-top: 2%">
+            <sui-table color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center" >Producto</sui-table-header-cell >
+                  <sui-table-header-cell text-align="center" >Precio</sui-table-header-cell >
+                  <sui-table-header-cell text-align="center" >Precio Mayoreo</sui-table-header-cell >
+                  <sui-table-header-cell text-align="center" >Cantidad</sui-table-header-cell >
+                  <sui-table-header-cell text-align="center" >Estatus</sui-table-header-cell >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row>
+                  <sui-table-cell text-align="center">Producto 1</sui-table-cell>
+                  <sui-table-cell text-align="center">$20</sui-table-cell>
+                  <sui-table-cell text-align="center">$15</sui-table-cell>
+                  <sui-table-cell text-align="center">10</sui-table-cell>
+                  <sui-table-cell text-align="center">Activo</sui-table-cell>
+                </sui-table-row>
+                <sui-table-row>
+                  <sui-table-cell text-align="center">Producto 2</sui-table-cell>
+                  <sui-table-cell text-align="center">$15</sui-table-cell>
+                  <sui-table-cell text-align="center">$10</sui-table-cell>
+                  <sui-table-cell text-align="center">18</sui-table-cell>
+                  <sui-table-cell text-align="center">Activo</sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
     <fondo />
   </div>
 </template>

@@ -1,40 +1,28 @@
 <template>
-  <div>
+  <div class="area">
     <cabecera />
+    <br/>
     <div class="funciones">
       <h3>Venta</h3>
     </div>
-    <br />
-    <br />
-    <div class="table">
-      <sui-grid divided="vertically">
-        <sui-grid-row :columns="2">
-          <sui-grid-column>
-            <sui-table class="tableResume" color="blue">
+    <sui-tab class="panel">
+      <sui-tab-pane icon="chart bar outline icon" title="Venta">
+        <div class="table">
+          <sui-container style="margin-top: 2%">
+            <sui-segment ><!--basic v-if="ventas.length === 0"-->
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table>
               <sui-table-header>
                 <sui-table-row>
-                  <sui-table-header-cell text-align="center"
-                    >Nombre Producto</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Precio</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Tipo (Menudeo/Mayoreo)</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center">
-                    Pieza (ml, gr, kg)
-                  </sui-table-header-cell>
-                  <sui-table-header-cell text-align="center"
-                    >Subtotal</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Cantidad</sui-table-header-cell
-                  >
-
-                  <sui-table-header-cell text-align="center"
-                    >Quitar Producto</sui-table-header-cell
-                  >
+                  <sui-table-header-cell text-align="center">Nombre</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Tipo (Menudeo/Mayoreo)</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Pieza (ml, gr, kg)</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Subtotal</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Cantidad</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Quitar Producto</sui-table-header-cell>
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
@@ -44,139 +32,49 @@
                   <sui-table-cell text-align="center">Menudeo</sui-table-cell>
                   <sui-table-cell text-align="center">5kg</sui-table-cell>
                   <sui-table-cell text-align="center">25</sui-table-cell>
-
                   <sui-table-cell>
                     <div is="sui-button-group">
-                      <sui-button class="btnModal"
-                        ><i class="plus square icon"></i
-                      ></sui-button>
+                      <sui-button class="btnModal">
+                        <i class="plus square icon"></i>
+                      </sui-button>
                       <sui-button-or />
-                      <sui-button><i class="minus icon"></i></sui-button>
+                      <sui-button>
+                        <i class="minus icon"></i>
+                      </sui-button>
                     </div>
                   </sui-table-cell>
-                  <sui-table-cell
-                    style="
-                      display: block;
-                      margin-left: auto;
-                      margin-right: auto;
-                    "
-                  >
-                    <sui-button negative circular icon="times" />
-                  </sui-table-cell>
-                </sui-table-row>
-                <sui-table-row>
-                  <sui-table-cell text-align="center">Apples</sui-table-cell>
-                  <sui-table-cell text-align="center">$212</sui-table-cell>
-                  <sui-table-cell text-align="center">Menudeo</sui-table-cell>
-                  <sui-table-cell text-align="center">5kg</sui-table-cell>
-                  <sui-table-cell text-align="center">25</sui-table-cell>
-
-                  <sui-table-cell>
-                    <div is="sui-button-group">
-                      <sui-button class="btnModal"
-                        ><i class="plus square icon"></i
-                      ></sui-button>
-                      <sui-button-or />
-                      <sui-button><i class="minus icon"></i></sui-button>
-                    </div>
-                  </sui-table-cell>
-                  <sui-table-cell
-                    style="
-                      display: block;
-                      margin-left: auto;
-                      margin-right: auto;
-                    "
-                  >
+                  <sui-table-cell style="display: block; margin-left: auto; margin-right: auto; " >
                     <sui-button negative circular icon="times" />
                   </sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
-          </sui-grid-column>
-          <sui-grid-column>
-            <div class="search">
-              <div class="ui fluid category search">
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-                <div class="results"></div>
-              </div>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+      <sui-tab-pane icon="chart bar outline icon" title="Producto">
+        <div class="table">
+          <div class="ui search">
+            <sui-button @click.native="toggle" style="background: #64b5f6" negative circular icon="plus" />
+            <div class="ui icon input">
+              <input class="prompt" type="text" placeholder="Buscar producto" v-model="search" />
+              <i class="search icon"></i>
             </div>
-            <div class="products">
-              <sui-table basic>
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center"
-                      >Producto</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Precio</sui-table-header-cell
-                    >
-                    <sui-table-header-cell text-align="center"
-                      >Agregar Producto</sui-table-header-cell
-                    >
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row>
-                    <sui-table-cell text-align="center"
-                      >Sabritas</sui-table-cell
-                    >
-                    <sui-table-cell text-align="center">$50</sui-table-cell>
-                    <sui-table-cell>
-                      <sui-button
-                        style="
-                          display: block;
-                          margin-left: auto;
-                          margin-right: auto;
-                        "
-                        class="btnModal"
-                        ><i class="plus square icon"></i
-                      ></sui-button>
-                    </sui-table-cell>
-                  </sui-table-row>
-                  <sui-table-row>
-                    <sui-table-cell text-align="center">Jumex</sui-table-cell>
-                    <sui-table-cell text-align="center">$15</sui-table-cell>
-                    <sui-table-cell>
-                      <sui-button
-                        style="
-                          display: block;
-                          margin-left: auto;
-                          margin-right: auto;
-                        "
-                        class="btnModal"
-                        ><i class="plus square icon"></i
-                      ></sui-button>
-                    </sui-table-cell>
-                  </sui-table-row>
-                  <sui-table-row>
-                    <sui-table-cell text-align="center">Corona</sui-table-cell>
-                    <sui-table-cell text-align="center">$18</sui-table-cell>
-                    <sui-table-cell>
-                      <sui-button
-                        style="
-                          display: block;
-                          margin-left: auto;
-                          margin-right: auto;
-                        "
-                        class="btnModal"
-                        ><i class="plus square icon"></i
-                      ></sui-button>
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
+            <div class="results"></div>
+          </div>
+          <sui-container style="margin-top: 2%">
+            <sui-segment>
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <div style="padding: 10px">
+              
             </div>
-          </sui-grid-column>
-        </sui-grid-row>
-      </sui-grid>
-    </div>
+          </sui-container>
+        </div>
+      </sui-tab-pane>
+    </sui-tab>
+    
     <fondo />
   </div>
 </template>
@@ -234,5 +132,6 @@ export default {
 .btnModal {
   background-color: #64b5f6 !important;
   color: white !important;
+  margin-bottom: -2% !important;
 }
 </style>
