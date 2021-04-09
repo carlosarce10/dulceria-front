@@ -9,18 +9,17 @@
     <sui-tab class="panel">
       <sui-tab-pane icon="chart bar outline icon" title="Todas las ventas">
         <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <input
-                  class="prompt"
-                  type="text"
-                  placeholder="Buscar productos..."
-                />
-                <i class="search icon"></i>
-              </div>
-              <div class="results"></div>
+          <div class="ui search">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar por fecha"
+                v-model="search"
+              />
+              <i class="search icon"></i>
             </div>
+            <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
             <sui-segment basic v-if="ventas.length === 0">
@@ -51,7 +50,10 @@
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row v-for="(venta, item) in ventas" :key="venta.id">
+                <sui-table-row
+                  v-for="(venta, item) in filteredSales"
+                  :key="venta.id"
+                >
                   <sui-table-cell text-align="center">{{
                     item + 1
                   }}</sui-table-cell>
@@ -322,10 +324,18 @@ export default {
         cashbox: {},
         details: [],
       },
+      search: "",
     };
   },
   mounted() {
     this.startup();
+  },
+  computed: {
+    filteredSales: function() {
+      return this.ventas.filter((sale) => {
+        return sale.date.toLowerCase().match(this.search.toLowerCase());
+      });
+    },
   },
   methods: {
     startup() {
@@ -392,6 +402,7 @@ export default {
 }
 .search {
   margin-right: 2%;
+  margin-bottom: 5px;
 }
 
 .btnModal {
