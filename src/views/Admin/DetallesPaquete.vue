@@ -5,7 +5,7 @@
       <div class="funciones">
           <h3>Detalles del paquete</h3>
           <a class="item" href="/admin/paquetes">
-            <sui-button floated="left" style="background: #64b5f6" negative content="Regresar" />
+            <sui-button icon="reply" floated="left" style="background: #64b5f6" negative content="Regresar" />
           </a>
       </div>
       <sui-tab class="panel">
@@ -24,14 +24,12 @@
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
                         <sui-button v-if="detalles.length === 0" style="background: #64b5f6" disabled negative>Registrar paquete</sui-button>
-                        <a class="item" href="/admin/paquetes">
                         <sui-button v-if="detalles.length > 0" style="background: #64b5f6" negative @click="register()" >Registrar paquete</sui-button>
-                        </a>
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
             <sui-divider hidden/>
-            <sui-divider horizontal>PRODUCTOS</sui-divider>
+                <sui-divider horizontal>PRODUCTOS DEL PAQUETE</sui-divider>
                 <sui-container style="margin-top: 2%">
                     <sui-grid :columns="3">
                         <sui-grid-row>
@@ -90,18 +88,18 @@
                 <sui-grid-row>
                     <sui-grid-column>
                         <label class="my-label">Nombre del paquete</label>
-                        <sui-input type="text" v-model="paqueteEdit.name" />
+                        <sui-input type="text" v-model="nombreE" />
                     </sui-grid-column>
                     <sui-grid-column>
                         <label class="my-label">Precio</label>
-                        <sui-input type="text" :placeholder="getSugerido" v-model="paqueteEdit.price"/>
+                        <sui-input type="text" :placeholder="getSugeridoE" v-model="precioE"/>
                     </sui-grid-column>
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
-                        <sui-button v-if="paqueteEdit.detalles.length === 0" style="background: #64b5f6" disabled negative>Editar paquete</sui-button>
-                        <a class="item" href="/admin/paquetes">
-                        <sui-button v-if="paqueteEdit.detalles.length > 0" style="background: #64b5f6" negative @click="editar()" >Editar paquete</sui-button>
-                        </a>
+                        <sui-button v-if="detallesE.length === 0" style="background: #64b5f6" disabled negative>Editar paquete</sui-button>
+                        
+                        <sui-button v-if="detallesE.length > 0" style="background: #64b5f6" negative @click="editar()" >Editar paquete</sui-button>
+                        
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
@@ -142,16 +140,16 @@
                     </sui-table-row>
                     </sui-table-header>
                     <sui-table-body>
-                    <sui-table-row v-for="(d,i) in paqueteEdit.detalles" :key="d.id">
+                    <sui-table-row v-for="(d,i) in detallesE" :key="d.id">
                         <sui-table-cell text-align="center">{{i+1}}</sui-table-cell>
                         <sui-table-cell text-align="center">{{d.product.name}}</sui-table-cell>
                         <sui-table-cell text-align="center">${{d.product.retailPrice}}</sui-table-cell>
                         <sui-table-cell  text-align="center">
-                            <sui-input style="width: 6rem;" min="1" max="99" type="number" v-model="d.quantityPackage"/>
+                            <sui-input style="width: 6rem;" min="1" max="99" type="number" v-model="detallesE[i].quantityPackage"/>
                         </sui-table-cell>
                         <sui-table-cell style="display: flex;align-items: center;justify-content: center;" text-align="center">
                             <sui-button style="background: #64b5f6" negative circular icon="eye" @click="getProduct(d.product.id)" @click.native="modalProduct()"/>
-                            <sui-button negative circular icon="times" @click="dropDetalleEdit(d.product.id, d.product.name,d.id)"/>
+                            <sui-button negative circular icon="times" @click="dropDetalleEdit(d.product.id, d.product.name)"/>
                         </sui-table-cell>
                     </sui-table-row>
                     </sui-table-body>
@@ -215,7 +213,14 @@ export default {
         getSugerido(){
             let sugerido = 0;
             for(let d of this.detalles){
-                sugerido = sugerido + (d.product.retailPrice*d.quantityPackage);
+                sugerido = sugerido + ((d.product.retailPrice*d.quantityPackage)*0.95);
+            }
+            return "Precio sugerido $"+sugerido;
+        },
+        getSugeridoE(){
+            let sugerido = 0;
+            for(let d of this.detallesE){
+                sugerido = sugerido + ((d.product.retailPrice*d.quantityPackage)*0.95);
             }
             return "Precio sugerido $"+sugerido;
         }
@@ -246,6 +251,9 @@ export default {
                     name: ""
                 }
             },
+            nombreE:"",
+            precioE:"",
+            detallesE:[],
             paqueteEdit:{
                 id:0,
                 name:"",
@@ -259,12 +267,11 @@ export default {
         startup(){
             if(this.id !== 0){
                 api.doGet("/package/get/"+this.id).then(response=>{
-                    this.paqueteEdit.id = response.data.id;
-                    this.paqueteEdit.name = response.data.name;
-                    this.paqueteEdit.price = response.data.price;    
+                    this.nombreE = response.data.name;
+                    this.precioE = response.data.price;    
                 })
                 api.doGet("/packageDetails/find/"+this.id).then(response=>{
-                    this.paqueteEdit.detalles = response.data;
+                    this.detallesE = response.data;
                 })
             }
             api
@@ -324,7 +331,7 @@ export default {
 
                 let agregar = true;
 
-                for(let d of this.paqueteEdit.detalles){
+                for(let d of this.detallesE){
                     if(d.product.id === this.idProducto){
                         this.$swal({
                             title: "¡El producto ya se encuentra en el paquete!",
@@ -344,7 +351,7 @@ export default {
                                 product: response.data
                             };
                             
-                            this.paqueteEdit.detalles.unshift(detalle);
+                            this.detallesE.unshift(detalle);
                         }).catch((error) => console.log(error)).finally(() => (this.loading = false));
                 }
             }
@@ -373,7 +380,7 @@ export default {
             });
 
 
-        },dropDetalleEdit(idProducto, nameProduct,id){
+        },dropDetalleEdit(idProducto, nameProduct){
             this.$swal({
                 title: "¿Estás seguro que desea eliminar "+nameProduct+" de este paquete?",
                 icon: "question",
@@ -383,16 +390,16 @@ export default {
                 reverseButtons: true
             }).then(result=>{
                 if(result.isConfirmed){
-                    console.log("ID: "+id+", Producto: "+idProducto+", Detalle: "+this.paqueteEdit.detalles[0].id);
-                    //this.paqueteEdit.detalles.splice(idProducto,1);
-                    api.doDelete("/packageDetails/del/"+id).then((response) => {
-                        this.$swal({
+                    for(let i = 0; i<this.detallesE.length; i++){
+                        if(this.detallesE[i].product.id === idProducto){
+                            this.detallesE.splice(i, 1);
+                            this.$swal({
                                 title: "¡El producto se ha removido exitosamente!",
                                 icon: "success"
                             });
-                        console.log(response);
-                    }).catch((error) => console.log(error)).finally(() => (this.loading = false));
-                    
+                            break;
+                        }
+                    }
                 }
             });
 
@@ -422,6 +429,12 @@ export default {
                             this.$swal({
                                 title: "¡Paquete registrado exitosamente!",
                                 icon: "success",
+                            }).then(result=>{
+                                if(result.isConfirmed){
+                                    this.$router.push("/admin/paquetes");
+                                }else{
+                                    this.$router.push("/admin/paquetes");
+                                }
                             });
                             console.log(response);
                         })
@@ -434,17 +447,18 @@ export default {
         },
         editar(){
             this.package = {
-                name: this.nombre,
-                price: this.precio,
+                id: this.id,
+                name: this.nombreE,
+                price: this.precioE,
             };
             api
-                .doPost("/package/save", this.paqueteEdit)
+                .doPost("/package/save",this.package)
                 .then((response) => {
                     let idPa = response.data.id;
-                    console.log(response.data.id);
+                    console.log(idPa);
                     
                     api
-                        .doPost("/packageDetails/save/many/"+idPa,this.paqueteEdit.detalles)
+                        .doPost("/packageDetails/save/many/edit/"+idPa,this.detallesE)
                         .then((response) => {
                             this.$swal({
                                 title: "¡Paquete actualizado exitosamente!",
@@ -453,7 +467,7 @@ export default {
                             console.log(response);
                         })
                         .catch((error) => console.log(error.response)).finally(() => (this.loading = false));
-                    this.onReset();
+                    
                     console.log(response);
                 })
                 .catch((error) => console.log(error));
