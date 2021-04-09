@@ -4,15 +4,18 @@
       <br />
       <div class="funciones">
           <h3>Detalles del paquete</h3>
+          <a class="item" href="/admin/paquetes">
+            <sui-button icon="reply" floated="left" style="background: #64b5f6" negative content="Regresar" />
+          </a>
       </div>
       <sui-tab class="panel">
-          <sui-tab-pane icon="boxes" title="Productos">
+          <sui-tab-pane v-if="id===0" icon="boxes" title="Productos">
               <sui-divider horizontal>PAQUETE</sui-divider>
             <sui-grid :columns="3">
                 <sui-grid-row>
                     <sui-grid-column>
                         <label class="my-label">Nombre del paquete</label>
-                        <sui-input type="text" :value="nombre" />
+                        <sui-input type="text" v-model="nombre" />
                     </sui-grid-column>
                     <sui-grid-column>
                         <label class="my-label">Precio</label>
@@ -21,12 +24,12 @@
                     <sui-grid-column>
                         <label style="color:transparent;" class="my-label">.</label>
                         <sui-button v-if="detalles.length === 0" style="background: #64b5f6" disabled negative>Registrar paquete</sui-button>
-                        <sui-button v-if="detalles.length > 0" style="background: #64b5f6" negative>Registrar paquete</sui-button>
+                        <sui-button v-if="detalles.length > 0" style="background: #64b5f6" negative @click="register()" >Registrar paquete</sui-button>
                     </sui-grid-column>
                 </sui-grid-row>
             </sui-grid>
             <sui-divider hidden/>
-            <sui-divider horizontal>PRODUCTOS</sui-divider>
+                <sui-divider horizontal>PRODUCTOS DEL PAQUETE</sui-divider>
                 <sui-container style="margin-top: 2%">
                     <sui-grid :columns="3">
                         <sui-grid-row>
@@ -67,11 +70,86 @@
                         <sui-table-cell text-align="center">{{d.product.name}}</sui-table-cell>
                         <sui-table-cell text-align="center">${{d.product.retailPrice}}</sui-table-cell>
                         <sui-table-cell  text-align="center">
-                            <sui-input style="width: 6rem;" min="1" max="99" type="number" :value="d.quantityPackage"/>
+                            <sui-input style="width: 6rem;" min="1" max="99" type="number" v-model="detalles[i].quantityPackage"/>
                         </sui-table-cell>
                         <sui-table-cell style="display: flex;align-items: center;justify-content: center;" text-align="center">
                             <sui-button style="background: #64b5f6" negative circular icon="eye" @click="getProduct(d.product.id)" @click.native="modalProduct()"/>
                             <sui-button negative circular icon="times" @click="dropDetalle(d.product.id, d.product.name)"/>
+                        </sui-table-cell>
+                    </sui-table-row>
+                    </sui-table-body>
+                </sui-table>
+                </sui-container>
+            
+          </sui-tab-pane>
+          <sui-tab-pane v-if="id!==0" icon="boxes" title="Productos">
+              <sui-divider horizontal>PAQUETE</sui-divider>
+            <sui-grid :columns="3">
+                <sui-grid-row>
+                    <sui-grid-column>
+                        <label class="my-label">Nombre del paquete</label>
+                        <sui-input type="text" v-model="nombreE" />
+                    </sui-grid-column>
+                    <sui-grid-column>
+                        <label class="my-label">Precio</label>
+                        <sui-input type="text" :placeholder="getSugeridoE" v-model="precioE"/>
+                    </sui-grid-column>
+                    <sui-grid-column>
+                        <label style="color:transparent;" class="my-label">.</label>
+                        <sui-button v-if="detallesE.length === 0" style="background: #64b5f6" disabled negative>Editar paquete</sui-button>
+                        
+                        <sui-button v-if="detallesE.length > 0" style="background: #64b5f6" negative @click="editar()" >Editar paquete</sui-button>
+                        
+                    </sui-grid-column>
+                </sui-grid-row>
+            </sui-grid>
+            <sui-divider hidden/>
+            <sui-divider horizontal>PRODUCTOS</sui-divider>
+                <sui-container  style="margin-top: 2%">
+                    <sui-grid :columns="3">
+                        <sui-grid-row>
+                            <sui-grid-column>
+                                <label class="my-label">Producto</label>
+                                <sui-dropdown
+                                class="custom-search"
+                                :options="productos"
+                                placeholder="Producto"
+                                search
+                                selection
+                                v-model="idProducto"
+                                />
+                            </sui-grid-column>
+                            <sui-grid-column>
+                                <label style="color:transparent;" class="my-label">.</label>
+                                <sui-button style="float:left;background-color:#64b5f6" negative circular @click="addProductToDetailsEdit()" icon="plus"/>
+                            </sui-grid-column>
+                            <sui-grid-column>
+                                <label style="color:transparent;" class="my-label">.</label>
+                                <sui-input placeholder="Buscar..." class="c-radius" icon="search"/>
+                            </sui-grid-column>
+                        </sui-grid-row>
+                    </sui-grid>
+                <sui-table color="blue">
+                    <sui-table-header>
+                    <sui-table-row>
+                        <sui-table-header-cell text-align="center">#</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Nombre</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Cantidad</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Acciones</sui-table-header-cell>
+                    </sui-table-row>
+                    </sui-table-header>
+                    <sui-table-body>
+                    <sui-table-row v-for="(d,i) in detallesE" :key="d.id">
+                        <sui-table-cell text-align="center">{{i+1}}</sui-table-cell>
+                        <sui-table-cell text-align="center">{{d.product.name}}</sui-table-cell>
+                        <sui-table-cell text-align="center">${{d.product.retailPrice}}</sui-table-cell>
+                        <sui-table-cell  text-align="center">
+                            <sui-input style="width: 6rem;" min="1" max="99" type="number" v-model="detallesE[i].quantityPackage"/>
+                        </sui-table-cell>
+                        <sui-table-cell style="display: flex;align-items: center;justify-content: center;" text-align="center">
+                            <sui-button style="background: #64b5f6" negative circular icon="eye" @click="getProduct(d.product.id)" @click.native="modalProduct()"/>
+                            <sui-button negative circular icon="times" @click="dropDetalleEdit(d.product.id, d.product.name)"/>
                         </sui-table-cell>
                     </sui-table-row>
                     </sui-table-body>
@@ -135,7 +213,14 @@ export default {
         getSugerido(){
             let sugerido = 0;
             for(let d of this.detalles){
-                sugerido = sugerido + (d.product.retailPrice*d.quantityPackage);
+                sugerido = sugerido + ((d.product.retailPrice*d.quantityPackage)*0.95);
+            }
+            return "Precio sugerido $"+sugerido;
+        },
+        getSugeridoE(){
+            let sugerido = 0;
+            for(let d of this.detallesE){
+                sugerido = sugerido + ((d.product.retailPrice*d.quantityPackage)*0.95);
             }
             return "Precio sugerido $"+sugerido;
         }
@@ -148,8 +233,13 @@ export default {
             openP: false,
             nombre:"",
             precio:"",
+            quantity: [],
             detalles: [],
             productos: [],
+            package:{
+                name:"",
+                price:""
+            },
             producto:{
                 name:"",
                 retailPrice:0,
@@ -161,6 +251,15 @@ export default {
                     name: ""
                 }
             },
+            nombreE:"",
+            precioE:"",
+            detallesE:[],
+            paqueteEdit:{
+                id:0,
+                name:"",
+                price:"",
+                detalles: []
+            },
             idProducto: 0
         }
     },
@@ -168,11 +267,11 @@ export default {
         startup(){
             if(this.id !== 0){
                 api.doGet("/package/get/"+this.id).then(response=>{
-                    this.nombre = response.data.name;
-                    this.precio = response.data.price;    
+                    this.nombreE = response.data.name;
+                    this.precioE = response.data.price;    
                 })
                 api.doGet("/packageDetails/find/"+this.id).then(response=>{
-                    this.detalles = response.data;
+                    this.detallesE = response.data;
                 })
             }
             api
@@ -210,8 +309,9 @@ export default {
                         });
                         agregar = false;
                         break;
-                    }
+                    } 
                 }
+
                 if(agregar){
                     api
                         .doGet("/product/get/"+this.idProducto)
@@ -222,11 +322,39 @@ export default {
                             };
                             
                             this.detalles.unshift(detalle);
-                        })
+                        }).catch((error) => console.log(error)).finally(() => (this.loading = false));
+                }
+            }
+        },addProductToDetailsEdit(){
+            console.log(this.idProducto);
+            if(this.idProducto !== 0){
+
+                let agregar = true;
+
+                for(let d of this.detallesE){
+                    if(d.product.id === this.idProducto){
+                        this.$swal({
+                            title: "¡El producto ya se encuentra en el paquete!",
+                            icon: "warning"
+                        });
+                        agregar = false;
+                        break;
+                    } 
                 }
 
+                if(agregar){
+                    api
+                        .doGet("/product/get/"+this.idProducto)
+                        .then(response=>{
+                            let detalle = {
+                                quantityPackage: 1,
+                                product: response.data
+                            };
+                            
+                            this.detallesE.unshift(detalle);
+                        }).catch((error) => console.log(error)).finally(() => (this.loading = false));
+                }
             }
-
         },
         dropDetalle(idProducto, nameProduct){
             this.$swal({
@@ -252,6 +380,30 @@ export default {
             });
 
 
+        },dropDetalleEdit(idProducto, nameProduct){
+            this.$swal({
+                title: "¿Estás seguro que desea eliminar "+nameProduct+" de este paquete?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Confirmar",
+                reverseButtons: true
+            }).then(result=>{
+                if(result.isConfirmed){
+                    for(let i = 0; i<this.detallesE.length; i++){
+                        if(this.detallesE[i].product.id === idProducto){
+                            this.detallesE.splice(i, 1);
+                            this.$swal({
+                                title: "¡El producto se ha removido exitosamente!",
+                                icon: "success"
+                            });
+                            break;
+                        }
+                    }
+                }
+            });
+
+
         },
         getProduct(id){
             api
@@ -259,6 +411,66 @@ export default {
                 .then(response=>{
                     this.producto = response.data;
                 });
+        },
+        register() {
+            this.package = {
+                name: this.nombre,
+                price: this.precio,
+            };
+            api
+                .doPost("/package/save", this.package)
+                .then((response) => {
+                    let idPa = response.data.id;
+                    console.log(response.data.id);
+
+                    api
+                        .doPost("/packageDetails/save/many/"+idPa,this.detalles)
+                        .then((response) => {
+                            this.$swal({
+                                title: "¡Paquete registrado exitosamente!",
+                                icon: "success",
+                            }).then(result=>{
+                                if(result.isConfirmed){
+                                    this.$router.push("/admin/paquetes");
+                                }else{
+                                    this.$router.push("/admin/paquetes");
+                                }
+                            });
+                            console.log(response);
+                        })
+                        .catch((error) => console.log(error.response)).finally(() => (this.loading = false));
+                    this.onReset();
+                    console.log(response);
+                })
+                .catch((error) => console.log(error))
+                .finally(() => (this.loading = false));
+        },
+        editar(){
+            this.package = {
+                id: this.id,
+                name: this.nombreE,
+                price: this.precioE,
+            };
+            api
+                .doPost("/package/save",this.package)
+                .then((response) => {
+                    let idPa = response.data.id;
+                    console.log(idPa);
+                    
+                    api
+                        .doPost("/packageDetails/save/many/edit/"+idPa,this.detallesE)
+                        .then((response) => {
+                            this.$swal({
+                                title: "¡Paquete actualizado exitosamente!",
+                                icon: "success",
+                            });
+                            console.log(response);
+                        })
+                        .catch((error) => console.log(error.response)).finally(() => (this.loading = false));
+                    
+                    console.log(response);
+                })
+                .catch((error) => console.log(error));
         }
     }
 }
