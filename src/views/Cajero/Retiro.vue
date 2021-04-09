@@ -5,83 +5,84 @@
     <div class="funciones">
       <h3>Retiro</h3>
     </div>
+    <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane  icon="chart bar outline icon" title="Consulta">
         <div class="table">
           <div class="ui grid container">
-      <div class="four wide column">
-        <div>
-          <sui-card>
-            <img src="../../assets/logo.png" />
-            <sui-card-content>
-              <sui-card-header>Daniel Beltrán</sui-card-header>
-            </sui-card-content>
-          </sui-card>
-          <sui-card
-            style="
-              margin-top: 7%;
-              position: relative !important;
-              display: flex !important;
-              align-items: center !important;
-              justify-content: center !important;
-            "
-          >
-            <label style="margin-top: 5%; margin-bottom: -5%"
-              >Detalles de venta</label
-            ><br />
-            <sui-button class="btnModal3" @click.native="toggle"
-              >Ver</sui-button
-            >
-          </sui-card>
-        </div>
-      </div>
-      <div class="nine wide column fondoForm">
-        <sui-form>
-          <sui-form-fields fields="two">
-            <sui-form-field>
-              <label>Total ventas del día</label>
-              <sui-statistic-value class="labelBordes"
-                >$5,550</sui-statistic-value
-              >
-            </sui-form-field>
-            <sui-form-field>
-              <label>Monto inicial</label>
-              <sui-statistic-value class="labelBordes"
-                >$500</sui-statistic-value
-              >
-            </sui-form-field>
-          </sui-form-fields>
-          <sui-form-fields fields="two">
-            <sui-form-field>
-              <label>Monto actual</label>
-              <sui-statistic-value class="labelBordes"
-                >$859</sui-statistic-value
-              >
-            </sui-form-field>
-            <sui-form-field>
-              <label>Total retirado</label>
-              <sui-statistic-value class="labelBordes"
-                >$300</sui-statistic-value
-              >
-            </sui-form-field>
-          </sui-form-fields>
-          <sui-form-fields fields="two">
-            <sui-form-field>
-              <label>Número de caja</label>
-              <sui-statistic-value class="labelBordes">#6</sui-statistic-value>
-            </sui-form-field>
-            <sui-form-field>
-              <label>Monto a retirar</label>
-              <sui-input icon="dollar sign" />
-            </sui-form-field>
-          </sui-form-fields>
-          <hr style="margin-top: 24%" />
-          <div>
-            <sui-button class="btnModal">Aceptar</sui-button>
-            <sui-button class="btnModal2">Cancelar</sui-button>
-          </div>
-        </sui-form>
-      </div>
+            <div class="four wide column">
+              <div>
+                <sui-card>
+                  <img src="../../assets/logo.png" />
+                  <sui-card-content>
+                    <sui-card-header>Daniel Beltrán</sui-card-header>
+                  </sui-card-content>
+                </sui-card>
+                <sui-card
+                  style="
+                    margin-top: 7%;
+                    position: relative !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                  "
+                >
+                  <label style="margin-top: 5%; margin-bottom: -5%"
+                    >Detalles de venta</label
+                  ><br />
+                  <sui-button class="btnModal3" @click.native="toggle"
+                    >Ver</sui-button
+                  >
+                </sui-card>
+              </div>
+            </div>
+            <div class="nine wide column fondoForm">
+              <sui-form>
+                <sui-form-fields fields="two">
+                  <sui-form-field>
+                    <label>Total ventas del día</label>
+                    <sui-statistic-value class="labelBordes"
+                      >$5,550</sui-statistic-value
+                    >
+                  </sui-form-field>
+                  <sui-form-field>
+                    <label>Monto inicial</label>
+                    <sui-statistic-value class="labelBordes"
+                      >$500</sui-statistic-value
+                    >
+                  </sui-form-field>
+                </sui-form-fields>
+                <sui-form-fields fields="two">
+                  <sui-form-field>
+                    <label>Monto actual</label>
+                    <sui-statistic-value class="labelBordes"
+                      >$859</sui-statistic-value
+                    >
+                  </sui-form-field>
+                  <sui-form-field>
+                    <label>Total retirado</label>
+                    <sui-statistic-value class="labelBordes"
+                      >$300</sui-statistic-value
+                    >
+                  </sui-form-field>
+                </sui-form-fields>
+                <sui-form-fields fields="two">
+                  <sui-form-field>
+                    <label>Número de caja</label>
+                    <sui-statistic-value class="labelBordes">#6</sui-statistic-value>
+                  </sui-form-field>
+                  <sui-form-field>
+                    <label>Monto a retirar</label>
+                    <sui-input icon="dollar sign" />
+                  </sui-form-field>
+                </sui-form-fields>
+                <hr style="margin-top: 24%" />
+                <div>
+                  <sui-button class="btnModal">Aceptar</sui-button>
+                  <sui-button class="btnModal2">Cancelar</sui-button>
+                </div>
+              </sui-form>
+            </div>
           </div>
         </div>
       </sui-tab-pane>
@@ -135,6 +136,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
+//import api from "../../util/api";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);

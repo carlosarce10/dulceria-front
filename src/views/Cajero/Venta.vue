@@ -5,6 +5,7 @@
     <div class="funciones">
       <h3>Venta</h3>
     </div>
+    <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane icon="chart bar outline icon" title="Venta">
         <div class="table">
@@ -26,22 +27,14 @@
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row>
+                <sui-table-row><!-- v-for="(d, i) in filteredProducts" :key="d.id"-->
                   <sui-table-cell text-align="center">Apples</sui-table-cell>
                   <sui-table-cell text-align="center">$212</sui-table-cell>
                   <sui-table-cell text-align="center">Menudeo</sui-table-cell>
                   <sui-table-cell text-align="center">5kg</sui-table-cell>
                   <sui-table-cell text-align="center">25</sui-table-cell>
                   <sui-table-cell>
-                    <div is="sui-button-group">
-                      <sui-button class="btnModal">
-                        <i class="plus square icon"></i>
-                      </sui-button>
-                      <sui-button-or />
-                      <sui-button>
-                        <i class="minus icon"></i>
-                      </sui-button>
-                    </div>
+                    <sui-input style="width: 6rem;" min="1" max="99" type="number" /><!--v-model="detalles[i].quantityPackage"-->
                   </sui-table-cell>
                   <sui-table-cell style="display: block; margin-left: auto; margin-right: auto; " >
                     <sui-button negative circular icon="times" />
@@ -68,7 +61,7 @@
               <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <div style="padding: 10px">
-              
+
             </div>
           </sui-container>
         </div>
@@ -84,6 +77,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
+//import api from "../../util/api";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);

@@ -5,6 +5,7 @@
     <div class="funciones">
       <h3>Cerrar caja</h3>
     </div>
+    <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane  icon="chart bar outline icon" title="Consulta">
         <div class="table">
@@ -125,6 +126,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
+//import api from "../../util/api";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);

@@ -5,6 +5,7 @@
     <div class="funciones">
       <h3>Consultar</h3>
     </div>
+    <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane  icon="chart bar outline icon" title="Consulta">
         <div class="table">
@@ -14,16 +15,21 @@
                 class="prompt"
                 type="text"
                 placeholder="Buscar producto"
-                v-model="searchD"
+                v-model="search"
               />
               <i class="search icon"></i>
             </div>
             <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
-            <sui-table color="blue">
+            <sui-segment basic v-if="productos.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="productos.length > 0" color="blue">
               <sui-table-header>
                 <sui-table-row>
+                  <sui-table-header-cell text-align="center">#</sui-table-header-cell>
                   <sui-table-header-cell text-align="center" >Producto</sui-table-header-cell >
                   <sui-table-header-cell text-align="center" >Precio</sui-table-header-cell >
                   <sui-table-header-cell text-align="center" >Precio Mayoreo</sui-table-header-cell >
@@ -32,19 +38,14 @@
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row>
-                  <sui-table-cell text-align="center">Producto 1</sui-table-cell>
-                  <sui-table-cell text-align="center">$20</sui-table-cell>
-                  <sui-table-cell text-align="center">$15</sui-table-cell>
-                  <sui-table-cell text-align="center">10</sui-table-cell>
-                  <sui-table-cell text-align="center">Activo</sui-table-cell>
-                </sui-table-row>
-                <sui-table-row>
-                  <sui-table-cell text-align="center">Producto 2</sui-table-cell>
-                  <sui-table-cell text-align="center">$15</sui-table-cell>
-                  <sui-table-cell text-align="center">$10</sui-table-cell>
-                  <sui-table-cell text-align="center">18</sui-table-cell>
-                  <sui-table-cell text-align="center">Activo</sui-table-cell>
+                <sui-table-row v-for="(product, item) in filteredProducts"
+                  :key="product.id">
+                  <sui-table-header-cell text-align="center">{{item+1}}</sui-table-header-cell>
+                  <sui-table-cell text-align="center">{{product.name}}</sui-table-cell>
+                  <sui-table-cell text-align="center">${{product.retailPrice}}</sui-table-cell>
+                  <sui-table-cell text-align="center">${{product.wholesalePrice}}</sui-table-cell>
+                  <sui-table-cell text-align="center">?</sui-table-cell>
+                  <sui-table-cell text-align="center">{{product.status}}</sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
@@ -61,6 +62,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
+import api from "../../util/api";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
@@ -72,8 +74,31 @@ export default {
     cabecera,
   },
   data() {
-    return {};
+    return {
+      loading: true,
+      productos: [],
+      search:""
+    };
   },
+  beforeMount() {
+    this.query();
+  },
+  computed: {
+    filteredProducts: function() {
+      return this.productos.filter((product) => {
+        return product.name.toLowerCase().match(this.search.toLowerCase());
+      });
+    }
+  },
+  methods: {
+    query() {
+      api.doGet("/product/list/true").then((response) =>  (
+          this.productos = response.data,
+          console.log(response.data)
+        )
+      ).catch((error) => console.log(error)).finally(() => (this.loading = false));
+    }
+  }
 };
 </script>
 
@@ -90,5 +115,12 @@ export default {
 .funciones > h3 {
   line-height: 50px;
   margin-left: 0.5%;
+}
+.table {
+  margin-top: 6%;
+}
+.search {
+  margin-right: 2%;
+  margin-bottom: 5px;
 }
 </style>

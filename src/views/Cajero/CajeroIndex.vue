@@ -5,78 +5,78 @@
     <div class="funciones">
       <h3>Funciones de cajero</h3>
     </div>
-    
+    <sui-divider hidden />
           <div class="container">
-      <div class="card">
-        <div class="face face1">
-          <div class="content">
-            <div class="icon">
-              <img src="../../assets/venta.png" />
+            <div class="card">
+              <div class="face face1">
+                <div class="content">
+                  <div class="icon">
+                    <img src="../../assets/venta.png" />
+                  </div>
+                </div>
+              </div>
+              <div class="face face2">
+                <div class="content">
+                  <h3>
+                    <a href="cajero/venta">Venta</a>
+                  </h3>
+                  <p>This is where I network and build my professional protfolio.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="face face2">
-          <div class="content">
-            <h3>
-              <a href="cajero/venta">Venta</a>
-            </h3>
-            <p>This is where I network and build my professional protfolio.</p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="face face1">
-          <div class="content">
-            <div class="icon">
-              <img src="../../assets/retiro.png" />
+            <div class="card">
+              <div class="face face1">
+                <div class="content">
+                  <div class="icon">
+                    <img src="../../assets/retiro.png" />
+                  </div>
+                </div>
+              </div>
+              <div class="face face2">
+                <div class="content">
+                  <h3>
+                    <a href="cajero/retiro">Hacer retiro</a>
+                  </h3>
+                  <p>This is where I network and build my professional protfolio.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="face face2">
-          <div class="content">
-            <h3>
-              <a href="cajero/retiro">Hacer retiro</a>
-            </h3>
-            <p>This is where I network and build my professional protfolio.</p>
-          </div>
-        </div>
-      </div>
           </div>
           <div class="container">
-      <div class="card">
-        <div class="face face1">
-          <div class="content">
-            <div class="icon">
-              <img src="../../assets/consultar.png" />
+            <div class="card">
+              <div class="face face1">
+                <div class="content">
+                  <div class="icon">
+                    <img src="../../assets/consultar.png" />
+                  </div>
+                </div>
+              </div>
+              <div class="face face2">
+                <div class="content">
+                  <h3>
+                    <a href="cajero/consultar">Consultar</a>
+                  </h3>
+                  <p>This is where I network and build my professional protfolio.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="face face2">
-          <div class="content">
-            <h3>
-              <a href="cajero/consultar">Consultar</a>
-            </h3>
-            <p>This is where I network and build my professional protfolio.</p>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="face face1">
-          <div class="content">
-            <div class="icon">
-              <img src="../../assets/cerrarcaja.png" />
+            <div class="card">
+              <div class="face face1">
+                <div class="content">
+                  <div class="icon">
+                    <img src="../../assets/cerrarcaja.png" />
+                  </div>
+                </div>
+              </div>
+              <div class="face face2">
+                <div class="content">
+                  <h3>
+                    <a href="cajero/cerrar-caja">Cerrar caja</a>
+                  </h3>
+                  <p>This is where I network and build my professional protfolio.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="face face2">
-          <div class="content">
-            <h3>
-              <a href="cajero/cerrar-caja">Cerrar caja</a>
-            </h3>
-            <p>This is where I network and build my professional protfolio.</p>
-          </div>
-        </div>
-      </div>
           </div>
     <fondo />
   </div>
@@ -87,6 +87,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
+//import api from "../../util/api";
 
 Vue.use(Particles);
 export default {
