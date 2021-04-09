@@ -30,7 +30,7 @@
           <a class="item" href="/admin/cajeros"
             ><i class="user circle outline icon"></i> Cajeros</a
           >
-          <a class="item" href="/"
+          <a class="item" href="#" @click="logout()"
             ><i class="share square outline icon"></i>Salir</a
           >
         </div>
@@ -38,6 +38,41 @@
     </header>
   </div>
 </template>
+
+<script>
+export default {
+  name: "Sidebar",
+  data() {
+    return {
+      visible: false,
+    };
+  },
+  beforeMount(){
+    let token = localStorage.getItem("token");
+    if(token === null){
+      localStorage.clear();
+      this.$router.push("/");
+    }
+    let auth = localStorage.getItem("authority");
+    if(auth === null || auth !== 'ROLE_ADMIN'){
+      this.$router.push("/");
+    }
+  },
+  methods: {
+    onVisible() {
+      if (this.visible) {
+        this.visible = false;
+      } else {
+        this.visible = true;
+      }
+    },
+    logout(){
+      localStorage.clear();
+      this.$router.push("/");
+    }
+  },
+};
+</script>
 
 <style scoped>
 .mymenu {
@@ -68,22 +103,4 @@
 }
 </style>
 
-<script>
-export default {
-  name: "Sidebar",
-  data() {
-    return {
-      visible: false,
-    };
-  },
-  methods: {
-    onVisible() {
-      if (this.visible) {
-        this.visible = false;
-      } else {
-        this.visible = true;
-      }
-    },
-  },
-};
-</script>
+

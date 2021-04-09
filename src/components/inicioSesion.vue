@@ -46,7 +46,15 @@ export default {
       },
     };
   },
-
+  beforeMount(){
+    let token = localStorage.getItem("token");
+    if(token !== null){
+      let auth = localStorage.getItem("authority");
+      if(auth !== null && auth === 'ROLE_ADMIN'){
+        this.$router.push("/admin/productos");
+      }
+    }
+  },
   methods: {
     authenticate() {
       console.log(this.user);
