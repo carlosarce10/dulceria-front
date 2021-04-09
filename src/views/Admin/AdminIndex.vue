@@ -41,7 +41,8 @@
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
-                      <img style="width:100px;height:100px;margin:0px" :src="resultTrue.url">
+                      <img v-if="resultTrue.image !== null" style="width:100px;height:100px;margin:0px" :src="resultTrue.url">
+                      <img v-if="resultTrue.image === null" style="width:100px;height:100px;margin:0px" src="../../assets/default.png">
                   </sui-card-content>
                   <sui-card-content
                     style="
@@ -109,7 +110,8 @@
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
-                    <img style="width:100px;height:100px;margin-top:0px" :src="resultTrue.url">
+                    <img v-if="resultTrue.image !== null" style="width:100px;height:100px;margin-top:0px" :src="resultTrue.url">
+                    <img v-if="resultTrue.image === null" style="width:100px;height:100px;margin-top:0px" src="../../assets/default.png">
                   </sui-card-content>
                   <sui-card-content
                     style="
@@ -376,7 +378,7 @@ export default {
         .then((response) => {
           let productos = []
           for(let p of response.data){
-            p.url = "/img/default.9fda67aa.png"
+            p.url = ""
             productos.push(p)
           }
           this.resultTrue = productos;
@@ -395,7 +397,7 @@ export default {
         .then((response) => {
           let productos = []
           for(let p of response.data){
-            p.url = "/img/default.9fda67aa.png"
+            p.url = ""
             productos.push(p)
           }
           this.resultFalse = productos;
@@ -473,11 +475,13 @@ export default {
           this.$swal({
             title: "¡Producto registrado exitosamente!",
             icon: "success",
-          })/*.then( result => {
+          }).then(result=>{
             if(result.isConfirmed){
               location.reload();
+            }else{
+              location.reload();
             }
-          })*/;
+          });
           console.log(response);
           this.getLists();
         })
@@ -522,6 +526,12 @@ export default {
           this.$swal({
             title: "¡Producto modificado exitosamente!",
             icon: "success",
+          }).then(result=>{
+            if(result.isConfirmed){
+              location.reload();
+            }else{
+              location.reload();
+            }
           });
           console.log(response);
           this.getLists();
