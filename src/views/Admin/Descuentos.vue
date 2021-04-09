@@ -303,16 +303,33 @@
               placeholder="Producto"
               search
               selection
-              v-model="discount.product.id"
+              v-model="$v.product.$model"
+              :class="status($v.product)"
             />
+            <div class="error errorMsg" v-if="!$v.product.required">
+              Debe seleccionar un producto
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
-            <input type="number" v-model="discount.discount" />
+            <input
+              type="number"
+              v-model="$v.discountP.$model"
+              :class="status($v.discountP)"
+            />
+            <div
+              class="error errorMsg"
+              v-if="!$v.discountP.required && $v.discountP.$dirty"
+            >
+              El descuento no debe estar en blanco
+            </div>
+            <div class="error errorMsg" v-if="!$v.discountP.minValue">
+              El descuento debe se mayor a 0
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
-            <textarea v-model="discount.comments"></textarea>
+            <textarea v-model="comments"></textarea>
           </sui-form-field>
         </sui-form>
       </sui-modal-content>
@@ -326,6 +343,7 @@
           positive
           @click.native="modalDP()"
           type="submit"
+          :disabled="!(!$v.$invalid && $v.$dirty)"
         >
           OK
         </sui-button>
@@ -483,6 +501,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import { required, minValue } from "vuelidate/lib/validators";
 
 Vue.use(Particles);
 export default {
@@ -523,20 +542,27 @@ export default {
       search: "",
       searchM: "",
       searchC: "",
+      discountP: "",
+      discountM: "",
+      discountC: "",
+      comments: "",
+      brand: "",
+      category: "",
+      product: "",
     };
   },
   beforeMount() {
     this.getLists();
   },
   computed: {
-    filteredDiscountP: function() {
+    filteredDiscountP: function () {
       return this.descuentosProductos.filter((discount) => {
         return discount.product.name
           .toLowerCase()
           .match(this.search.toLowerCase());
       });
     },
-    filteredDiscountM: function() {
+    filteredDiscountM: function () {
       return this.descuentosMarcas.filter((discount) => {
         console.log(discount.brand.name);
         return discount.brand.name
@@ -544,7 +570,7 @@ export default {
           .match(this.searchM.toLowerCase());
       });
     },
-    filteredDiscountC: function() {
+    filteredDiscountC: function () {
       return this.descuentosCategorias.filter((discount) => {
         return discount.category.name
           .toLowerCase()
@@ -621,6 +647,13 @@ export default {
         .catch((error) => console.log(error));
     },
     registerDP() {
+      this.discount = {
+        product: {
+          id: this.product,
+        },
+        discountP: this.discountP,
+        comments: this.comments,
+      };
       console.log(this.discount);
       let obj = {};
       Object.assign(obj, this.discount);
@@ -812,6 +845,16 @@ export default {
     toggleEdit() {
       this.openEdit = !this.openEdit;
     },
+    status(validation) {
+      return {
+        error: validation.$error,
+        dirty: validation.$dirty,
+      };
+    },
+  },
+  validations: {
+    discountP: { required, minValue: minValue(1) },
+    product: { required },
   },
 };
 </script>
