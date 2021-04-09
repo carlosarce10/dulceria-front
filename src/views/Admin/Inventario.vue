@@ -9,27 +9,22 @@
     <sui-tab class="panel">
       <sui-tab-pane icon="calendar check icon" title="No caducos">
         <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <div style="margin-right: 5%">
-                  <sui-button
-                    @click.native="toggle"
-                    style="background: #64b5f6"
-                    negative
-                    circular
-                    icon="plus"
-                  />
-                </div>
-                <div class="ui icon input">
-                  <input
-                    class="prompt"
-                    type="text"
-                    placeholder="Buscar productos..."
-                  />
-                  <i class="search icon"></i>
-                </div>
-              </div>
+          <div class="ui search">
+            <sui-button
+              @click.native="toggle"
+              style="background: #64b5f6"
+              negative
+              circular
+              icon="plus"
+            />
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar producto"
+                v-model="search"
+              />
+              <i class="search icon"></i>
             </div>
             <div class="results"></div>
           </div>
@@ -57,7 +52,10 @@
               </sui-table-row>
             </sui-table-header>
             <sui-table-body>
-              <sui-table-row v-for="listStock in listStock" :key="listStock.id">
+              <sui-table-row
+                v-for="listStock in filteredStock"
+                :key="listStock.id"
+              >
                 <sui-table-cell text-align="center">{{
                   listStock.product.name
                 }}</sui-table-cell>
@@ -169,18 +167,17 @@
       </sui-tab-pane>
       <sui-tab-pane icon="calendar times icon" title="Caducos">
         <div class="table">
-          <div class="search">
-            <div class="ui fluid category search">
-              <div class="ui icon input">
-                <input
-                  class="prompt"
-                  type="text"
-                  placeholder="Buscar productos..."
-                />
-                <i class="search icon"></i>
-              </div>
-              <div class="results"></div>
+          <div class="ui search">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar producto"
+                v-model="searchD"
+              />
+              <i class="search icon"></i>
             </div>
+            <div class="results"></div>
           </div>
           <div>
             <sui-segment basic v-if="listStockEx.length === 0">
@@ -206,7 +203,7 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="listStockEx in listStockEx"
+                  v-for="listStockEx in filteredStockDisabled"
                   :key="listStockEx.id"
                 >
                   <sui-table-cell text-align="center">{{
@@ -265,11 +262,29 @@ export default {
       product: "",
       dateExpire: "",
       today: "",
+      search: "",
+      searchD: "",
     };
   },
   beforeMount() {
     this.dateToday();
     this.getLists();
+  },
+  computed: {
+    filteredStock: function() {
+      return this.listStock.filter((stock) => {
+        return stock.product.name
+          .toLowerCase()
+          .match(this.search.toLowerCase());
+      });
+    },
+    filteredStockDisabled: function() {
+      return this.listStockEx.filter((stock) => {
+        return stock.product.name
+          .toLowerCase()
+          .match(this.searchD.toLowerCase());
+      });
+    },
   },
   methods: {
     getLists() {
@@ -322,6 +337,9 @@ export default {
           });
           console.log(response);
           this.getLists();
+          this.stock.batch = "";
+          this.stock.dateExpire = "";
+          (this.stock.quantityStock = ""), (this.stock.product.id = 0);
         })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -390,7 +408,7 @@ export default {
 }
 .search {
   margin-right: 2%;
-  margin-bottom: 2%;
+  margin-bottom: 5px;
 }
 .btnModal {
   background-color: #64b5f6 !important;
