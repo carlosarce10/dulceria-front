@@ -5,6 +5,7 @@ import Cajero from "../views/Cajero/CajeroIndex";
 import Venta from "../views/Cajero/Venta";
 import Consultar from "../views/Cajero/Consultar";
 import Retiro from "../views/Cajero/Retiro";
+import AbrirCaja from "../views/Cajero/AbrirCaja.vue";
 import CerrarCaja from "../views/Cajero/CerrarCaja";
 import Admin from "../views/Admin/AdminIndex.vue";
 import Inventario from "../views/Admin/Inventario.vue";
@@ -29,9 +30,11 @@ const routes = [
     path: "/cajero",
     name: "Cajero",
     component: Cajero,
-  },
-
-  {
+  },{
+    path:"/cajero/abrir-caja",
+    name:"AbrirCaja",
+    component: AbrirCaja
+  },{
     path: "/cajero/venta",
     name: "Venta",
     component: Venta,

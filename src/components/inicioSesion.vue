@@ -80,7 +80,7 @@ export default {
             if (authority === "ROLE_ADMIN") {
               this.$router.push("admin/productos");
             } else if (authority === "ROLE_CASHIER") {
-              this.$router.push("cajero");
+              this.$router.push("cajero/abrir-caja");
             }
           }
         })
