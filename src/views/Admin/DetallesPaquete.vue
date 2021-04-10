@@ -38,6 +38,7 @@
                 style="background: #64b5f6"
                 disabled
                 negative
+                icon="pencil alternate"
                 >Registrar paquete</sui-button
               >
               <sui-button
@@ -45,6 +46,7 @@
                 style="background: #64b5f6"
                 negative
                 @click="register()"
+                icon="pencil alternate"
                 >Registrar paquete</sui-button
               >
             </sui-grid-column>
@@ -77,7 +79,7 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
-                <label style="color:transparent;" class="my-label">.</label>
+                <sui-divider hidden/>
                 <div class="ui search">
                   <div class="ui icon input">
                     <input
@@ -178,21 +180,22 @@
                 style="background: #64b5f6"
                 disabled
                 negative
-                >Editar paquete</sui-button
+                icon="save"
+                >Guardar</sui-button
               >
-
               <sui-button
                 v-if="detallesE.length > 0"
                 style="background: #64b5f6"
                 negative
                 @click="editar()"
-                >Editar paquete</sui-button
+                icon="save"
+                >Guardar</sui-button
               >
             </sui-grid-column>
           </sui-grid-row>
         </sui-grid>
         <sui-divider hidden />
-        <sui-divider horizontal>PRODUCTOS</sui-divider>
+        <sui-divider horizontal>PRODUCTOS DEL PAQUETE</sui-divider>
         <sui-container style="margin-top: 2%">
           <sui-grid :columns="3">
             <sui-grid-row>
@@ -218,6 +221,7 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
+                <sui-divider hidden/>
                 <div class="ui search">
                   <div class="ui icon input">
                     <input
