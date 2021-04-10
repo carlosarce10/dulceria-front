@@ -33,8 +33,8 @@
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
-            <sui-table color="blue">
-              <sui-table-header v-if="listPackage.length > 0">
+            <sui-table color="blue" v-if="listPackage.length > 0">
+              <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
                     >#</sui-table-header-cell
@@ -107,14 +107,13 @@
             </div>
             <div class="results"></div>
           </div>
-          <sui-segment basic v-if="listPackageFalse.length === 0">
-            <i style="color: #6c757d" class="massive comment icon"></i><br />
-            <small style="color: #6c757d">No se encontraron registros.</small>
-          </sui-segment>
-
           <sui-container class="scrolling" style="margin-top: 2%">
-            <sui-table color="blue">
-              <sui-table-header v-if="listPackageFalse.length > 0">
+            <sui-segment basic v-if="listPackageFalse.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="listPackageFalse.length > 0" color="blue">
+              <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
                     >#</sui-table-header-cell

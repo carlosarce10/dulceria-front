@@ -218,12 +218,18 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
-                <label style="color:transparent;" class="my-label">.</label>
-                <sui-input
-                  placeholder="Buscar..."
-                  class="c-radius"
-                  icon="search"
-                />
+                <div class="ui search">
+                  <div class="ui icon input">
+                    <input
+                      class="prompt"
+                      type="text"
+                      placeholder="Buscar producto"
+                      v-model="searchD"
+                    />
+                    <i class="search icon"></i>
+                  </div>
+                  <div class="results"></div>
+                </div>
               </sui-grid-column>
             </sui-grid-row>
           </sui-grid>
@@ -248,7 +254,7 @@
               </sui-table-row>
             </sui-table-header>
             <sui-table-body>
-              <sui-table-row v-for="(d, i) in detallesE" :key="d.id">
+              <sui-table-row v-for="(d, i) in filteredProductEdit" :key="d.id">
                 <sui-table-cell text-align="center">{{ i + 1 }}</sui-table-cell>
                 <sui-table-cell text-align="center">{{
                   d.product.name
@@ -368,6 +374,13 @@ export default {
           .match(this.search.toLowerCase());
       });
     },
+    filteredProductEdit: function() {
+      return this.detallesE.filter((productos) => {
+        return productos.product.name
+          .toLowerCase()
+          .match(this.searchD.toLowerCase());
+      });
+    },
   },
   mounted() {
     this.startup();
@@ -406,6 +419,7 @@ export default {
       },
       idProducto: 0,
       search: "",
+      searchD:""
     };
   },
   methods: {
