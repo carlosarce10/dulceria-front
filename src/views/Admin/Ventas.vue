@@ -194,10 +194,7 @@
                       v-for="(detail, item) in venta.details"
                       :key="detail.id"
                     >
-                      <sui-table-cell
-                        v-if="detail.product !== null"
-                        text-align="left"
-                      >
+                      <sui-table-cell text-align="left">
                         {{ item + 1 }}
                       </sui-table-cell>
                       <sui-table-cell
@@ -331,7 +328,7 @@ export default {
     this.startup();
   },
   computed: {
-    filteredSales: function() {
+    filteredSales: function () {
       return this.ventas.filter((sale) => {
         return sale.date.toLowerCase().match(this.search.toLowerCase());
       });
