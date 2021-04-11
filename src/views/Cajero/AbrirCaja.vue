@@ -86,12 +86,6 @@ export default {
   },
   methods: {
     continuar() {
-      let username = localStorage.getItem("username");
-      if(username !== null && username !== ""){
-          this.cashbox.user.username = username;
-          console.log(this.cashbox);
-      }
-      
       api
         .doPost("/cashbox/open/box", this.cashbox)
         .then((response) => {
