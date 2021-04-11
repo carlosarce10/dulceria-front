@@ -3,7 +3,7 @@
     <header>
       <div class="ui left fixed vertical menu mymenu">
         <div class="item">
-          <img class="ui centered tiny image" src="../assets/V1.png"/>
+          <img class="ui centered tiny image" src="../assets/V1.png" />
         </div>
         <div class="">
           <a class="item" href="/cajero"><i class="list ul icon"></i>Menu</a>
@@ -15,14 +15,14 @@
 </template>
 
 <style scoped>
-.mymenu{
-  background: #2286C3 !important;
+.mymenu {
+  background: #2286c3 !important;
   border-radius: 0 !important;
 }
-.item{
+.item {
   color: white !important;
 }
-.logo{
+.logo {
   height: 100%;
 }
 

@@ -1,16 +1,14 @@
 <template>
   <div>
-    <div>
-      <div>
-        <img class="ui centered medium image" src="../assets/404.png" />
+    <div class="center">
+      <img class="ui centered medium image" src="../assets/404.png" />
 
-        <h1>¡Página no encontrada!</h1>
-        <h3>Algo salió mal...</h3>
-        <button icon="home icon" class="ui primary button">
-          <i class="home icon"></i>
-          <a style="color: white" href="/">Volver al inicio</a>
-        </button>
-      </div>
+      <h1>¡Página no encontrada!</h1>
+      <h3>Algo salió mal...</h3>
+      <button icon="home icon" class="ui primary button">
+        <i class="home icon"></i>
+        <a style="color: white" href="/">Volver al inicio</a>
+      </button>
     </div>
     <fondo />
   </div>
@@ -31,8 +29,10 @@ export default {
 </script>
 
 <style scoped>
-center {
-  margin: 15vw;
+.center {
+  margin: 15vh;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
