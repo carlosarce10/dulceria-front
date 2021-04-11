@@ -3,11 +3,13 @@
     <header>
       <div class="ui left fixed vertical menu mymenu">
         <div class="item">
-          <img class="ui centered tiny image" src="../assets/V1.png"/>
+          <img class="ui centered tiny image" src="../assets/V1.png" />
         </div>
         <div class="">
-          <a class="item" href="/cajero"><i class="share square outline icon"></i>MENU</a>
-          <a class="item" href="/"><i class="share square outline icon"></i>SALIR</a>
+          <a class="item" href="/cajero"><i class="th icon"></i>MENU</a>
+          <a class="item" href="/"
+            ><i class="share square outline icon"></i>SALIR</a
+          >
         </div>
       </div>
     </header>
@@ -15,14 +17,14 @@
 </template>
 
 <style scoped>
-.mymenu{
-  background: #2286C3 !important;
+.mymenu {
+  background: #2286c3 !important;
   border-radius: 0 !important;
 }
-.item{
+.item {
   color: white !important;
 }
-.logo{
+.logo {
   height: 100%;
 }
 
