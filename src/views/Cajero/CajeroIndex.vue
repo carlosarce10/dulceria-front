@@ -1,83 +1,72 @@
 <template>
   <div class="area">
     <cabecera />
-    <br/>
+    <br />
     <div class="funciones">
       <h3>Funciones de cajero</h3>
     </div>
     <sui-divider hidden />
-          <div class="container">
-            <div class="card">
-              <div class="face face1">
-                <div class="content">
-                  <div class="icon">
-                    <img src="../../assets/venta.png" />
-                  </div>
-                </div>
-              </div>
-              <div class="face face2">
-                <div class="content">
-                  <h3>
-                    <a href="cajero/venta">Venta</a>
-                  </h3>
-                  <p>This is where I network and build my professional protfolio.</p>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="face face1">
-                <div class="content">
-                  <div class="icon">
-                    <img src="../../assets/retiro.png" />
-                  </div>
-                </div>
-              </div>
-              <div class="face face2">
-                <div class="content">
-                  <h3>
-                    <a href="cajero/retiro">Hacer retiro</a>
-                  </h3>
-                  <p>This is where I network and build my professional protfolio.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="container">
-            <div class="card">
-              <div class="face face1">
-                <div class="content">
-                  <div class="icon">
-                    <img src="../../assets/consultar.png" />
-                  </div>
-                </div>
-              </div>
-              <div class="face face2">
-                <div class="content">
-                  <h3>
-                    <a href="cajero/consultar">Consultar</a>
-                  </h3>
-                  <p>This is where I network and build my professional protfolio.</p>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="face face1">
-                <div class="content">
-                  <div class="icon">
-                    <img src="../../assets/cerrarcaja.png" />
-                  </div>
-                </div>
-              </div>
-              <div class="face face2">
-                <div class="content">
-                  <h3>
-                    <a href="cajero/cerrar-caja">Cerrar caja</a>
-                  </h3>
-                  <p>This is where I network and build my professional protfolio.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="cartas">
+      <sui-card-group :items-per-row="2" stackable>
+        <sui-card class="centered raised">
+          <sui-dimmer-dimmable
+            @mouseenter.native="cardOneActive = true"
+            @mouseleave.native="cardOneActive = false"
+          >
+            <img src="../../assets/venta.png" />
+            <sui-dimmer blurring :active="cardOneActive">
+              <sui-button inverted>GO</sui-button>
+            </sui-dimmer>
+          </sui-dimmer-dimmable>
+          <sui-card-content>
+            <sui-card-header>Venta</sui-card-header>
+          </sui-card-content>
+        </sui-card>
+        <sui-card class="centered raised">
+          <sui-dimmer-dimmable
+            @mouseenter.native="cardTwoActive = true"
+            @mouseleave.native="cardTwoActive = false"
+          >
+            <img src="../../assets/consultar.png" />
+            <sui-dimmer blurring :active="cardTwoActive">
+              <sui-button v-on:click="consulta()" inverted>GO</sui-button>
+            </sui-dimmer>
+          </sui-dimmer-dimmable>
+          <sui-card-content>
+            <sui-card-header>Consultar</sui-card-header>
+          </sui-card-content>
+        </sui-card>
+        <sui-card class="centered raised">
+          <sui-dimmer-dimmable
+            @mouseenter.native="cardThreeActive = true"
+            @mouseleave.native="cardThreeActive = false"
+          >
+            <img src="../../assets/retiro.png" />
+            <sui-dimmer blurring :active="cardThreeActive">
+              <sui-button inverted>GO</sui-button>
+            </sui-dimmer>
+          </sui-dimmer-dimmable>
+          <sui-card-content>
+            <sui-card-header>Retiro</sui-card-header>
+          </sui-card-content>
+        </sui-card>
+        <sui-card class="centered raised">
+          <sui-dimmer-dimmable
+            @mouseenter.native="cardFourActive = true"
+            @mouseleave.native="cardFourActive = false"
+          >
+            <img src="../../assets/cerrarcaja.png" />
+            <sui-dimmer blurring :active="cardFourActive">
+              <sui-button inverted>GO</sui-button>
+            </sui-dimmer>
+          </sui-dimmer-dimmable>
+          <sui-card-content>
+            <sui-card-header>Cerrar Caja</sui-card-header>
+          </sui-card-content>
+        </sui-card>
+      </sui-card-group>
+    </div>
+
     <fondo />
   </div>
 </template>
@@ -97,103 +86,34 @@ export default {
     cabecera,
   },
   data() {
-    return {};
+    return {
+      cardOneActive: false,
+      cardTwoActive: false,
+      cardThreeActive: false,
+      cardFourActive: false,
+    };
+  },
+  methods: {
+    consulta() {
+      this.$router.push({ name: "Consultar" });
+    },
   },
 };
 </script>
 
 <style>
-.funciones {
-  color: #64b5f6;
-  line-height: 50px;
-  width: 100%;
-  text-align: left;
-  margin-left: 5%;
-  border-left: 3px solid #64b5f6;
-  height: 45px;
+.ui.card,
+.ui.cards > .card {
+  background-color: #2286c3;
 }
-.funciones > h3 {
-  line-height: 50px;
-  margin-left: 0.5%;
-}
-.cards {
-  width: 50%;
-}
-.cardss {
-  background-color: #64b5f6;
+.ui.card > .content,
+.ui.cards > .card > .content {
+  background-color: #ffff;
 }
 
-img {
-  margin-top: 10%;
-  height: 50%;
-}
-
-/* estilos del card */
-
-.container {
-  width: 100%;
-  position: relative;
-  border-radius: 10px !important;
+.cartas {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.container .card {
-  position: relative;
-  margin-left: 2%;
-  margin-top: -5%;
-  margin-bottom: -5%;
-}
-
-.container .card .icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #f00;
-  transition: 0.7s;
-  z-index: 1;
-}
-
-.container .card:nth-child(1) .icon {
-  background: #64b5f6;
-}
-
-.container .card:nth-child(2) .icon {
-  background: #64b5f6;
-}
-
-.container .card:nth-child(3) .icon {
-  background: #64b5f6;
-}
-.container .card:nth-child(4) .icon {
-  background: #64b5f6;
-}
-
-.container .card .face {
-  width: 300px;
-  height: 200px;
-  transition: 0.6s;
-}
-
-.container .card .face.face1 {
-  z-index: 1;
-  transform: translateY(100px);
-}
-
-.container .card:hover .face.face1 {
-  background: #ff0057;
-  transform: translateY(11px);
-}
-
-.container .card .face.face2 .content h3 {
-  margin: 10px 0 10px 0;
-  padding: 0;
-  color: #fff;
-  font-size: 20px;
-  text-align: center;
-  color: #414141;
 }
 </style>
