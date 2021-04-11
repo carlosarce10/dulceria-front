@@ -6,8 +6,8 @@
           <img class="ui centered tiny image" src="../assets/V1.png"/>
         </div>
         <div class="">
-          <a class="item" href="/cajero"><i class="share square outline icon"></i>MENU</a>
-          <a class="item" href="/"><i class="share square outline icon"></i>SALIR</a>
+          <a class="item" href="/cajero"><i class="list ul icon"></i>Menu</a>
+          <a class="item" href="/"><i class="share square outline icon"></i>Salir</a>
         </div>
       </div>
     </header>

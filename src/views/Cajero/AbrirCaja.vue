@@ -1,32 +1,54 @@
 <template>
-    <div class="border">
-
-        <div>
-            <img src="../../assets/V1.png" style="width: 10%;" />
+  <sui-container>
+    <div class="ui grid middle aligned centered-vertically">
+      <div class="row">
+        <div class="column">
+          <div class="ui text container segment basic">
+            <sui-card class="centered">
+              <sui-card-content>
+                <sui-card-header>Abrir Caja</sui-card-header>
+              </sui-card-content>
+              <sui-card-content>
+                <label class="custom-label">Introduzca un monto inicial:</label>
+                <sui-input
+                  fluid
+                  type="number"
+                  min="0"
+                  max="1000"
+                  v-model="cashbox.initialAmount"
+                />
+                <br>
+                <label class="custom-label">Introduzca el número de caja:</label>
+                <sui-input
+                  fluid
+                  type="text"
+                  v-model="cashbox.cashboxNumber"
+                />
+              </sui-card-content>
+              <sui-card-content extra>
+                <sui-button
+                  class="btn-color"
+                  fluid
+                  size="large"
+                  @click.native="continuar()"
+                  content="Continuar"
+                />
+                <br />
+                <sui-button
+                  color="blue"
+                  fluid
+                  size="large"
+                  @click.native="salir()"
+                  content="Salir"
+                />
+              </sui-card-content>
+            </sui-card>
+          </div>
         </div>
-        
-        <form v-on:submit.prevent="onSubmit" class="formulario">
-            <div class="fondoForm" style="padding:2em;">
-                <h2 class="login">Abrir caja</h2>
-                
-                
-                <sui-form-field>
-                    <label class="custom-label">Introduzca un monto inicial:</label>
-                    <sui-input icon="dollar sign" type="number" min="0" max="1000" v-model="cashbox.initialAmount" />
-                </sui-form-field>
-                <sui-divider hidden/>
-                <sui-form-field>
-                <sui-button size="large" fluid @click.native="continuar()" color="blue" content="Continuar" />
-                <sui-divider hidden/>
-                <sui-button color="teal" fluid size="large" @click.native="salir()" content="Salir" />
-                </sui-form-field>
-
-            </div>
-            
-        </form>
-        <fondo />
+      </div>
     </div>
-    
+    <fondo />
+  </sui-container>
 </template>
 <script>
 import fondo from "../../components/fondo";
@@ -38,82 +60,82 @@ Vue.use(VueRouter);
 Vue.use(Particles);
 
 export default {
-    name: "abrirCaja",
-    components: {
-        fondo
-    },
-    data(){
-        return {
-            cantidad: 0,
-            cashbox: {
-                id:0,
-                amount:0,
-                cashboxNumber:0,
-                date:"",
-                endTime:"",
-                initialAmount:0,
-                startTime:"",
-                totalSales:0,
-                withdrawal:"",
-                user:{
-                    id:0
-                }
-            }
-        }
-    },
-    methods: {
-        continuar(){
-            api.doPost("/cashbox/openBox", this.cashbox).then((response) => {
-                this.$swal({
-                    title: "Caja abierta",
-                    icon: "success",
-                }).then(result => { 
-                    location.reload(); 
-                    console.log(result);
-                });
-                
-                console.log(response);
-            }).catch((e) => { console.log(e); });
-            //this.$router.push({name: "AbrirCaja", params: { cantidad: cant }});
+  name: "abrirCaja",
+  components: {
+    fondo,
+  },
+  data() {
+    return {
+      cantidad: 0,
+      cashbox: {
+        id: 0,
+        amount: 0,
+        cashboxNumber: 0,
+        date: "",
+        endTime: "",
+        initialAmount: 0,
+        startTime: "",
+        totalSales: 0,
+        withdrawal: "",
+        user: {
+          id: 0,
+          username: "",
         },
-        salir(){
-            this.$router.push({name: "Home"});
-        }
-    }
-}
+      },
+    };
+  },
+  methods: {
+    continuar() {
+      let username = localStorage.getItem("username");
+      if(username !== null && username !== ""){
+          this.cashbox.user.username = username;
+          console.log(this.cashbox);
+      }
+      
+      api
+        .doPost("/cashbox/open/box", this.cashbox)
+        .then((response) => {
+            console.log(response);
+            localStorage.setItem("idCashbox", response.data.id);
+            this.$router.push("/cajero");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    
+      //this.$router.push({name: "AbrirCaja", params: { cantidad: cant }});
+    },
+    salir() {
+      this.$router.push({ name: "Home" });
+    },
+  },
+};
 </script>
 <style scoped>
-.formulario {
+.btn-color {
+  background-color: #64a6d9;
+  color: #fff;
+  text-shadow: none;
+  background-image: none;
+}
+
+.btn-color:hover {
+  background-color: #5a94c1;
+  color: #fff;
+}
+
+.centered-vertically {
+  height: 100vh;
   width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  margin-top: 15%;
-}
-.fondoForm {
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding-top: 0px;
-  padding-bottom: 10%;
 }
 
-.login {
-  padding-right: 50%;
-  color: #64b5f6;
-}
-
-.custom-label{
-    display: block;
-    margin: 0 0 .28571429rem 0;
-    color: rgba(0,0,0,.87);
-    font-size: .92857143em;
-    font-weight: 700;
-    text-transform: none;
-}
-
-.btnGo {
-  padding-left: 20% !important;
-  padding-right: 20% !important;
-  margin-top: 10%;
-  margin-bottom: 10% !important;
+.custom-label {
+  display: block;
+  margin: 0 0 0.28571429rem 0;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: 700;
+  text-transform: none;
+  font-size: 1em;
 }
 </style>
