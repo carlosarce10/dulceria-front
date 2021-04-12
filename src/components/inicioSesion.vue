@@ -11,9 +11,9 @@
         <br />
         <div class="row">
           <div class="two column">
-            <div class="ui blue text container segment raised">
+            <div class="ui blue text container segment raised login">
               <form
-                class="ui form login"
+                class="ui form"
                 method="POST"
                 v-on:submit.prevent="onSubmit"
               >
@@ -40,7 +40,7 @@
                   />
                 </div>
                 <div
-                  class="ui blue animated button primary"
+                  class="ui blue animated button primary boton"
                   tabindex="0"
                   @click="authenticate()"
                 >
@@ -126,6 +126,14 @@ export default {
 </script>
 
 <style scoped>
+.ui.primary.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ui.segment {
+  width: 30% !important;
+}
 .centered-vertically {
   height: 100vh;
   width: 100%;
