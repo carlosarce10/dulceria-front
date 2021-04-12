@@ -203,7 +203,19 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
-              <input v-model="categoriaEdit.name" />
+              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.required && $v.name.$dirty"
+              >
+                El nombre de la categoría no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.minLength && $v.name.maxLength"
+              >
+                El nombre de la categoría debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
@@ -217,6 +229,7 @@
             positive
             @click.native="toggleEdit"
             type="submit"
+            :disabled="!(!$v.$invalid && $v.$dirty)"
           >
             OK
           </sui-button>
@@ -262,12 +275,12 @@ export default {
     this.getLists();
   },
   computed: {
-    filteredCategories: function() {
+    filteredCategories: function () {
       return this.categoriasTrue.filter((category) => {
         return category.name.toLowerCase().match(this.search.toLowerCase());
       });
     },
-    filteredCategoriesDisabled: function() {
+    filteredCategoriesDisabled: function () {
       return this.categoriasFalse.filter((category) => {
         return category.name.toLowerCase().match(this.searchD.toLowerCase());
       });
@@ -295,7 +308,8 @@ export default {
         .doGet("/category/get/" + id)
         .then((response) => {
           console.log(response);
-          this.categoriaEdit = response.data;
+          this.name = response.data.name;
+          this.idEdit = response.data.id;
         })
         .catch((error) => {
           console.log(error);
@@ -304,6 +318,10 @@ export default {
       this.openEdit = !this.openEdit;
     },
     editar() {
+      this.categoriaEdit = {
+        name: this.name,
+        id: this.idEdit,
+      };
       api
         .doPost("/category/save", this.categoriaEdit)
         .then((response) => {

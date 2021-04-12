@@ -363,13 +363,29 @@
               placeholder="Marca"
               search
               selection
-              v-model="discount.brand.id"
+              v-model="$v.brand.$model"
+              :class="status($v.brand)"
             />
-
+            <div class="error errorMsg" v-if="!$v.brand.required">
+              Debe seleccionar una marca
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
-            <input type="number" v-model="discount.discount" />
+            <input
+              type="number"
+              v-model="$v.discountM.$model"
+              :class="status($v.discountM)"
+            />
+            <div
+              class="error errorMsg"
+              v-if="!$v.discountM.required && $v.discountM.$dirty"
+            >
+              El descuento no debe estar en blanco
+            </div>
+            <div class="error errorMsg" v-if="!$v.discountM.minValue">
+              El descuento debe se mayor a 0
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
@@ -410,8 +426,6 @@
               selection
               v-model="discount.category.id"
             />
-
-
           </sui-form-field>
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
@@ -460,7 +474,20 @@
           </sui-form-field>
           <sui-form-field>
             <label>Cantidad del descuento:</label>
-            <input type="number" v-model="discountEdit.discount" />
+            <input
+              type="number"
+              v-model="$v.discountP.$model"
+              :class="status($v.discountP)"
+            />
+            <div
+              class="error errorMsg"
+              v-if="!$v.discountP.required && $v.discountP.$dirty"
+            >
+              El descuento no debe estar en blanco
+            </div>
+            <div class="error errorMsg" v-if="!$v.discountP.minValue">
+              El descuento debe se mayor a 0
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
@@ -589,6 +616,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.discountEdit = response.data;
+          this.discountP = response.data.discount;
           this.toggleEdit();
         })
         .catch((error) => {
@@ -619,10 +647,10 @@ export default {
       api
         .doGet("/category/list/true")
         .then((listCategory) => {
-          this.listCategory = listCategory.data
+          this.listCategory = listCategory.data;
           this.listSelectCategory = [];
-          for(let category of this.listCategory){
-            let c = {text: "", key: 0, value: 0}
+          for (let category of this.listCategory) {
+            let c = { text: "", key: 0, value: 0 };
             c.text = category.name;
             c.key = category.id;
             c.value = category.id;
@@ -633,10 +661,10 @@ export default {
       api
         .doGet("/brand/list/true")
         .then((listBrand) => {
-          this.listBrand = listBrand.data
+          this.listBrand = listBrand.data;
           this.listSelectBrand = [];
-          for(let brand of this.listBrand){
-            let b = {text: "", key: 0, value: 0}
+          for (let brand of this.listBrand) {
+            let b = { text: "", key: 0, value: 0 };
             b.text = brand.name;
             b.key = brand.id;
             b.value = brand.id;
@@ -843,6 +871,9 @@ export default {
       });
     },
     editar() {
+      this.discountEdit = {
+        discount: this.discountP,
+      };
       api
         .doPost("/discount/save", this.discountEdit)
         .then((response) => {
@@ -869,7 +900,9 @@ export default {
   },
   validations: {
     discountP: { required, minValue: minValue(1) },
+    discountM: { required, minValue: minValue(1) },
     product: { required },
+    brand: { required },
   },
 };
 </script>

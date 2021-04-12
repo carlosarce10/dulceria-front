@@ -202,7 +202,19 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
-              <input v-model="marcaEdit.name" />
+              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.required && $v.name.$dirty"
+              >
+                El nombre de la marca no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.minLength && $v.name.maxLength"
+              >
+                El nombre de la marca debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
           </sui-form>
         </sui-modal-content>
@@ -216,6 +228,7 @@
             positive
             @click.native="toggleEdit"
             type="submit"
+            :disabled="!(!$v.$invalid && $v.$dirty)"
           >
             OK
           </sui-button>
@@ -262,12 +275,12 @@ export default {
     this.getLists();
   },
   computed: {
-    filteredBrands: function() {
+    filteredBrands: function () {
       return this.marcasTrue.filter((marca) => {
         return marca.name.toLowerCase().match(this.search.toLowerCase());
       });
     },
-    filteredBrandsDisabled: function() {
+    filteredBrandsDisabled: function () {
       return this.marcasFalse.filter((marca) => {
         return marca.name.toLowerCase().match(this.searchD.toLowerCase());
       });
@@ -295,7 +308,8 @@ export default {
         .doGet("/brand/get/" + id)
         .then((response) => {
           console.log(response);
-          this.marcaEdit = response.data;
+          this.name = response.data.name;
+          this.idEdit = response.data.id;
         })
         .catch((error) => {
           console.log(error);
@@ -304,6 +318,10 @@ export default {
       this.openEdit = !this.openEdit;
     },
     editar() {
+      this.marcaEdit = {
+        id: this.idEdit,
+        name: this.name,
+      };
       api
         .doPost("/brand/save", this.marcaEdit)
         .then((response) => {
@@ -404,6 +422,11 @@ export default {
       minLength: minLength(3),
       maxLength: maxLength(50),
     },
+    /* editName: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    }, */
   },
 };
 </script>
