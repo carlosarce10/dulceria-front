@@ -16,6 +16,7 @@ import Ventas from "../views/Admin/Ventas.vue";
 import Paquetes from "../views/Admin/Paquetes.vue";
 import Descuentos from "../views/Admin/Descuentos.vue";
 import DetallesPaquete from "../views/Admin/DetallesPaquete.vue";
+import HacerVenta from "../views/Cajero/HacerVenta.vue";
 import NotFound from "../views/NotFound.vue"
 
 Vue.use(VueRouter);
@@ -34,10 +35,16 @@ const routes = [
     path:"/cajero/abrir-caja",
     name:"AbrirCaja",
     component: AbrirCaja
-  },{
+  },
+  {
     path: "/cajero/venta",
     name: "Venta",
     component: Venta,
+  },
+  {
+    path: "/cajero/nueva/venta",
+    name: "HacerVenta",
+    component: HacerVenta
   },
   {
     path: "/cajero/consultar",

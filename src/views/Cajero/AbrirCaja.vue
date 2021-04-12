@@ -86,17 +86,12 @@ export default {
   },
   methods: {
     continuar() {
-      let username = localStorage.getItem("username");
-      if(username !== null && username !== ""){
-          this.cashbox.user.username = username;
-          console.log(this.cashbox);
-      }
-      
       api
         .doPost("/cashbox/open/box", this.cashbox)
         .then((response) => {
             console.log(response);
             localStorage.setItem("idCashbox", response.data.id);
+            localStorage.setItem("cashboxNumber", response.data.cashboxNumber);
             this.$router.push("/cajero");
         })
         .catch((e) => {

@@ -15,7 +15,7 @@
           >
             <img src="../../assets/venta.png" />
             <sui-dimmer blurring :active="cardOneActive">
-              <sui-button inverted>GO</sui-button>
+              <sui-button @click="venta()" inverted>GO</sui-button>
             </sui-dimmer>
           </sui-dimmer-dimmable>
           <sui-card-content>
@@ -43,7 +43,7 @@
           >
             <img src="../../assets/retiro.png" />
             <sui-dimmer blurring :active="cardThreeActive">
-              <sui-button inverted>GO</sui-button>
+              <sui-button inverted v-on:click="retiro()">GO</sui-button>
             </sui-dimmer>
           </sui-dimmer-dimmable>
           <sui-card-content>
@@ -97,11 +97,17 @@ export default {
     consulta() {
       this.$router.push({ name: "Consultar" });
     },
+    venta(){
+      this.$router.push({ name: "Venta" });
+    },
+    retiro() {
+      this.$router.push({ name: "Retiro" });
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .ui.card,
 .ui.cards > .card {
   background-color: #2286c3;

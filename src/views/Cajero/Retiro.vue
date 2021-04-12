@@ -1,87 +1,94 @@
 <template>
   <div class="area">
     <cabecera />
-    <br/>
+    <br />
     <div class="funciones">
       <h3>Retiro</h3>
     </div>
     <sui-divider hidden />
     <sui-tab class="panel">
-      <sui-tab-pane  icon="chart bar outline icon" title="Consulta">
+      <sui-tab-pane icon="dollar sign icon" title="Retiro">
         <div class="table">
           <div class="ui grid container">
             <div class="four wide column">
               <div>
-                <sui-card>
+                <sui-card class="centered raised">
                   <img src="../../assets/logo.png" />
                   <sui-card-content>
-                    <sui-card-header>Daniel Beltrán</sui-card-header>
+                    <sui-card-header>Daniel</sui-card-header>
                   </sui-card-content>
                 </sui-card>
-                <sui-card
-                  style="
-                    margin-top: 7%;
-                    position: relative !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                  "
-                >
-                  <label style="margin-top: 5%; margin-bottom: -5%"
-                    >Detalles de venta</label
-                  ><br />
-                  <sui-button class="btnModal3" @click.native="toggle"
-                    >Ver</sui-button
-                  >
+                <sui-card class="centered raised">
+                  <sui-card-content>
+                    <sui-card-header>Detalles de venta</sui-card-header>
+                  </sui-card-content>
+                  <sui-container text-align="center">
+                    <sui-card-content extra>
+                      <sui-container text-align="center">
+                        <sui-button-group>
+                          <sui-button
+                            class="btnModal3"
+                            @click.native="toggle"
+                            primary
+                            >Ver</sui-button
+                          >
+                        </sui-button-group>
+                      </sui-container>
+                    </sui-card-content>
+                  </sui-container>
                 </sui-card>
               </div>
             </div>
-            <div class="nine wide column fondoForm">
-              <sui-form>
-                <sui-form-fields fields="two">
-                  <sui-form-field>
-                    <label>Total ventas del día</label>
-                    <sui-statistic-value class="labelBordes"
-                      >$5,550</sui-statistic-value
-                    >
-                  </sui-form-field>
-                  <sui-form-field>
-                    <label>Monto inicial</label>
-                    <sui-statistic-value class="labelBordes"
-                      >$500</sui-statistic-value
-                    >
-                  </sui-form-field>
-                </sui-form-fields>
-                <sui-form-fields fields="two">
-                  <sui-form-field>
-                    <label>Monto actual</label>
-                    <sui-statistic-value class="labelBordes"
-                      >$859</sui-statistic-value
-                    >
-                  </sui-form-field>
-                  <sui-form-field>
-                    <label>Total retirado</label>
-                    <sui-statistic-value class="labelBordes"
-                      >$300</sui-statistic-value
-                    >
-                  </sui-form-field>
-                </sui-form-fields>
-                <sui-form-fields fields="two">
-                  <sui-form-field>
-                    <label>Número de caja</label>
-                    <sui-statistic-value class="labelBordes">#6</sui-statistic-value>
-                  </sui-form-field>
-                  <sui-form-field>
-                    <label>Monto a retirar</label>
-                    <sui-input icon="dollar sign" />
-                  </sui-form-field>
-                </sui-form-fields>
-                <hr style="margin-top: 24%" />
-                <div>
-                  <sui-button class="btnModal">Aceptar</sui-button>
-                  <sui-button class="btnModal2">Cancelar</sui-button>
-                </div>
-              </sui-form>
+            <div class="twelve wide column">
+              <sui-segment color="blue" raised aligned="center">
+                <sui-form>
+                  <sui-form-fields fields="two">
+                    <sui-form-field>
+                      <label>Total ventas del día</label>
+                      <sui-statistic-value class="labelBordes"
+                        >$5,550</sui-statistic-value
+                      >
+                    </sui-form-field>
+                    <sui-form-field>
+                      <label>Monto inicial</label>
+                      <sui-statistic-value class="labelBordes"
+                        >$500</sui-statistic-value
+                      >
+                    </sui-form-field>
+                  </sui-form-fields>
+                  <sui-form-fields fields="two">
+                    <sui-form-field>
+                      <label>Monto actual</label>
+                      <sui-statistic-value class="labelBordes"
+                        >$859</sui-statistic-value
+                      >
+                    </sui-form-field>
+                    <sui-form-field>
+                      <label>Total retirado</label>
+                      <sui-statistic-value class="labelBordes"
+                        >$300</sui-statistic-value
+                      >
+                    </sui-form-field>
+                  </sui-form-fields>
+                  <sui-form-fields fields="two">
+                    <sui-form-field>
+                      <label>Número de caja</label>
+                      <sui-statistic-value class="labelBordes"
+                        >#6</sui-statistic-value
+                      >
+                    </sui-form-field>
+                    <sui-form-field>
+                      <label>Monto a retirar</label>
+                      <sui-input icon="dollar sign" />
+                    </sui-form-field>
+                  </sui-form-fields>
+                  <hr style="margin-top: 24%" />
+                  <div>
+                    <sui-button class="btnModal">Aceptar</sui-button>
+                    <sui-button class="btnModal2">Cancelar</sui-button>
+                  </div>
+                </sui-form>
+              </sui-segment>
             </div>
           </div>
         </div>
@@ -90,7 +97,7 @@
     <div>
       <sui-modal v-model="open">
         <sui-modal-header>Ventas del día</sui-modal-header>
-        <sui-modal-body>
+        <sui-modal-content>
           <sui-table color="blue">
             <sui-table-header>
               <sui-table-row>
@@ -121,7 +128,7 @@
               </sui-table-row>
             </sui-table-body>
           </sui-table>
-        </sui-modal-body>
+        </sui-modal-content>
         <sui-modal-actions>
           <sui-button positive @click.native="toggle"> OK </sui-button>
         </sui-modal-actions>
@@ -138,6 +145,7 @@ import Particles from "particles.vue";
 import Vue from "vue";
 //import api from "../../util/api";
 import VueRouter from "vue-router";
+import api from "../../util/api";
 
 Vue.use(VueRouter);
 Vue.use(Particles);
@@ -148,72 +156,32 @@ export default {
     cabecera,
   },
   data() {
-    return { open: false };
+    return {
+      open: false,
+      user: "",
+      id: "",
+    };
+  },
+  beforeMount() {
+    this.getUserAuthenticated();
   },
   methods: {
     toggle() {
       this.open = !this.open;
+    },
+
+    getUserAuthenticated() {
+      console.log(localStorage.getItem("id"));
+      let id = localStorage.getItem("id", id);
+      api
+        .doGet("/user/get/" + id)
+        .then((response) => (this.user = response.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
     },
   },
 };
 </script>
 
 <style>
-.funciones {
-  color: #64b5f6;
-  line-height: 50px;
-  width: 100%;
-  text-align: left;
-  margin-left: 5%;
-  border-left: 3px solid #64b5f6;
-  height: 45px;
-}
-.funciones > h3 {
-  line-height: 50px;
-  margin-left: 0.5%;
-}
-.btnModal {
-  background-color: #64b5f6 !important;
-  color: white !important;
-  margin-bottom: -2% !important;
-}
-.btnModal2 {
-  background-color: red !important;
-  color: white !important;
-  margin-bottom: -2% !important;
-}
-
-.btnModal3 {
-  background-color: #64b5f6 !important;
-  color: white !important;
-  width: 25% !important;
-  margin-bottom: 5% !important;
-}
-
-.fondoForm {
-  background-color: white;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgba(165, 165, 165, 0.726);
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-.fondoForm2 {
-  background-color: white;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgba(165, 165, 165, 0.726);
-  margin-top: 1%;
-  margin-bottom: 1%;
-  margin-left: 2%;
-  padding-bottom: 5%;
-}
-
-.labelBordes {
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgba(165, 165, 165, 0.445);
-  padding-top: 2.5%;
-  padding-bottom: 2.5%;
-}
 </style>
