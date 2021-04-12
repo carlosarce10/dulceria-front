@@ -46,11 +46,11 @@ export default {
       },
     };
   },
-  beforeMount(){
+  beforeMount() {
     let token = localStorage.getItem("token");
-    if(token !== null){
+    if (token !== null) {
       let auth = localStorage.getItem("authority");
-      if(auth !== null && auth === 'ROLE_ADMIN'){
+      if (auth !== null && auth === "ROLE_ADMIN") {
         this.$router.push("/admin/productos");
       }
     }
@@ -90,7 +90,7 @@ export default {
           this.$swal({
             title: "Oops!",
             text: error.response.data,
-            icon: "warning"
+            icon: "warning",
           });
         });
     },
