@@ -1,33 +1,60 @@
 <template>
   <div class="border">
-    <form v-on:submit.prevent="onSubmit" class="formulario">
-      <div class="fondoForm">
-        <h2 class="login">Inicio</h2>
-        <div class="field" style="padding-top: 5%">
-          <div class="ui left icon input">
-            <input
-              v-model="user.username"
-              type="text"
-              placeholder="Usuario"
-            /><i class="user icon"></i>
+    <br />
+    <sui-container>
+      <div class="ui one column centered grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui centered small image" src="../assets/V1.png" />
           </div>
         </div>
-        <div class="field" style="padding-top: 10%; padding-bottom: 10%">
-          <div class="ui left icon input">
-            <input
-              v-model="user.password"
-              type="password"
-              placeholder="*******"
-            /><i class="lock icon"></i>
+        <br />
+        <div class="row">
+          <div class="two column">
+            <div class="ui blue text container segment raised">
+              <form
+                class="ui form login"
+                method="POST"
+                v-on:submit.prevent="onSubmit"
+              >
+                <div class="field">
+                  <h1 class="ui dividing blue header">¡Bienvenido!</h1>
+                </div>
+                <br />
+                <div class="field">
+                  <label>Usuario</label>
+                  <input
+                    v-model="user.username"
+                    type="text"
+                    name="user"
+                    placeholder="User"
+                  />
+                </div>
+                <div class="field">
+                  <label>Contraseña</label>
+                  <input
+                    v-model="user.password"
+                    type="password"
+                    name="pass"
+                    placeholder="Password"
+                  />
+                </div>
+                <div
+                  class="ui blue animated button primary"
+                  tabindex="0"
+                  @click="authenticate()"
+                >
+                  <div class="visible content">Iniciar Sesión</div>
+                  <div class="hidden content">
+                    <i class="right arrow icon"></i>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-        <div>
-          <sui-button @click="authenticate()" class="btnGo" primary button
-            >GO</sui-button
-          >
         </div>
       </div>
-    </form>
+    </sui-container>
   </div>
 </template>
 
@@ -98,28 +125,9 @@ export default {
 };
 </script>
 
-<style>
-.formulario {
+<style scoped>
+.centered-vertically {
+  height: 100vh;
   width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  margin-top: 15%;
-}
-.fondoForm {
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding-top: 10%;
-  padding-bottom: 10%;
-}
-
-.login {
-  padding-right: 50%;
-  color: #64b5f6;
-}
-
-.btnGo {
-  padding-left: 20% !important;
-  padding-right: 20% !important;
-  margin-bottom: 10% !important;
 }
 </style>
