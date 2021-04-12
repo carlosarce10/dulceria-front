@@ -91,6 +91,7 @@ export default {
         .then((response) => {
             console.log(response);
             localStorage.setItem("idCashbox", response.data.id);
+            localStorage.setItem("cashboxNumber", response.data.cashboxNumber);
             this.$router.push("/cajero");
         })
         .catch((e) => {

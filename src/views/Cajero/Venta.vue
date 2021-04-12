@@ -8,63 +8,45 @@
     <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane icon="chart bar outline icon" title="Venta">
-        <div class="table">
+          
+          <sui-button @click="doSale()" style="background: #64b5f6" negative circular icon="plus"/>
+          <sui-input class="custom-search" icon="search" type="text" placeholder="Buscar..." />
+          
           <sui-container style="margin-top: 2%">
-            <sui-segment ><!--basic v-if="ventas.length === 0"-->
+            <sui-segment basic v-if="ventas.length === 0">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
-            <sui-table>
+            <sui-table color="blue" v-if="ventas.length > 0">
               <sui-table-header>
                 <sui-table-row>
-                  <sui-table-header-cell text-align="center">Nombre</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">#</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Paquete</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Tipo (Menudeo/Mayoreo)</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Pieza (ml, gr, kg)</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Subtotal</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Cantidad</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Quitar Producto</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Acciones</sui-table-header-cell>
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row><!-- v-for="(d, i) in filteredProducts" :key="d.id"-->
-                  <sui-table-cell text-align="center">Apples</sui-table-cell>
-                  <sui-table-cell text-align="center">$212</sui-table-cell>
-                  <sui-table-cell text-align="center">Menudeo</sui-table-cell>
-                  <sui-table-cell text-align="center">5kg</sui-table-cell>
-                  <sui-table-cell text-align="center">25</sui-table-cell>
-                  <sui-table-cell>
-                    <sui-input style="width: 6rem;" min="1" max="99" type="number" /><!--v-model="detalles[i].quantityPackage"-->
-                  </sui-table-cell>
-                  <sui-table-cell style="display: block; margin-left: auto; margin-right: auto; " >
-                    <sui-button negative circular icon="times" />
+                <sui-table-row v-for="(venta, item) in filteredVentas" :key="venta.id">
+                  <sui-table-cell text-align="center">{{item + 1}}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{venta.date}}</sui-table-cell>
+                  <sui-table-cell text-align="center">${{venta.total}}</sui-table-cell>
+                  <sui-table-cell style="display: flex;align-items: center;justify-content: center;">
+                    <sui-button
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="eye"
+                      @click.native="getVenta(venta.id)"
+                    />
                   </sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
           </sui-container>
-        </div>
       </sui-tab-pane>
       <sui-tab-pane icon="chart bar outline icon" title="Producto">
-        <div class="table">
-          <div class="ui search">
-            <sui-button @click.native="toggle" style="background: #64b5f6" negative circular icon="plus" />
-            <div class="ui icon input">
-              <input class="prompt" type="text" placeholder="Buscar producto" v-model="search" />
-              <i class="search icon"></i>
-            </div>
-            <div class="results"></div>
-          </div>
-          <sui-container style="margin-top: 2%">
-            <sui-segment>
-              <i style="color: #6c757d" class="massive comment icon"></i><br />
-              <small style="color: #6c757d">No se encontraron registros.</small>
-            </sui-segment>
-            <div style="padding: 10px">
 
-            </div>
-          </sui-container>
-        </div>
       </sui-tab-pane>
     </sui-tab>
     
@@ -77,7 +59,7 @@ import fondo from "../../components/fondo";
 import cabecera from "../../components/headerCajero";
 import Particles from "particles.vue";
 import Vue from "vue";
-//import api from "../../util/api";
+import api from "../../util/api";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
@@ -88,21 +70,52 @@ export default {
     fondo,
     cabecera,
   },
+  computed:{
+    filteredVentas: function() {
+      return this.ventas.filter((venta) => {
+        return venta.date.toLowerCase().match(this.search.toLowerCase());
+      });
+    }
+  },
+  methods:{
+    startup(){
+      let idCashbox = localStorage.getItem("idCashbox");
+
+      api
+        .doGet("/sales/list/cashbox/"+idCashbox)
+        .then(response=>{
+          this.ventas = response.data;
+        })
+    },
+    doSale(){
+      this.$router.push("/cajero/nueva/venta");
+    }
+  },
+  mounted(){
+    this.startup();
+  },
   data() {
-    return {};
+    return {
+      search: "",
+      ventas: []
+    };
   },
 };
 </script>
 
 <style>
-.products {
-  margin-right: 5%;
-}
 
 .search {
   margin-top: -5%;
   margin-right: 5%;
   float: right;
+}
+
+.custom-search > input{
+  border-radius: 500rem !important;
+  float: right !important;
+  margin-right: 0em !important;
+  margin-left: 0.25em !important;
 }
 
 .table {

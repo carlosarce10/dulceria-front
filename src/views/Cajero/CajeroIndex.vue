@@ -15,7 +15,7 @@
           >
             <img src="../../assets/venta.png" />
             <sui-dimmer blurring :active="cardOneActive">
-              <sui-button inverted>GO</sui-button>
+              <sui-button @click="venta()" inverted>GO</sui-button>
             </sui-dimmer>
           </sui-dimmer-dimmable>
           <sui-card-content>
@@ -97,6 +97,9 @@ export default {
     consulta() {
       this.$router.push({ name: "Consultar" });
     },
+    venta(){
+      this.$router.push({ name: "Venta" });
+    }
   },
 };
 </script>
