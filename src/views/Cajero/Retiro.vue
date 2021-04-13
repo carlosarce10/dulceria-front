@@ -26,9 +26,7 @@
                     <sui-card-content extra>
                       <sui-container text-align="center">
                         <sui-button-group>
-                          <sui-button class="btnModal3" @click.native="toggle" primary >
-                            Ver
-                          </sui-button>
+                          <sui-button class="btnModal3" @click.native="toggle" primary icon="eye" negative circular />
                         </sui-button-group>
                       </sui-container>
                     </sui-card-content>
@@ -37,55 +35,40 @@
               </div>
             </div>
             <div class="twelve wide column">
-              <sui-segment color="blue" raised aligned="center">
-                <sui-form>
-                  <sui-form-fields fields="two">
-                    <sui-form-field>
-                      <label>Total ventas del día</label>
-                      <sui-statistic-value class="labelBordes"
-                        >$5,550</sui-statistic-value
-                      >
-                    </sui-form-field>
-                    <sui-form-field>
-                      <label>Monto inicial</label>
-                      <sui-statistic-value class="labelBordes"
-                        >$500</sui-statistic-value
-                      >
-                    </sui-form-field>
-                  </sui-form-fields>
-                  <sui-form-fields fields="two">
-                    <sui-form-field>
-                      <label>Monto actual</label>
-                      <sui-statistic-value class="labelBordes"
-                        >$859</sui-statistic-value
-                      >
-                    </sui-form-field>
-                    <sui-form-field>
-                      <label>Total retirado</label>
-                      <sui-statistic-value class="labelBordes"
-                        >$300</sui-statistic-value
-                      >
-                    </sui-form-field>
-                  </sui-form-fields>
-                  <sui-form-fields fields="two">
-                    <sui-form-field>
-                      <label>Número de caja</label>
-                      <sui-statistic-value class="labelBordes"
-                        >#6</sui-statistic-value
-                      >
-                    </sui-form-field>
-                    <sui-form-field>
-                      <label>Monto a retirar</label>
-                      <sui-input icon="dollar sign" />
-                    </sui-form-field>
-                  </sui-form-fields>
-                  <hr style="margin-top: 24%" />
-                  <div>
+              <sui-segments raised aligned="center" color="blue">
+                <sui-segments horizontal>
+                  <sui-segment class="segmento" attached>
+                    <p>Ventas del día: $5,550</p>
+                  </sui-segment>
+                  <sui-segment class="segmento" attached>
+                    <p>Monto inicial: $500</p>
+                  </sui-segment>
+                </sui-segments>
+                <sui-segments horizontal>
+                  <sui-segment class="segmento" attached>
+                    <p>Monto actual: $859</p>
+                  </sui-segment>
+                  <sui-segment class="segmento" attached>
+                    <p>Total retirado: $300</p>
+                  </sui-segment>
+                </sui-segments>
+                <sui-segments horizontal >
+                  <sui-segment class="segmento" attached>
+                    <p>No. caja: #6</p>
+                  </sui-segment>
+                  <sui-segment class="segmento" attached>
+                    <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  fluid/></p>
+                  </sui-segment>
+                </sui-segments>
+                <sui-segments horizontal >
+                  <sui-segment class="segmento" attached>
                     <sui-button class="btnModal">Aceptar</sui-button>
+                  </sui-segment>
+                  <sui-segment class="segmento" attached>
                     <sui-button class="btnModal2">Cancelar</sui-button>
-                  </div>
-                </sui-form>
-              </sui-segment>
+                  </sui-segment>
+                </sui-segments>
+              </sui-segments>
             </div>
           </div>
         </div>
@@ -98,12 +81,7 @@
         <sui-modal-content>
           <div class="ui search">
             <div class="ui icon input">
-              <input
-                class="prompt"
-                type="text"
-                placeholder="Buscar producto"
-                v-model="search"
-              />
+              <input class="prompt" type="text" placeholder="Buscar fecha" v-model="search" />
               <i class="search icon"></i>
             </div>
             <div class="results"></div>
@@ -117,22 +95,18 @@
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center">#</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">No. caja</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">Fecha</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">Total</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Cajero</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">Detalles de venta</sui-table-header-cell>
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row v-for="(venta, item) in filteredSales" :key="venta.id">
                   <sui-table-header-cell text-align="center">{{ item + 1 }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">{{ venta.cashbox.cashboxNumber }}</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">{{ venta.date }}</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">${{ venta.total }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">{{ venta.user.username }}</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">
-                    <sui-button style="display: block; margin-left: auto; margin-right: auto;" class="btnModal" @click.native="getVenta(venta.id)">
+                    <sui-button style=" margin-left: auto; margin-right: auto;" class="btnModal" @click.native="getVenta(venta.id)" icon="eye" negative circular>
                       Ver
                     </sui-button>
                   </sui-table-header-cell>
@@ -141,114 +115,119 @@
             </sui-table>
           </sui-container>
         </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button positive @click.native="toggle" type="button">
+            OK
+          </sui-button>
+        </sui-modal-actions>
       </sui-modal>
     </div>
     <div>
-          <sui-modal v-model="open2"><!---->
-            <sui-modal-header>Ventas</sui-modal-header>
-            <sui-modal-content scrolling>
-              <sui-grid :columns="3" divided>
-                <sui-grid-row stretched>
-                  <sui-grid-colum>
-                    <sui-segment color="violet">
-                      <sui-grid>
-                        <sui-grid-row>
-                          <sui-grid-colum :width="8">
-                            <sui-segment color="blue" aligned="center" compact>
-                              <sui-icon name="cube" size="large" color="blue" circular/>
-                              <sui-divider/>
-                              Producto
-                              <sui-icon title="Precio menudeo" color="orange" name="circle"/>
-                              <sui-icon title="Precio mayoreo" color="yellow" name="circle"  />
-                            </sui-segment>
-                          </sui-grid-colum>
-                          <sui-grid-colum :width="8">
-                            <sui-segment color="red" aligned="center" compact>
-                              <sui-icon name="cubes" size="large" color="red" circular/>
-                              <sui-divider/>
-                              Paquete
-                              <sui-icon title="Precio del paquete" color="red" name="circle"/>
-                            </sui-segment>
-                          </sui-grid-colum>
-                        </sui-grid-row>
-                      </sui-grid>
-                    </sui-segment>
-                  </sui-grid-colum>
-                  <sui-grid-colum>
-                    <sui-segment color="green" aligned="center">
-                      <b>Total: ${{ venta.total }} MXN</b>
-                    </sui-segment>
-                    <sui-segment color="teal" aligned="center">
-                      <b>Cajero: {{ venta.user.username }}</b>
-                    </sui-segment>
-                  </sui-grid-colum>
-                  <sui-grid-colum>
-                    <sui-segment color="orange" aligned="center">
-                      <b>No. Caja: #{{ this.id }}</b>
-                    </sui-segment>
-                    <sui-segment color="yellow" aligned="center">
-                      <b>Fecha: {{ venta.date }}</b>
-                    </sui-segment>
-                  </sui-grid-colum>
-                </sui-grid-row>
-              </sui-grid>
-              <sui-table color="blue">
-                <sui-table-header>
-                  <sui-table-row>
-                    <sui-table-header-cell text-align="center">#</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Producto/Paquete</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Cantidad</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Subtotal</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Descuento</sui-table-header-cell>
-                    <sui-table-header-cell text-align="center">Monto descontado</sui-table-header-cell>
-                  </sui-table-row>
-                </sui-table-header>
-                <sui-table-body>
-                  <sui-table-row v-for="(vent, item) in this.venta.details" :key="vent.id"><!---->
-                    <sui-table-cell text-align="left">
-                      {{ item + 1 }}
-                    </sui-table-cell>
-                    <sui-table-cell text-align="left" v-if="vent.packagee !== null"><!---->
-                      <sui-icon color="red" name="cubes" circular />
-                      {{ vent.packagee.name }}
-                    </sui-table-cell>
-                    <sui-table-cell text-align="left" v-if="vent.product !== null"><!---->
-                      <sui-icon color="blue" name="cube" circular />
-                      {{ vent.product.name }}
-                    </sui-table-cell>
-                    <sui-table-cell v-if="vent.product !== null && vent.quantity < 100" text-align="center"><!---->
-                      <sui-icon title="Precio menudeo" color="orange" name="circle" />
-                      ${{ vent.product.retailPrice }}
-                    </sui-table-cell>
-                    <sui-table-cell v-if="vent.product !== null && vent.quantity >= 100" text-align="center"><!---->
-                      <sui-icon title="Precio mayoreo" color="yellow" name="circle"/>
-                      ${{ vent.product.wholesalePrice }}
-                    </sui-table-cell>
-                    <sui-table-cell v-if="vent.packagee !== null" text-align="center"><!---->
-                      <sui-icon title="Precio del paquete" color="red" name="circle" />
-                      ${{ vent.packagee.price }}
-                    </sui-table-cell>
-                    <sui-table-cell text-align="center">
-                      {{vent.quantity}}
-                    </sui-table-cell>
-                    <sui-table-cell text-align="center">
-                      ${{ vent.subtotal }}
-                    </sui-table-cell>
-                    <sui-table-cell text-align="center">
-                      {{ vent.discount }}%
-                    </sui-table-cell>
-                    <sui-table-cell text-align="center">
-                      ${{ vent.discountAmount }}
-                    </sui-table-cell>
-                  </sui-table-row>
-                </sui-table-body>
-              </sui-table>
-            </sui-modal-content>
-            <sui-modal-actions>
-              <sui-button positive @click.native="toggle2"> OK </sui-button>
-            </sui-modal-actions>
-          </sui-modal>
+      <sui-modal v-model="open2"><!---->
+        <sui-modal-header>Ventas</sui-modal-header>
+        <sui-modal-content scrolling>
+          <sui-grid :columns="3" divided>
+            <sui-grid-row stretched>
+              <sui-grid-column>
+                <sui-segment color="violet">
+                  <sui-grid>
+                    <sui-grid-row>
+                      <sui-grid-column :width="8">
+                        <sui-segment color="blue" aligned="center" compact>
+                          <sui-icon name="cube" size="large" color="blue" circular/>
+                          <sui-divider/>
+                          Producto
+                          <sui-icon title="Precio menudeo" color="orange" name="circle"/>
+                          <sui-icon title="Precio mayoreo" color="yellow" name="circle"  />
+                        </sui-segment>
+                      </sui-grid-column>
+                      <sui-grid-column :width="8">
+                        <sui-segment color="red" aligned="center" compact>
+                          <sui-icon name="cubes" size="large" color="red" circular/>
+                          <sui-divider/>
+                          Paquete
+                          <sui-icon title="Precio del paquete" color="red" name="circle"/>
+                        </sui-segment>
+                      </sui-grid-column>
+                    </sui-grid-row>
+                  </sui-grid>
+                </sui-segment>
+              </sui-grid-column>
+              <sui-grid-column>
+                <sui-segment color="green" aligned="center">
+                  <b>Total: ${{ venta.total }} MXN</b>
+                </sui-segment>
+                <sui-segment color="teal" aligned="center">
+                  <b>Cajero: {{ venta.user.username }}</b>
+                </sui-segment>
+              </sui-grid-column>
+              <sui-grid-column>
+                <sui-segment color="orange" aligned="center">
+                  <b>No. Caja: #{{ this.id }}</b>
+                </sui-segment>
+                <sui-segment color="yellow" aligned="center">
+                  <b>Fecha: {{ venta.date }}</b>
+                </sui-segment>
+              </sui-grid-column>
+            </sui-grid-row>
+          </sui-grid>
+          <sui-table color="blue">
+            <sui-table-header>
+              <sui-table-row>
+                <sui-table-header-cell text-align="center">#</sui-table-header-cell>
+                <sui-table-header-cell text-align="center">Producto/Paquete</sui-table-header-cell>
+                <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
+                <sui-table-header-cell text-align="center">Cantidad</sui-table-header-cell>
+                <sui-table-header-cell text-align="center">Subtotal</sui-table-header-cell>
+                <sui-table-header-cell text-align="center">Descuento</sui-table-header-cell>
+                <sui-table-header-cell text-align="center">Monto descontado</sui-table-header-cell>
+              </sui-table-row>
+            </sui-table-header>
+            <sui-table-body>
+              <sui-table-row v-for="(vent, item) in this.venta.details" :key="vent.id"><!---->
+                <sui-table-cell text-align="left">
+                  {{ item + 1 }}
+                </sui-table-cell>
+                <sui-table-cell text-align="left" v-if="vent.packagee !== null"><!---->
+                  <sui-icon color="red" name="cubes" circular />
+                  {{ vent.packagee.name }}
+                </sui-table-cell>
+                <sui-table-cell text-align="left" v-if="vent.product !== null"><!---->
+                  <sui-icon color="blue" name="cube" circular />
+                  {{ vent.product.name }}
+                </sui-table-cell>
+                <sui-table-cell v-if="vent.product !== null && vent.quantity < 100" text-align="center"><!---->
+                  <sui-icon title="Precio menudeo" color="orange" name="circle" />
+                  ${{ vent.product.retailPrice }}
+                </sui-table-cell>
+                <sui-table-cell v-if="vent.product !== null && vent.quantity >= 100" text-align="center"><!---->
+                  <sui-icon title="Precio mayoreo" color="yellow" name="circle"/>
+                  ${{ vent.product.wholesalePrice }}
+                </sui-table-cell>
+                <sui-table-cell v-if="vent.packagee !== null" text-align="center"><!---->
+                  <sui-icon title="Precio del paquete" color="red" name="circle" />
+                  ${{ vent.packagee.price }}
+                </sui-table-cell>
+                <sui-table-cell text-align="center">
+                  {{vent.quantity}}
+                </sui-table-cell>
+                <sui-table-cell text-align="center">
+                  ${{ vent.subtotal }}
+                </sui-table-cell>
+                <sui-table-cell text-align="center">
+                  {{ vent.discount }}%
+                </sui-table-cell>
+                <sui-table-cell text-align="center">
+                  ${{ vent.discountAmount }}
+                </sui-table-cell>
+              </sui-table-row>
+            </sui-table-body>
+          </sui-table>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button positive @click.native="toggle2"> OK </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
     </div>
     <fondo />
   </div>
@@ -304,7 +283,7 @@ export default {
   },
   methods: {
     startUp() {
-      this.id = localStorage.getItem("cashboxNumber");
+      this.id = localStorage.getItem("idCashbox");
       api
         .doGet("/sales/list/cashbox/"+this.id)
         .then((response) => {
@@ -352,4 +331,16 @@ export default {
 </script>
 
 <style>
+.search {
+  margin-right: 2%;
+  margin-bottom: 5px;
+}
+img {
+  height: auto;
+  width: 30%;
+  margin-right: 5%;
+}
+.segmento {
+  width: 50%
+}
 </style>
