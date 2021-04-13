@@ -8,7 +8,6 @@
             <img class="ui centered small image" src="../assets/V1.png" />
           </div>
         </div>
-        <br />
         <div class="row">
           <div class="two column">
             <div class="ui blue text container segment raised login">
