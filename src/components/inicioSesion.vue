@@ -12,6 +12,7 @@
           <div class="two column">
             <div class="ui blue text container segment raised login">
               <form
+                autocomplete="off"
                 class="ui form"
                 method="POST"
                 v-on:submit.prevent="onSubmit"
@@ -23,6 +24,7 @@
                 <div class="field">
                   <label>Usuario</label>
                   <input
+                    autocomplete="off"
                     v-model="user.username"
                     type="text"
                     name="user"
