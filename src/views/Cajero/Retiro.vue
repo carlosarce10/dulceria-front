@@ -20,18 +20,15 @@
                 </sui-card>
                 <sui-card class="centered raised">
                   <sui-card-content>
-                    <sui-card-header>Detalles de venta</sui-card-header>
+                    <sui-card-header>Ventas</sui-card-header>
                   </sui-card-content>
                   <sui-container text-align="center">
                     <sui-card-content extra>
                       <sui-container text-align="center">
                         <sui-button-group>
-                          <sui-button
-                            class="btnModal3"
-                            @click.native="toggle"
-                            primary
-                            >Ver</sui-button
-                          >
+                          <sui-button class="btnModal3" @click.native="toggle" primary >
+                            Ver
+                          </sui-button>
                         </sui-button-group>
                       </sui-container>
                     </sui-card-content>
@@ -92,47 +89,166 @@
             </div>
           </div>
         </div>
+        
       </sui-tab-pane>
     </sui-tab>
     <div>
       <sui-modal v-model="open">
-        <sui-modal-header>Ventas del día</sui-modal-header>
+        <sui-modal-header>Ventas</sui-modal-header>
         <sui-modal-content>
-          <sui-table color="blue">
-            <sui-table-header>
-              <sui-table-row>
-                <sui-table-header-cell text-align="center"
-                  >Producto/Paquete</sui-table-header-cell
-                >
-                <sui-table-header-cell text-align="center"
-                  >Cantidad</sui-table-header-cell
-                >
-                <sui-table-header-cell text-align="center"
-                  >Total</sui-table-header-cell
-                >
-                <sui-table-header-cell text-align="center"
-                  >Descuento</sui-table-header-cell
-                >
-                <sui-table-header-cell text-align="center"
-                  >Descuento de monto</sui-table-header-cell
-                >
-              </sui-table-row>
-            </sui-table-header>
-            <sui-table-body>
-              <sui-table-row>
-                <sui-table-cell text-align="center">Papas</sui-table-cell>
-                <sui-table-cell text-align="center">10</sui-table-cell>
-                <sui-table-cell text-align="center">$3,900</sui-table-cell>
-                <sui-table-cell text-align="center">$400</sui-table-cell>
-                <sui-table-cell text-align="center">$0</sui-table-cell>
-              </sui-table-row>
-            </sui-table-body>
-          </sui-table>
+          <div class="ui search">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Buscar producto"
+                v-model="search"
+              />
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+          <sui-container style="margin-top: 2%">
+            <sui-segment basic v-if="ventas.length === 0">
+              <i style="color: #6c757d" class="massive comment icon"></i><br />
+              <small style="color: #6c757d">No se encontraron registros.</small>
+            </sui-segment>
+            <sui-table v-if="ventas.length > 0" color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center">#</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">No. caja</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Fecha</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Total</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Cajero</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Detalles de venta</sui-table-header-cell>
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row v-for="(venta, item) in filteredSales" :key="venta.id">
+                  <sui-table-header-cell text-align="center">{{ item + 1 }}</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">{{ venta.cashbox.cashboxNumber }}</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">{{ venta.date }}</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">${{ venta.total }}</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">{{ venta.user.username }}</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">
+                    <sui-button style="display: block; margin-left: auto; margin-right: auto;" class="btnModal" @click.native="getVenta(venta.id)">
+                      Ver
+                    </sui-button>
+                  </sui-table-header-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
+          </sui-container>
         </sui-modal-content>
-        <sui-modal-actions>
-          <sui-button positive @click.native="toggle"> OK </sui-button>
-        </sui-modal-actions>
       </sui-modal>
+    </div>
+    <div>
+          <sui-modal v-model="open2"><!---->
+            <sui-modal-header>Ventas</sui-modal-header>
+            <sui-modal-content scrolling>
+              <sui-grid :columns="3" divided>
+                <sui-grid-row stretched>
+                  <sui-grid-colum>
+                    <sui-segment color="violet">
+                      <sui-grid>
+                        <sui-grid-row>
+                          <sui-grid-colum :width="8">
+                            <sui-segment color="blue" aligned="center" compact>
+                              <sui-icon name="cube" size="large" color="blue" circular/>
+                              <sui-divider/>
+                              Producto
+                              <sui-icon title="Precio menudeo" color="orange" name="circle"/>
+                              <sui-icon title="Precio mayoreo" color="yellow" name="circle"  />
+                            </sui-segment>
+                          </sui-grid-colum>
+                          <sui-grid-colum :width="8">
+                            <sui-segment color="red" aligned="center" compact>
+                              <sui-icon name="cubes" size="large" color="red" circular/>
+                              <sui-divider/>
+                              Paquete
+                              <sui-icon title="Precio del paquete" color="red" name="circle"/>
+                            </sui-segment>
+                          </sui-grid-colum>
+                        </sui-grid-row>
+                      </sui-grid>
+                    </sui-segment>
+                  </sui-grid-colum>
+                  <sui-grid-colum>
+                    <sui-segment color="green" aligned="center">
+                      <b>Total: ${{ venta.total }} MXN</b>
+                    </sui-segment>
+                    <sui-segment color="teal" aligned="center">
+                      <b>Cajero: {{ venta.user.username }}</b>
+                    </sui-segment>
+                  </sui-grid-colum>
+                  <sui-grid-colum>
+                    <sui-segment color="orange" aligned="center">
+                      <b>No. Caja: #{{ this.id }}</b>
+                    </sui-segment>
+                    <sui-segment color="yellow" aligned="center">
+                      <b>Fecha: {{ venta.date }}</b>
+                    </sui-segment>
+                  </sui-grid-colum>
+                </sui-grid-row>
+              </sui-grid>
+              <sui-table color="blue">
+                <sui-table-header>
+                  <sui-table-row>
+                    <sui-table-header-cell text-align="center">#</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Producto/Paquete</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Cantidad</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Subtotal</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Descuento</sui-table-header-cell>
+                    <sui-table-header-cell text-align="center">Monto descontado</sui-table-header-cell>
+                  </sui-table-row>
+                </sui-table-header>
+                <sui-table-body>
+                  <sui-table-row v-for="(vent, item) in this.venta.details" :key="vent.id"><!---->
+                    <sui-table-cell text-align="left">
+                      {{ item + 1 }}
+                    </sui-table-cell>
+                    <sui-table-cell text-align="left" v-if="vent.packagee !== null"><!---->
+                      <sui-icon color="red" name="cubes" circular />
+                      {{ vent.packagee.name }}
+                    </sui-table-cell>
+                    <sui-table-cell text-align="left" v-if="vent.product !== null"><!---->
+                      <sui-icon color="blue" name="cube" circular />
+                      {{ vent.product.name }}
+                    </sui-table-cell>
+                    <sui-table-cell v-if="vent.product !== null && vent.quantity < 100" text-align="center"><!---->
+                      <sui-icon title="Precio menudeo" color="orange" name="circle" />
+                      ${{ vent.product.retailPrice }}
+                    </sui-table-cell>
+                    <sui-table-cell v-if="vent.product !== null && vent.quantity >= 100" text-align="center"><!---->
+                      <sui-icon title="Precio mayoreo" color="yellow" name="circle"/>
+                      ${{ vent.product.wholesalePrice }}
+                    </sui-table-cell>
+                    <sui-table-cell v-if="vent.packagee !== null" text-align="center"><!---->
+                      <sui-icon title="Precio del paquete" color="red" name="circle" />
+                      ${{ vent.packagee.price }}
+                    </sui-table-cell>
+                    <sui-table-cell text-align="center">
+                      {{vent.quantity}}
+                    </sui-table-cell>
+                    <sui-table-cell text-align="center">
+                      ${{ vent.subtotal }}
+                    </sui-table-cell>
+                    <sui-table-cell text-align="center">
+                      {{ vent.discount }}%
+                    </sui-table-cell>
+                    <sui-table-cell text-align="center">
+                      ${{ vent.discountAmount }}
+                    </sui-table-cell>
+                  </sui-table-row>
+                </sui-table-body>
+              </sui-table>
+            </sui-modal-content>
+            <sui-modal-actions>
+              <sui-button positive @click.native="toggle2"> OK </sui-button>
+            </sui-modal-actions>
+          </sui-modal>
     </div>
     <fondo />
   </div>
@@ -158,21 +274,73 @@ export default {
   data() {
     return {
       open: false,
+      open2: false,
       user: "",
       id: "",
+      ventas: [],
+      venta:{
+        id: 0,
+        date: {},
+        total: 0,
+        user: {},
+        cashbox: {},
+        details: [],
+      },
+      vent:[],
+      search: "",
     };
   },
   beforeMount() {
     this.getUserAuthenticated();
+  },mounted(){
+    this.startUp();
+  },
+  computed:{
+    filteredSales: function() {
+      return this.ventas.filter((sale) => {
+        return sale.date.toLowerCase().match(this.search.toLowerCase());
+      });
+    }
   },
   methods: {
+    startUp() {
+      this.id = localStorage.getItem("cashboxNumber");
+      api
+        .doGet("/sales/list/cashbox/"+this.id)
+        .then((response) => {
+          console.log(response.data);
+          this.ventas = response.data;
+          for (let u of this.ventas) {
+            u.date = u.date.split(".")[0];
+            u.date = u.date.replace("T", " ");
+            u.date = u.date + " hrs.";
+          }
+        })
+        .catch((error) => {
+          this.$swal(error.message);
+        });
+    },
     toggle() {
       this.open = !this.open;
-    },
-
-    getUserAuthenticated() {
-      console.log(localStorage.getItem("id"));
-      let id = localStorage.getItem("id", id);
+    },toggle2() {
+      this.open2 = !this.open2;
+    },getVenta(id){
+      this.open2 = !this.open2;
+      api.doGet("/sales/get/"+id).then((response)=>{
+        this.venta.details = response.data.saleDetails;
+        console.log(this.venta.details);
+        this.venta.date = response.data.sale.date;
+        this.venta.date = this.venta.date.split(".")[0];
+        this.venta.date = this.venta.date.replace("T", " ");
+        this.venta.date = this.venta.date + " hrs.";
+        this.venta.total = response.data.sale.total;
+        this.venta.user.username = response.data.sale.user.username;
+        this.venta.cashbox.cashboxNumber = response.data.sale.cashbox.cashboxNumber;
+      }).catch((error) => {
+          this.$swal(error.message);
+      });
+    },getUserAuthenticated() {
+      let id = localStorage.getItem("idCashbox");
       api
         .doGet("/user/get/" + id)
         .then((response) => (this.user = response.data))
