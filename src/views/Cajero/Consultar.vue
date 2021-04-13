@@ -22,24 +22,24 @@
             <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
-            <sui-segment basic v-if="productos.length === 0">
+            <sui-segment basic v-if="resultTrue.length === 0">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <div style="padding: 10px">
-              <sui-card-group :items-per-row="3">
+              <sui-card-group :items-per-row="4">
                 <sui-card
                   v-for="resultTrue in filteredProducts"
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
                     <img
-                      v-if="paquetes.image !== null"
+                      v-if="resultTrue.image !== null"
                       style="width: 100px; height: 100px; margin: 0px"
                       :src="resultTrue.url"
                     />
                     <img
-                      v-if="paquetes.image === null"
+                      v-if="resultTrue.image === null"
                       style="width: 100px; height: 100px; margin: 0px"
                       src="../../assets/default.png"
                     />
@@ -178,6 +178,9 @@ import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
 import VueRouter from "vue-router";
+import { storage } from "../../firebase";
+
+const ref = storage.ref();
 
 Vue.use(VueRouter);
 Vue.use(Particles);
@@ -189,15 +192,27 @@ export default {
   },
   data() {
     return {
+      imagenes: [],
+      imagen: null,
+      imagendesc: false,
       openEdit: false,
       loading: true,
       productos: [],
       paquetes: [],
       search: "",
       searchD: "",
-      resultFalse: null,
+      resultTrue: null,
       resultCategory: "",
       resultBrand: "",
+      product: {
+        name: "",
+        netContent: "",
+        retailPrice: "",
+        wholesalePrice: "",
+        image: null,
+        brand: { id: 0 },
+        category: { id: 0 },
+      },
       productEdit: {
         id: 0,
         name: "",
@@ -214,7 +229,7 @@ export default {
   },
   computed: {
     filteredProducts: function () {
-      return this.productos.filter((product) => {
+      return this.resultTrue.filter((product) => {
         return product.name.toLowerCase().match(this.search.toLowerCase());
       });
     },
@@ -246,13 +261,25 @@ export default {
         .finally(() => (this.loading = false));
       api
         .doGet("/product/list/true")
-        .then(
-          (response) => (
-            (this.productos = response.data), console.log(response.data)
-          )
-        )
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+        .then((response) => {
+          let productos = [];
+          for (let p of response.data) {
+            p.url = "";
+            productos.push(p);
+          }
+          this.resultTrue = productos;
+          for (let p of this.resultTrue) {
+            if (p.image !== null) {
+              ref
+                .child("imagenes/productos/" + p.image)
+                .getDownloadURL()
+                .then((url) => {
+                  p.url = url;
+                });
+            }
+          }
+        })
+        .catch((error) => console.log(error));
       api
         .doGet("/package/list/true")
         .then(
@@ -300,9 +327,21 @@ export default {
   margin-right: 2%;
   margin-bottom: 5px;
 }
-img {
+.cards {
+  width: 90%;
+}
+.table {
+  margin-top: 6%;
+}
+.ui.card {
+  height: 300px !important;
+}
+.pr img {
+  width: 50%;
   height: auto;
-  width: 30%;
-  margin-right: 5%;
+}
+.panel {
+  width: 90%;
+  margin-left: 5%;
 }
 </style>
