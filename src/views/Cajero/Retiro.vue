@@ -13,9 +13,12 @@
             <div class="four wide column">
               <div>
                 <sui-card class="centered raised">
-                  <img src="../../assets/logo.png" />
+                  <sui-icon-group size="huge">
+                    <sui-icon name="circle" size="large" outline />
+                    <sui-icon name="user" />
+                  </sui-icon-group>
                   <sui-card-content>
-                    <sui-card-header>Daniel</sui-card-header>
+                    <sui-card-header>{{this.user}}</sui-card-header>
                   </sui-card-content>
                 </sui-card>
                 <sui-card class="centered raised">
@@ -26,7 +29,7 @@
                     <sui-card-content extra>
                       <sui-container text-align="center">
                         <sui-button-group>
-                          <sui-button class="btnModal3" @click.native="toggle" primary icon="eye" negative circular />
+                          <sui-button class="btnModal3" @click.native="toggle" primary icon="eye" negative circular>ver</sui-button>
                         </sui-button-group>
                       </sui-container>
                     </sui-card-content>
@@ -38,23 +41,23 @@
               <sui-segments raised aligned="center" color="blue">
                 <sui-segments horizontal>
                   <sui-segment class="segmento" attached>
-                    <p>Ventas del día: $5,550</p>
+                    <p>Ventas del día: ${{this.cashbox.totalSales}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <p>Monto inicial: $500</p>
+                    <p>Monto inicial: ${{this.cashbox.initialAmount}}</p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal>
                   <sui-segment class="segmento" attached>
-                    <p>Monto actual: $859</p>
+                    <p>Monto actual: ${{this.cashbox.amount}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <p>Total retirado: $300</p>
+                    <p>Total retirado: ${{this.cashbox.retiro}}</p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal >
                   <sui-segment class="segmento" attached>
-                    <p>No. caja: #6</p>
+                    <p>No. caja: #{{this.cashbox.cashboxNumber}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
                     <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  fluid/></p>
@@ -62,10 +65,10 @@
                 </sui-segments>
                 <sui-segments horizontal >
                   <sui-segment class="segmento" attached>
-                    <sui-button class="btnModal">Aceptar</sui-button>
+                    <sui-button class="btnModal2" icon="reply" @click="cancelar">Cancelar</sui-button>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <sui-button class="btnModal2">Cancelar</sui-button>
+                    <sui-button class="btnModal" icon="check">Retirar</sui-button>
                   </sui-segment>
                 </sui-segments>
               </sui-segments>
@@ -87,7 +90,7 @@
             <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
-            <sui-segment basic v-if="ventas.length === 0">
+            <sui-segment basic v-if="ventas.length === 0" align="center">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
@@ -265,6 +268,16 @@ export default {
         cashbox: {},
         details: [],
       },
+      cashbox:{
+        id:0,
+        amount:0,
+        cashboxNumber:0,
+        date:"",
+        initialAmount:0,
+        startTime:"",
+        totalSales:0,
+        retiro:0
+      },
       vent:[],
       search: "",
     };
@@ -284,10 +297,12 @@ export default {
   methods: {
     startUp() {
       this.id = localStorage.getItem("idCashbox");
+      this.user = localStorage.getItem("username");
+      console.log(localStorage);
       api
         .doGet("/sales/list/cashbox/"+this.id)
         .then((response) => {
-          console.log(response.data);
+          
           this.ventas = response.data;
           for (let u of this.ventas) {
             u.date = u.date.split(".")[0];
@@ -303,7 +318,10 @@ export default {
       this.open = !this.open;
     },toggle2() {
       this.open2 = !this.open2;
-    },getVenta(id){
+    },cancelar(){
+      this.$router.push("/cajero");
+    },
+    getVenta(id){
       this.open2 = !this.open2;
       api.doGet("/sales/get/"+id).then((response)=>{
         this.venta.details = response.data.saleDetails;
@@ -325,7 +343,20 @@ export default {
         .then((response) => (this.user = response.data))
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
-    },
+        
+    },getCashbox(){
+      let id = localStorage.getItem("idCashbox");
+      api.doGet("/get/"+id).then((response)=>{
+        this.cashbox.id = response.data.id;
+        this.cashbox.amount = response.data.amount;
+        this.cashbox.cashboxNumber = response.data.cashboxNumber;
+        this.cashbox.date = response.data.date;
+        this.cashbox.initialAmount = response.data.initialAmount;
+        this.cashbox.startTime = response.data.startTime;
+        this.cashbox.totalSales = response.data.totalSales;
+        this.cashbox.retiro = response.data.retiro;
+      }).catch((error) => console.log(error)).finally(() => (this.loading = false));
+    }
   },
 };
 </script>

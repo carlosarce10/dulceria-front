@@ -57,7 +57,7 @@
           >
             <img src="../../assets/cerrarcaja.png" />
             <sui-dimmer blurring :active="cardFourActive">
-              <sui-button inverted>GO</sui-button>
+              <sui-button inverted v-on:click="cerrar()">GO</sui-button>
             </sui-dimmer>
           </sui-dimmer-dimmable>
           <sui-card-content>
@@ -103,6 +103,9 @@ export default {
     retiro() {
       this.$router.push({ name: "Retiro" });
     },
+    cerrar() {
+      this.$router.push({ name: "CerrarCaja" });
+    }
   },
 };
 </script>
