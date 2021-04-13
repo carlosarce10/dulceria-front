@@ -18,6 +18,7 @@ import Descuentos from "../views/Admin/Descuentos.vue";
 import DetallesPaquete from "../views/Admin/DetallesPaquete.vue";
 import HacerVenta from "../views/Cajero/HacerVenta.vue";
 import NotFound from "../views/NotFound.vue"
+import Bitacora from "../views/Admin/Bitacora.vue";
 
 Vue.use(VueRouter);
 
@@ -28,9 +29,14 @@ const routes = [
     component: Home,
   },
   {
+    path:"/admin/bitacora",
+    name:"Bitacora",
+    component: Bitacora
+  },
+  {
     path: "/cajero",
     name: "Cajero",
-    component: Cajero,
+    component: Cajero
   },{
     path:"/cajero/abrir-caja",
     name:"AbrirCaja",

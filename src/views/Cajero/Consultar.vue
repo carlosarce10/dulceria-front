@@ -306,7 +306,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .funciones {
   color: #64b5f6;
 

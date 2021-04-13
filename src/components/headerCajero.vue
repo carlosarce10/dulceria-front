@@ -7,7 +7,12 @@
         </div>
         <div class="">
           <a class="item" href="/cajero"><i class="list ul icon"></i>Menu</a>
-          <a class="item" href="/"><i class="share square outline icon"></i>Salir</a>
+          <a class="item" href="/admin/bitacora"
+            ><i class="clipboard list icon"></i>Bitácora</a
+          >
+          <a class="item" href="/"
+            ><i class="share square outline icon"></i>Salir</a
+          >
         </div>
       </div>
     </header>
