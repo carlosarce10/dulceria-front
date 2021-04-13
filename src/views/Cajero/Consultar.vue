@@ -130,57 +130,43 @@
         </div>
       </sui-tab-pane>
     </sui-tab>
-    <div>
-      <sui-modal class="modal-small" v-model="openEdit">
-        <sui-modal-header>Detalle</sui-modal-header>
-        <sui-modal-content scrolling>
-          <sui-form>
-            <img
-              centered
-              class="pr"
-              style="width: 100px; height: 100px; margin: 0px"
-              src="../../assets/default.png"
-            />
-
-            <sui-form-field>
-              <label>Nombre del producto:</label>
-              <input disabled v-model="productEdit.name" />
-            </sui-form-field>
-            <sui-form-field>
-              <label>Contenido Neto:</label>
-              <input disabled v-model="productEdit.netContent" />
-            </sui-form-field>
-            <sui-form-field>
-              <label>Precio menudeo:</label>
-              <input disabled type="number" v-model="productEdit.retailPrice" />
-            </sui-form-field>
-            <sui-form-field>
-              <label>Precio mayoreo:</label>
-              <input
-                disabled
-                type="number"
-                v-model="productEdit.wholesalePrice"
-              />
-            </sui-form-field>
-            <sui-form-field>
-              <label>Marca del producto:</label>
-              <input disabled type="text" v-model="productEdit.brand.name" />
-            </sui-form-field>
-            <sui-form-field>
-              <label>Categoría del producto:</label>
-              <input disabled type="text" v-model="productEdit.category.name" />
-            </sui-form-field>
-
-            <br />
-          </sui-form>
-        </sui-modal-content>
-        <sui-modal-actions>
-          <sui-button positive @click.native="toggleEdit" type="submit">
-            OK
-          </sui-button>
-        </sui-modal-actions>
-      </sui-modal>
-    </div>
+    <sui-modal class="modal-small" v-model="openEdit">
+      <sui-modal-header>{{ productEdit.name }}</sui-modal-header>
+      <sui-modal-content scrolling>
+        <sui-form>
+          <sui-form-field>
+            <sui-segments raised>
+              <sui-segment>
+                <img
+                  style="margin-top: 0px; width: 100%"
+                  src="https://mk0lanoticiapwmx1x6a.kinstacdn.com/wp-content/uploads/2019/11/dulce-adiccion.jpeg"
+                />
+              </sui-segment>
+              <sui-segment><b>Nombre:</b> {{ productEdit.name }}</sui-segment>
+              <sui-segment
+                ><b>Precio:</b> {{ productEdit.retailPrice }}</sui-segment
+              >
+              <sui-segment
+                ><b>Contenido neto:</b>
+                {{ productEdit.netContent }}</sui-segment
+              >
+              <sui-segment
+                ><b>Marca:</b> {{ productEdit.brand.name }}</sui-segment
+              >
+              <sui-segment
+                ><b>Categoría:</b> {{ productEdit.category.name }}</sui-segment
+              >
+            </sui-segments>
+          </sui-form-field>
+        </sui-form>
+      </sui-modal-content>
+      <sui-modal-actions>
+        <sui-button positive @click.native="toggleEdit" type="button">
+          OK
+        </sui-button>
+      </sui-modal-actions>
+    </sui-modal>
+    <br /><br /><br />
     <fondo />
   </div>
 </template>
@@ -314,8 +300,9 @@ export default {
   margin-right: 2%;
   margin-bottom: 5px;
 }
-.pr img {
-  width: 50%;
+img {
   height: auto;
+  width: 30%;
+  margin-right: 5%;
 }
 </style>
