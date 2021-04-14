@@ -20,7 +20,6 @@
                 <div class="field">
                   <h1 class="ui dividing blue header">¡Bienvenido!</h1>
                 </div>
-                <br />
                 <div class="field">
                   <label>Usuario</label>
                   <input

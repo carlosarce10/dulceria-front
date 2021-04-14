@@ -140,6 +140,50 @@
         </sui-tab>
         <sui-divider hidden/>
         <sui-divider hidden/>
+
+      <sui-modal v-model="openV">
+        <sui-modal-header>Producto insuficiente</sui-modal-header>
+        <sui-modal-content scrolling>
+          <sui-form>
+            <sui-form-field>
+                <sui-container>
+                    <sui-segment color="yellow">
+                        <i style="float: right;" class="big yellow exclamation triangle icon"></i>
+                        <p style="font-size: 1.5em;font-weight: bold;">No hay suficiente producto en inventario para realizar la venta, lo sentimos.</p>
+                        
+                    </sui-segment>
+                    <sui-table color="blue">
+                    <sui-table-header>
+                        <sui-table-row>
+                        <sui-table-header-cell text-align="center">#</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Producto</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Cantidad en la venta</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Cantidad en inventario</sui-table-header-cell>
+                        <sui-table-header-cell text-align="center">Producto faltante</sui-table-header-cell>
+                        </sui-table-row>
+                    </sui-table-header>
+                    <sui-table-body>
+                        <sui-table-row v-for="(p, i) in productsMap" :key="i">
+                            <sui-table-cell text-align="center">{{i+1}}</sui-table-cell>
+                            <sui-table-cell text-align="center">{{p.productName}}</sui-table-cell>
+                            <sui-table-cell text-align="center">{{p.totalSale}}</sui-table-cell>
+                            <sui-table-cell text-align="center">{{p.totalStock}}</sui-table-cell>
+                            <sui-table-cell text-align="center">{{p.totalSale-p.totalStock}}</sui-table-cell>
+                        </sui-table-row>
+                    </sui-table-body>
+                    </sui-table>
+                </sui-container>
+            </sui-form-field>
+          </sui-form>
+        </sui-modal-content>
+        <sui-modal-actions>
+          <sui-button positive @click.native="toggleV()" type="button">
+            OK
+          </sui-button>
+        </sui-modal-actions>
+      </sui-modal>
+
+
       <fondo/>
   </div>
 </template>
@@ -203,7 +247,13 @@ export default {
             detalles:[],
             productos: [],
             paquetes: [],
-            seleccionado:null
+            seleccionado:null,
+            openV: false,
+            map:{
+                verify: false,
+                products: []
+            },
+            productsMap:[]
         }
     },
     methods:{
@@ -365,6 +415,9 @@ export default {
             });
 
         },
+        toggleV(){
+            this.openV = !this.openV;
+        },
         cancelarVenta(){
             this.$swal({
                 title: "¿Está seguro de cancelar la venta?",
@@ -380,6 +433,68 @@ export default {
                 }
             });
             
+        },
+        hacerVenta(){
+            console.log("DETALLES DE LA VENTA => ",this.detalles);
+            this.$swal({
+                title: "¿Está seguro de realizar la venta?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Confirmar",
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    api
+                        .doPost("/sales/verify/sale", this.detalles)
+                        .then(response=>{
+                            this.map = response.data;
+                            console.log(response.data);
+
+                            if(this.map.verify){
+                                let idCashbox = localStorage.getItem("idCashbox");
+                                let objSale = {cashbox: {id: idCashbox}, total: this.getTotal};
+                                
+                                api
+                                    .doPost("/sales/save", objSale)
+                                    .then(response=>{
+                                        let sale = response.data;
+
+                                        api
+                                            .doPost("/sales/details/save/"+sale.id,this.detalles)
+                                            .then(response=>{
+                                                console.log(response);
+                                                this.$swal({
+                                                    title:"¡La venta se ha realizado exitosamente!",
+                                                    icon:"success"
+                                                });
+                                            })
+                                            .catch(error=>{
+                                                console.log("NOT SALE => ",error.response);
+                                            })
+
+
+                                    })
+                                    .catch(error=>{
+                                        console.log(error);
+                                    })
+
+
+                            }else{
+                                this.productsMap = [];
+                                for(let p of this.map.products){
+                                    if(!p.enough){
+                                        this.productsMap.push(p);
+                                    }
+                                }
+                                this.toggleV();
+                            }
+                        })
+                        .catch(error=>{
+                            console.log(error);
+                        })
+                }
+            });
         }
     }
 }
