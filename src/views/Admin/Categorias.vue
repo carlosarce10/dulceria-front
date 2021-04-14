@@ -164,7 +164,11 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la categoría:</label>
-              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <input
+                v-model="$v.name.$model"
+                :class="status($v.name)"
+                @keypress="letterOnly"
+              />
               <div
                 class="error errorMsg"
                 v-if="!$v.name.required && $v.name.$dirty"
@@ -190,7 +194,7 @@
             positive
             @click.native="toggle"
             type="submit"
-            :disabled="!(!$v.$invalid && $v.$dirty)"
+            :disabled="!(!$v.name.$invalid && $v.name.$dirty)"
           >
             OK
           </sui-button>
@@ -209,6 +213,7 @@
               <input
                 v-model="$v.nameEdit.$model"
                 :class="status($v.nameEdit)"
+                @keypress="letterOnly"
               />
               <div
                 class="error errorMsg"
@@ -420,6 +425,14 @@ export default {
         error: validation.$error,
         dirty: validation.$dirty,
       };
+    },
+    letterOnly() {
+      let pattern = /^[A-Za-záéíóúÁÉÍÓÚÑñ ]+$/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
     },
   },
   validations: {

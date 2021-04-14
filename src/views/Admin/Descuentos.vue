@@ -317,9 +317,10 @@
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
             <input
-              type="number"
+              type="text"
               v-model="$v.discountP.$model"
               :class="status($v.discountP)"
+              @keypress="numberOnly"
             />
             <div
               class="error errorMsg"
@@ -384,9 +385,10 @@
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
             <input
-              type="number"
+              type="text"
               v-model="$v.discountM.$model"
               :class="status($v.discountM)"
+              @keypress="numberOnly"
             />
             <div
               class="error errorMsg"
@@ -452,9 +454,10 @@
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
             <input
-              type="number"
+              type="text"
               v-model="$v.discountC.$model"
               :class="status($v.discountC)"
+              @keypress="numberOnly"
             />
             <div
               class="error errorMsg"
@@ -508,9 +511,10 @@
           <sui-form-field>
             <label>Cantidad del descuento:</label>
             <input
-              type="number"
+              type="text"
               v-model="$v.discountPEdit.$model"
               :class="status($v.discountPEdit)"
+              @keypress="numberOnly"
             />
             <div
               class="error errorMsg"
@@ -558,9 +562,10 @@
           <sui-form-field>
             <label>Cantidad del descuento:</label>
             <input
-              type="number"
+              type="text"
               v-model="$v.discountMEdit.$model"
               :class="status($v.discountMEdit)"
+              @keypress="numberOnly"
             />
             <div
               class="error errorMsg"
@@ -608,9 +613,10 @@
           <sui-form-field>
             <label>Cantidad del descuento:</label>
             <input
-              type="number"
+              type="text"
               v-model="$v.discountCEdit.$model"
               :class="status($v.discountCEdit)"
+              @keypress="numberOnly"
             />
             <div
               class="error errorMsg"
@@ -1145,6 +1151,14 @@ export default {
       this.discountM = "";
       this.discountC = "";
       this.comments = "";
+    },
+    numberOnly() {
+      let pattern = /[0-9.]/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
     },
   },
   validations: {
