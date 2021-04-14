@@ -22,11 +22,14 @@
             <div class="results"></div>
           </div>
           <sui-container style="margin-top: 2%">
-            <sui-table striped color="blue">
+            <sui-table striped color="blue" size="small">
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center"
                     >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Usuario que modificó</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
                     >Acción</sui-table-header-cell
@@ -34,65 +37,40 @@
                   <sui-table-header-cell text-align="center"
                     >Fecha</sui-table-header-cell
                   >
+
                   <sui-table-header-cell text-align="center"
-                    >Datos nuevos</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Datos antiguos</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Usuario que modificó</sui-table-header-cell
-                  >
-                  <sui-table-header-cell text-align="center"
-                    >Tabla afectada</sui-table-header-cell
+                    >Acción</sui-table-header-cell
                   >
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row>
-                  <sui-table-cell text-align="center">1</sui-table-cell>
-                  <sui-table-cell text-align="center">DELETE</sui-table-cell>
-                  <sui-table-cell text-align="center"
-                    >2021-01-08</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center"></sui-table-cell>
-                  <sui-table-cell text-align="center"
-                    >Takis Fuego</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center"
-                    >fanicadenas</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center">user</sui-table-cell>
-                </sui-table-row>
-                <sui-table-row>
-                  <sui-table-cell text-align="center">1</sui-table-cell>
-                  <sui-table-cell text-align="center">DELETE</sui-table-cell>
-                  <sui-table-cell text-align="center"
-                    >2021-01-08</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center"></sui-table-cell>
-                  <sui-table-cell text-align="center"
-                    >Takis Fuego</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center"
-                    >fanicadenas</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center">user</sui-table-cell>
-                </sui-table-row>
-                <sui-table-row>
-                  <sui-table-cell text-align="center">1</sui-table-cell>
-                  <sui-table-cell text-align="center">DELETE</sui-table-cell>
-                  <sui-table-cell text-align="center"
-                    >2021-01-08</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center"></sui-table-cell>
-                  <sui-table-cell text-align="center"
-                    >Takis Fuego</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center"
-                    >fanicadenas</sui-table-cell
-                  >
-                  <sui-table-cell text-align="center">user</sui-table-cell>
+                <sui-table-row
+                  v-for="(logbook, item) in filteredBrands"
+                  :key="logbook.id"
+                >
+                  <sui-table-cell text-align="center">{{
+                    item + 1
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    logbook.user
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    logbook.action
+                  }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{
+                    logbook.date
+                  }}</sui-table-cell>
+
+                  <sui-table-cell text-align="center">
+                    <sui-button
+                      @click.native="toggleEdit(logbook.id)"
+                      id="editar"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="eye"
+                    />
+                  </sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
@@ -100,18 +78,90 @@
         </div>
       </sui-tab-pane>
     </sui-tab>
+    <sui-modal v-model="openEdit">
+      <sui-modal-header>Detalle Movimiento</sui-modal-header>
+      <sui-modal-content scrolling>
+        <sui-segment raised color="blue">
+          <h1 class="ui header">
+            <div class="sub header">
+              <i class="folder open icon"></i>Movimiento:
+              {{ logbookEdit.action }}
+            </div>
+          </h1></sui-segment
+        >
+        <sui-segments horizontal>
+          <sui-segment raised color="pink">
+            <h2 class="ui header">
+              <div class="sub header">
+                <i class="user icon"></i>Usuario: {{ logbookEdit.user }}
+              </div>
+            </h2>
+          </sui-segment>
+          <sui-segment raised color="purple">
+            <h2 class="ui header">
+              <div class="sub header">
+                <i class="calendar icon"></i>Fecha: {{ logbookEdit.date }}
+              </div>
+            </h2>
+          </sui-segment>
+          <sui-segment raised color="pink">
+            <h2 class="ui header">
+              <div class="sub header">
+                <i class="th icon"></i>Tabla: {{ logbookEdit.table }}
+              </div>
+            </h2>
+          </sui-segment>
+          <sui-segment raised color="purple">
+            <h2 class="ui header">
+              <div class="sub header">
+                <i class="paper plane icon"></i>Host: {{ logbookEdit.host }}
+              </div>
+            </h2>
+          </sui-segment>
+        </sui-segments>
+        <sui-segments raised horizontal>
+          <sui-segment color="green" raised>
+            <h2 class="ui header">
+              <div class="sub header">
+                <i class="calendar times icon"></i> Datos previos:
+              </div>
+              <sui-divider />
+              <div class="sub header">
+                {{ logbookEdit.previous_log }}
+              </div>
+            </h2>
+          </sui-segment>
 
+          <sui-segment raised color="green">
+            <h2 class="ui header">
+              <div class="sub header">
+                <i class="calendar check icon"></i> Datos nuevos:
+              </div>
+              <sui-divider />
+              <div class="sub header">
+                {{ logbookEdit.next_log }}
+              </div>
+            </h2>
+          </sui-segment>
+        </sui-segments>
+      </sui-modal-content>
+      <sui-modal-actions>
+        <sui-button primary @click.native="toggleEdit" type="submit">
+          OK
+        </sui-button>
+      </sui-modal-actions>
+    </sui-modal>
     <fondo />
   </div>
 </template>
 
 <script >
 import fondo from "../../components/fondo";
-import cabecera from "../../components/headerCajero";
+import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import VueRouter from "vue-router";
-//import api from "../../util/api";
+import api from "../../util/api";
 
 Vue.use(VueRouter);
 Vue.use(Particles);
@@ -120,6 +170,58 @@ export default {
   components: {
     fondo,
     cabecera,
+  },
+  data() {
+    return {
+      logbookTrue: [],
+      action: "",
+      search: "",
+      openEdit: false,
+      logbookEdit: {
+        id: 0,
+        tableExecute: "",
+        action: "",
+        previous_log: "",
+        next_log: "",
+        user: "",
+        date: "",
+        host: "",
+        table: "",
+      },
+    };
+  },
+  beforeMount() {
+    this.getList();
+  },
+  computed: {
+    filteredBrands: function () {
+      console.log("entre");
+      return this.logbookTrue.filter((logbook) => {
+        return logbook.action.toLowerCase().match(this.search.toLowerCase());
+      });
+    },
+  },
+  methods: {
+    getList() {
+      api
+        .doGet("/logBook/list")
+        .then((response) => (this.logbookTrue = response.data))
+        .catch((error) => console.log(error))
+        .finally(() => (this.loading = false));
+    },
+    toggleEdit(id) {
+      api
+        .doGet("/logBook/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.logbookEdit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.openEdit = !this.openEdit;
+    },
   },
 };
 </script>

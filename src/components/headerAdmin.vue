@@ -30,6 +30,9 @@
           <a class="item" href="/admin/cajeros"
             ><i class="user circle outline icon"></i> Cajeros</a
           >
+          <a class="item" href="/admin/bitacora"
+            ><i class="clipboard list icon"></i>Bitácora</a
+          >
           <a class="item" href="#" @click="logout()"
             ><i class="share square outline icon"></i>Salir</a
           >
@@ -47,14 +50,14 @@ export default {
       visible: false,
     };
   },
-  beforeMount(){
+  beforeMount() {
     let token = localStorage.getItem("token");
-    if(token === null){
+    if (token === null) {
       localStorage.clear();
       this.$router.push("/");
     }
     let auth = localStorage.getItem("authority");
-    if(auth === null || auth !== 'ROLE_ADMIN'){
+    if (auth === null || auth !== "ROLE_ADMIN") {
       this.$router.push("/");
     }
   },
@@ -66,10 +69,10 @@ export default {
         this.visible = true;
       }
     },
-    logout(){
+    logout() {
       localStorage.clear();
       this.$router.push("/");
-    }
+    },
   },
 };
 </script>
