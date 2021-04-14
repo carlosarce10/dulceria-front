@@ -155,6 +155,8 @@
         </div>
       </sui-tab-pane>
     </sui-tab>
+
+    <!-- Registrar Marcas -->
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar marca</sui-modal-header>
@@ -195,6 +197,8 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+
+    <!-- Editar Marcas -->
     <div>
       <sui-modal class="modal-small" v-model="openEdit">
         <sui-modal-header>Modificar marca</sui-modal-header>
@@ -202,16 +206,19 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
-              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <input
+                v-model="$v.nameEdit.$model"
+                :class="status($v.nameEdit)"
+              />
               <div
                 class="error errorMsg"
-                v-if="!$v.name.required && $v.name.$dirty"
+                v-if="!$v.nameEdit.required && $v.nameEdit.$dirty"
               >
                 El nombre de la marca no debe estar en blanco
               </div>
               <div
                 class="error errorMsg"
-                v-if="!$v.name.minLength && $v.name.maxLength"
+                v-if="!$v.nameEdit.minLength && $v.nameEdit.maxLength"
               >
                 El nombre de la marca debe tener entre 3 y 50 carateres
               </div>
@@ -228,7 +235,7 @@
             positive
             @click.native="toggleEdit"
             type="submit"
-            :disabled="!(!$v.$invalid && $v.$dirty)"
+            :disabled="!(!$v.nameEdit.$invalid && $v.nameEdit.$dirty)"
           >
             OK
           </sui-button>
@@ -260,9 +267,9 @@ export default {
       marcasTrue: [],
       marcasFalse: [],
       resultEdit: null,
-      //id: null,
       loading: true,
       name: "",
+      nameEdit: "",
       marcaEdit: {
         id: 0,
         name: "",
@@ -308,7 +315,7 @@ export default {
         .doGet("/brand/get/" + id)
         .then((response) => {
           console.log(response);
-          this.name = response.data.name;
+          this.nameEdit = response.data.name;
           this.idEdit = response.data.id;
         })
         .catch((error) => {
@@ -320,7 +327,7 @@ export default {
     editar() {
       this.marcaEdit = {
         id: this.idEdit,
-        name: this.name,
+        name: this.nameEdit,
       };
       api
         .doPost("/brand/save", this.marcaEdit)
@@ -332,7 +339,7 @@ export default {
           console.log(response);
           this.getLists();
           this.marcaEdit.id = 0;
-          this.marcaEdit.name = "";
+          this.name = "";
         })
         .catch((error) => {
           console.log(error);
@@ -422,11 +429,11 @@ export default {
       minLength: minLength(3),
       maxLength: maxLength(50),
     },
-    /* editName: {
+    nameEdit: {
       required,
       minLength: minLength(3),
       maxLength: maxLength(50),
-    }, */
+    },
   },
 };
 </script>

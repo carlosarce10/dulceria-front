@@ -156,6 +156,7 @@
       </sui-tab-pane>
     </sui-tab>
 
+    <!-- Registrar Categorías -->
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar nueva categoría</sui-modal-header>
@@ -196,6 +197,8 @@
         </sui-modal-actions>
       </sui-modal>
     </div>
+
+    <!-- Editar Categorías -->
     <div>
       <sui-modal class="modal-small" v-model="openEdit">
         <sui-modal-header>Modificar categoría</sui-modal-header>
@@ -203,16 +206,19 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre de la marca:</label>
-              <input v-model="$v.name.$model" :class="status($v.name)" />
+              <input
+                v-model="$v.nameEdit.$model"
+                :class="status($v.nameEdit)"
+              />
               <div
                 class="error errorMsg"
-                v-if="!$v.name.required && $v.name.$dirty"
+                v-if="!$v.nameEdit.required && $v.nameEdit.$dirty"
               >
                 El nombre de la categoría no debe estar en blanco
               </div>
               <div
                 class="error errorMsg"
-                v-if="!$v.name.minLength && $v.name.maxLength"
+                v-if="!$v.nameEdit.minLength && $v.nameEdit.maxLength"
               >
                 El nombre de la categoría debe tener entre 3 y 50 carateres
               </div>
@@ -229,7 +235,7 @@
             positive
             @click.native="toggleEdit"
             type="submit"
-            :disabled="!(!$v.$invalid && $v.$dirty)"
+            :disabled="!(!$v.nameEdit.$invalid && $v.nameEdit.$dirty)"
           >
             OK
           </sui-button>
@@ -263,6 +269,7 @@ export default {
       id: null,
       loading: true,
       name: "",
+      nameEdit: "",
       categoriaEdit: {
         id: 0,
         name: "",
@@ -308,7 +315,7 @@ export default {
         .doGet("/category/get/" + id)
         .then((response) => {
           console.log(response);
-          this.name = response.data.name;
+          this.nameEdit = response.data.name;
           this.idEdit = response.data.id;
         })
         .catch((error) => {
@@ -319,7 +326,7 @@ export default {
     },
     editar() {
       this.categoriaEdit = {
-        name: this.name,
+        name: this.nameEdit,
         id: this.idEdit,
       };
       api
@@ -331,7 +338,7 @@ export default {
           });
           console.log(response);
           this.getLists();
-          this.categoriaEdit.name = "";
+          this.name = "";
           this.categoriaEdit.id = 0;
         })
         .catch((error) => {
@@ -417,6 +424,11 @@ export default {
   },
   validations: {
     name: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    },
+    nameEdit: {
       required,
       minLength: minLength(3),
       maxLength: maxLength(50),

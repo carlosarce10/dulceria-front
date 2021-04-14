@@ -6,6 +6,7 @@
       <h3>Descuentos</h3>
     </div>
 
+    <!-- LISTA DE PRODUCTOS -->
     <sui-tab class="panel">
       <sui-tab-pane icon="shopping basket icon" title="Productos">
         <div class="table">
@@ -55,20 +56,20 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="(descuento, item) in filteredDiscountP"
-                  :key="descuento.id"
+                  v-for="(descuentoP, item) in filteredDiscountP"
+                  :key="descuentoP.id"
                 >
                   <sui-table-cell text-align="center">
                     {{ item + 1 }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{ descuento.product.name }}
+                    {{ descuentoP.product.name }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{ descuento.discount }}%
+                    {{ descuentoP.discount }}%
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{ descuento.comments }}
+                    {{ descuentoP.comments }}
                   </sui-table-cell>
 
                   <sui-table-cell
@@ -79,7 +80,7 @@
                     "
                   >
                     <sui-button
-                      @click.native="getEdit(descuento.id)"
+                      @click.native="getEditP(descuentoP.id)"
                       id="editar"
                       style="background: #64b5f6"
                       negative
@@ -88,7 +89,7 @@
                     />
                     <sui-button
                       id="delete"
-                      v-on:click="eliminar(descuento.id)"
+                      v-on:click="eliminar(descuentoP.id)"
                       negative
                       circular
                       icon="times"
@@ -100,6 +101,8 @@
           </sui-container>
         </div>
       </sui-tab-pane>
+
+      <!-- LISTA DE MARCAS -->
       <sui-tab-pane icon="tags icon" title="Marcas">
         <div class="table">
           <div class="ui search">
@@ -148,20 +151,20 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row
-                  v-for="(descuento, item) in filteredDiscountM"
-                  :key="descuento.id"
+                  v-for="(descuentoM, item) in filteredDiscountM"
+                  :key="descuentoM.id"
                 >
                   <sui-table-cell text-align="center">
                     {{ item + 1 }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{ descuento.brand.name }}
+                    {{ descuentoM.brand.name }}
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{ descuento.discount }}%
+                    {{ descuentoM.discount }}%
                   </sui-table-cell>
                   <sui-table-cell text-align="center">
-                    {{ descuento.comments }}
+                    {{ descuentoM.comments }}
                   </sui-table-cell>
 
                   <sui-table-cell
@@ -172,7 +175,7 @@
                     "
                   >
                     <sui-button
-                      @click.native="getEdit(descuento.id)"
+                      @click.native="getEditM(descuentoM.id)"
                       id="editar"
                       style="background: #64b5f6"
                       negative
@@ -181,7 +184,7 @@
                     />
                     <sui-button
                       id="delete"
-                      v-on:click="eliminar(descuento.id)"
+                      v-on:click="eliminar(descuentoM.id)"
                       negative
                       circular
                       icon="times"
@@ -193,6 +196,8 @@
           </sui-container>
         </div>
       </sui-tab-pane>
+
+      <!-- LISTA DE CATEGORÍAS -->
       <sui-tab-pane icon="table icon" title="Categorías">
         <div class="table">
           <div class="ui search">
@@ -265,7 +270,7 @@
                     "
                   >
                     <sui-button
-                      @click.native="getEdit(descuento.id)"
+                      @click.native="getEditC(descuento.id)"
                       id="editar"
                       style="background: #64b5f6"
                       negative
@@ -342,7 +347,13 @@
           positive
           @click.native="modalDP()"
           type="submit"
-          :disabled="!(!$v.$invalid && $v.$dirty)"
+          :disabled="
+            !(
+              !$v.discountP.$invalid &&
+              $v.discountP.$dirty &&
+              !$v.product.$invalid
+            )
+          "
         >
           OK
         </sui-button>
@@ -389,7 +400,7 @@
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
-            <textarea v-model="discount.comments"></textarea>
+            <textarea v-model="comments"></textarea>
           </sui-form-field>
         </sui-form>
       </sui-modal-content>
@@ -403,6 +414,13 @@
           positive
           @click.native="modalDM()"
           type="submit"
+          :disabled="
+            !(
+              !$v.discountM.$invalid &&
+              $v.discountM.$dirty &&
+              !$v.brand.$invalid
+            )
+          "
         >
           OK
         </sui-button>
@@ -424,16 +442,33 @@
               placeholder="Categoría"
               search
               selection
-              v-model="discount.category.id"
+              v-model="$v.category.$model"
+              :class="status($v.category)"
             />
+            <div class="error errorMsg" v-if="!$v.category.required">
+              Debe seleccionar una categoría
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Porcentaje del descuento %:</label>
-            <input type="number" v-model="discount.discount" />
+            <input
+              type="number"
+              v-model="$v.discountC.$model"
+              :class="status($v.discountC)"
+            />
+            <div
+              class="error errorMsg"
+              v-if="!$v.discountC.required && $v.discountC.$dirty"
+            >
+              El descuento no debe estar en blanco
+            </div>
+            <div class="error errorMsg" v-if="!$v.discountC.minValue">
+              El descuento debe se mayor a 0
+            </div>
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
-            <textarea v-model="discount.comments"></textarea>
+            <textarea v-model="comments"></textarea>
           </sui-form-field>
         </sui-form>
       </sui-modal-content>
@@ -447,13 +482,21 @@
           positive
           @click.native="modalDC()"
           type="submit"
+          :disabled="
+            !(
+              !$v.discountC.$invalid &&
+              $v.discountC.$dirty &&
+              !$v.category.$invalid
+            )
+          "
         >
           OK
         </sui-button>
       </sui-modal-actions>
     </sui-modal>
 
-    <sui-modal class="modal-small" v-model="openEdit">
+    <!-- MODAL DE EDICIÓN DE DESCUENTO PARA PRODUCTO -->
+    <sui-modal class="modal-small" v-model="openEditP">
       <sui-modal-header>Editar descuento</sui-modal-header>
       <sui-modal-content>
         <sui-form>
@@ -462,13 +505,103 @@
               <label>Producto: {{ discountEdit.product.name }}</label>
             </sui-segment>
           </sui-form-field>
+          <sui-form-field>
+            <label>Cantidad del descuento:</label>
+            <input
+              type="number"
+              v-model="$v.discountPEdit.$model"
+              :class="status($v.discountPEdit)"
+            />
+            <div
+              class="error errorMsg"
+              v-if="!$v.discountPEdit.required && $v.discountPEdit.$dirty"
+            >
+              El descuento no debe estar en blanco
+            </div>
+            <div class="error errorMsg" v-if="!$v.discountPEdit.minValue">
+              El descuento debe se mayor a 0
+            </div>
+          </sui-form-field>
+          <sui-form-field>
+            <label>Comentarios:</label>
+            <textarea v-model="commentsPEdit"></textarea>
+          </sui-form-field>
+        </sui-form>
+      </sui-modal-content>
+      <sui-modal-actions style="margin-bottom: 3%">
+        <sui-button negative @click.native="toggleEditP()" type="submit">
+          Cancelar
+        </sui-button>
+        <sui-button
+          id="editar"
+          @click="editarP()"
+          positive
+          @click.native="toggleEditP()"
+          type="submit"
+          :disabled="!(!$v.discountPEdit.$invalid && $v.discountPEdit.$dirty)"
+        >
+          OK
+        </sui-button>
+      </sui-modal-actions>
+    </sui-modal>
+
+    <!-- MODAL DE EDICIÓN DE DESCUENTO PARA MARCA -->
+    <sui-modal class="modal-small" v-model="openEditM">
+      <sui-modal-header>Editar descuento</sui-modal-header>
+      <sui-modal-content>
+        <sui-form>
           <sui-form-field v-if="discountEdit.brand !== null">
-            <sui-segment color="green">
+            <sui-segment color="blue">
               <label>Marca: {{ discountEdit.brand.name }}</label>
             </sui-segment>
           </sui-form-field>
+          <sui-form-field>
+            <label>Cantidad del descuento:</label>
+            <input
+              type="number"
+              v-model="$v.discountMEdit.$model"
+              :class="status($v.discountMEdit)"
+            />
+            <div
+              class="error errorMsg"
+              v-if="!$v.discountMEdit.required && $v.discountMEdit.$dirty"
+            >
+              El descuento no debe estar en blanco
+            </div>
+            <div class="error errorMsg" v-if="!$v.discountMEdit.minValue">
+              El descuento debe se mayor a 0
+            </div>
+          </sui-form-field>
+          <sui-form-field>
+            <label>Comentarios:</label>
+            <textarea v-model="commentsMEdit"></textarea>
+          </sui-form-field>
+        </sui-form>
+      </sui-modal-content>
+      <sui-modal-actions style="margin-bottom: 3%">
+        <sui-button negative @click.native="toggleEditM()" type="submit">
+          Cancelar
+        </sui-button>
+        <sui-button
+          id="editar"
+          @click="editarM()"
+          positive
+          @click.native="toggleEditM()"
+          type="submit"
+          :disabled="!(!$v.discountMEdit.$invalid && $v.discountMEdit.$dirty)"
+        >
+          OK
+        </sui-button>
+      </sui-modal-actions>
+    </sui-modal>
+
+    <!-- MODAL DE EDICIÓN DE DESCUENTO PARA CATEGORÍA -->
+    <sui-modal class="modal-small" v-model="openEditC">
+      <sui-modal-header>Editar descuento</sui-modal-header>
+      <sui-modal-content>
+        <sui-form>
           <sui-form-field v-if="discountEdit.category !== null">
-            <sui-segment color="orange">
+            <sui-segment color="blue">
               <label>Categoría: {{ discountEdit.category.name }}</label>
             </sui-segment>
           </sui-form-field>
@@ -476,35 +609,36 @@
             <label>Cantidad del descuento:</label>
             <input
               type="number"
-              v-model="$v.discountP.$model"
-              :class="status($v.discountP)"
+              v-model="$v.discountCEdit.$model"
+              :class="status($v.discountCEdit)"
             />
             <div
               class="error errorMsg"
-              v-if="!$v.discountP.required && $v.discountP.$dirty"
+              v-if="!$v.discountCEdit.required && $v.discountCEdit.$dirty"
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountP.minValue">
+            <div class="error errorMsg" v-if="!$v.discountCEdit.minValue">
               El descuento debe se mayor a 0
             </div>
           </sui-form-field>
           <sui-form-field>
             <label>Comentarios:</label>
-            <textarea v-model="discountEdit.comments"></textarea>
+            <textarea v-model="commentsCEdit"></textarea>
           </sui-form-field>
         </sui-form>
       </sui-modal-content>
       <sui-modal-actions style="margin-bottom: 3%">
-        <sui-button negative @click.native="toggleEdit()" type="submit">
+        <sui-button negative @click.native="toggleEditC()" type="submit">
           Cancelar
         </sui-button>
         <sui-button
           id="editar"
-          @click="editar()"
+          @click="editarC()"
           positive
-          @click.native="toggleEdit()"
+          @click.native="toggleEditC()"
           type="submit"
+          :disabled="!(!$v.discountCEdit.$invalid && $v.discountCEdit.$dirty)"
         >
           OK
         </sui-button>
@@ -560,14 +694,22 @@ export default {
       openP: false,
       openM: false,
       openC: false,
-      openEdit: false,
+      openEditP: false,
+      openEditM: false,
+      openEditC: false,
       search: "",
       searchM: "",
       searchC: "",
       discountP: "",
       discountM: "",
       discountC: "",
+      discountPEdit: "",
+      discountCEdit: "",
+      discountMEdit: "",
       comments: "",
+      commentsPEdit: "",
+      commentsMEdit: "",
+      commentsCEdit: "",
       brand: "",
       category: "",
       product: "",
@@ -610,14 +752,49 @@ export default {
     modalDC() {
       this.openC = !this.openC;
     },
-    getEdit(id) {
+    getEditP(id) {
       api
         .doGet("/discount/get/" + id)
         .then((response) => {
           console.log(response);
           this.discountEdit = response.data;
-          this.discountP = response.data.discount;
-          this.toggleEdit();
+          this.discountIDEdit = response.data.id;
+          this.discountIDEditP = response.data.product.id;
+          this.discountPEdit = response.data.discount;
+          this.commentsPEdit = response.data.comments;
+          this.toggleEditP();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getEditM(id) {
+      api
+        .doGet("/discount/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.discountEdit = response.data;
+          this.MdiscountIDEdit = response.data.id;
+          this.discountIDEditM = response.data.brand.id;
+          this.discountMEdit = response.data.discount;
+          this.commentsMEdit = response.data.comments;
+          this.toggleEditM();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getEditC(id) {
+      api
+        .doGet("/discount/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.discountEdit = response.data;
+          this.CdiscountIDEdit = response.data.id;
+          this.discountIDEditC = response.data.category.id;
+          this.discountCEdit = response.data.discount;
+          this.commentsCEdit = response.data.comments;
+          this.toggleEditC();
         })
         .catch((error) => {
           console.log(error);
@@ -723,12 +900,11 @@ export default {
                 });
                 this.getLists();
                 this.discount = {
-                  discount: "",
-                  comments: null,
                   brand: { id: 0 },
                   category: { id: 0 },
                   product: { id: 0 },
                 };
+                this.onReset();
               })
               .catch((e) => {
                 this.$swal({
@@ -746,6 +922,13 @@ export default {
         });
     },
     registerDM() {
+      this.discount = {
+        brand: {
+          id: this.brand,
+        },
+        discount: this.discountM,
+        comments: this.comments,
+      };
       console.log(this.discount);
       let obj = {};
       Object.assign(obj, this.discount);
@@ -778,6 +961,7 @@ export default {
                   category: { id: 0 },
                   product: { id: 0 },
                 };
+                this.onReset();
               })
               .catch((e) => {
                 console.log(e);
@@ -796,6 +980,13 @@ export default {
         });
     },
     registerDC() {
+      this.discount = {
+        category: {
+          id: this.category,
+        },
+        discount: this.discountC,
+        comments: this.comments,
+      };
       console.log(this.discount);
       let obj = {};
       Object.assign(obj, this.discount);
@@ -828,6 +1019,7 @@ export default {
                   category: { id: 0 },
                   product: { id: 0 },
                 };
+                this.onReset();
               })
               .catch((e) => {
                 this.$swal({
@@ -870,9 +1062,12 @@ export default {
         }
       });
     },
-    editar() {
+    editarP() {
       this.discountEdit = {
-        discount: this.discountP,
+        id: this.discountIDEdit,
+        product: { id: this.discountIDEditP },
+        discount: this.discountPEdit,
+        comments: this.commentsPEdit,
       };
       api
         .doPost("/discount/save", this.discountEdit)
@@ -888,8 +1083,57 @@ export default {
           console.log(error);
         });
     },
-    toggleEdit() {
-      this.openEdit = !this.openEdit;
+    editarM() {
+      this.discountEdit = {
+        id: this.MdiscountIDEdit,
+        brand: { id: this.discountIDEditM },
+        discount: this.discountMEdit,
+        comments: this.commentsMEdit,
+      };
+      api
+        .doPost("/discount/save", this.discountEdit)
+        .then((response) => {
+          this.$swal({
+            title: "¡Descuento modificado exitosamente!",
+            icon: "success",
+          });
+          console.log(response);
+          this.getLists();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    editarC() {
+      this.discountEdit = {
+        id: this.CdiscountIDEdit,
+        category: { id: this.discountIDEditC },
+        discount: this.discountCEdit,
+        comments: this.commentsCEdit,
+      };
+      api
+        .doPost("/discount/save", this.discountEdit)
+        .then((response) => {
+          this.$swal({
+            title: "¡Descuento modificado exitosamente!",
+            icon: "success",
+          });
+          console.log(response);
+          this.getLists();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    toggleEditP() {
+      this.openEditP = !this.openEditP;
+    },
+    toggleEditM() {
+      this.openEditM = !this.openEditM;
+    },
+    toggleEditC() {
+      this.openEditC = !this.openEditC;
     },
     status(validation) {
       return {
@@ -897,12 +1141,23 @@ export default {
         dirty: validation.$dirty,
       };
     },
+    onReset() {
+      this.discountP = "";
+      this.discountM = "";
+      this.discountC = "";
+      this.comments = "";
+    },
   },
   validations: {
     discountP: { required, minValue: minValue(1) },
     discountM: { required, minValue: minValue(1) },
+    discountC: { required, minValue: minValue(1) },
+    discountPEdit: { required, minValue: minValue(1) },
+    discountMEdit: { required, minValue: minValue(1) },
+    discountCEdit: { required, minValue: minValue(1) },
     product: { required },
     brand: { required },
+    category: { required },
   },
 };
 </script>
