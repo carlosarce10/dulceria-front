@@ -60,7 +60,7 @@
                     <p>No. caja: #{{this.cashbox.cashboxNumber}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  fluid/></p>
+                    <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  v-model="dinero" fluid/></p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal >
@@ -68,7 +68,7 @@
                     <sui-button class="btnModal2" icon="reply" @click="cancelar">Cancelar</sui-button>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <sui-button class="btnModal" icon="check">Retirar</sui-button>
+                    <sui-button class="btnModal" icon="check" @click="retirar">Retirar</sui-button>
                   </sui-segment>
                 </sui-segments>
               </sui-segments>
@@ -280,12 +280,14 @@ export default {
       },
       vent:[],
       search: "",
+      dinero: null
     };
   },
   beforeMount() {
     this.getUserAuthenticated();
   },mounted(){
     this.startUp();
+    this.getCashbox();
   },
   computed:{
     filteredSales: function() {
@@ -346,7 +348,7 @@ export default {
         
     },getCashbox(){
       let id = localStorage.getItem("idCashbox");
-      api.doGet("/get/"+id).then((response)=>{
+      api.doGet("/cashbox/get/"+id).then((response)=>{
         this.cashbox.id = response.data.id;
         this.cashbox.amount = response.data.amount;
         this.cashbox.cashboxNumber = response.data.cashboxNumber;
@@ -354,8 +356,14 @@ export default {
         this.cashbox.initialAmount = response.data.initialAmount;
         this.cashbox.startTime = response.data.startTime;
         this.cashbox.totalSales = response.data.totalSales;
-        this.cashbox.retiro = response.data.retiro;
+        this.cashbox.retiro = response.data.withdrawal;
       }).catch((error) => console.log(error)).finally(() => (this.loading = false));
+    },
+    retirar(){
+      let Id = localStorage.getItem("idCashbox");
+      api.doGet("/cashbox/makeWithdrawal/"+Id+"/"+this.dinero).then((response)=>{
+        console.log(response.data);
+      }).catch((error) => console.log(error))
     }
   },
 };
