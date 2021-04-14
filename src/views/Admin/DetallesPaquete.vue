@@ -14,6 +14,8 @@
         />
       </a>
     </div>
+
+    <!-- REGISTRO DE PAQUETE -->
     <sui-tab class="panel">
       <sui-tab-pane v-if="id === 0" icon="boxes" title="Productos">
         <sui-divider horizontal>PAQUETE</sui-divider>
@@ -21,18 +23,46 @@
           <sui-grid-row>
             <sui-grid-column>
               <label class="my-label">Nombre del paquete</label>
-              <sui-input type="text" v-model="nombre" />
+              <sui-input
+                type="text"
+                v-model="$v.nombre.$model"
+                :class="status($v.nombre)"
+                @keypress="letterOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.nombre.required && $v.nombre.$dirty"
+              >
+                El nombre del paquete no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.nombre.minLength && $v.nombre.maxLength"
+              >
+                El nombre del paquete debe tener entre 3 y 50 carateres
+              </div>
             </sui-grid-column>
             <sui-grid-column>
               <label class="my-label">Precio</label>
               <sui-input
                 type="text"
                 :placeholder="getSugerido"
-                v-model="precio"
+                v-model="$v.precio.$model"
+                :class="status($v.precio)"
+                @keypress="numberOnly"
               />
+              <div
+                class="error errorMsg"
+                v-if="!$v.precio.required && $v.precio.$dirty"
+              >
+                El precio no debe estar en blanco
+              </div>
+              <div class="error errorMsg" v-if="!$v.precio.minValue">
+                El precio debe se mayor a 0
+              </div>
             </sui-grid-column>
             <sui-grid-column>
-              <label style="color:transparent;" class="my-label">.</label>
+              <label style="color: transparent" class="my-label">.</label>
               <sui-button
                 v-if="detalles.length === 0"
                 style="background: #64b5f6"
@@ -47,6 +77,14 @@
                 negative
                 @click="register()"
                 icon="pencil alternate"
+                :disabled="
+                  !(
+                    !$v.nombre.$invalid &&
+                    $v.nombre.$dirty &&
+                    !$v.precio.$invalid &&
+                    $v.precio.$dirty
+                  )
+                "
                 >Registrar paquete</sui-button
               >
             </sui-grid-column>
@@ -69,9 +107,9 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
-                <label style="color:transparent;" class="my-label">.</label>
+                <label style="color: transparent" class="my-label">.</label>
                 <sui-button
-                  style="float:left;background-color:#64b5f6"
+                  style="float: left; background-color: #64b5f6"
                   negative
                   circular
                   @click="addProductToDetails()"
@@ -79,7 +117,7 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
-                <sui-divider hidden/>
+                <sui-divider hidden />
                 <div class="ui search">
                   <div class="ui icon input">
                     <input
@@ -126,7 +164,7 @@
                 >
                 <sui-table-cell text-align="center">
                   <sui-input
-                    style="width: 6rem;"
+                    style="width: 6rem"
                     min="1"
                     max="99"
                     type="number"
@@ -134,7 +172,11 @@
                   />
                 </sui-table-cell>
                 <sui-table-cell
-                  style="display: flex;align-items: center;justify-content: center;"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
                   text-align="center"
                 >
                   <sui-button
@@ -157,24 +199,54 @@
           </sui-table>
         </sui-container>
       </sui-tab-pane>
+
+      <!-- EIDICIÓN DE PAQUETE -->
       <sui-tab-pane v-if="id !== 0" icon="boxes" title="Productos">
         <sui-divider horizontal>PAQUETE</sui-divider>
         <sui-grid :columns="3">
           <sui-grid-row>
             <sui-grid-column>
               <label class="my-label">Nombre del paquete</label>
-              <sui-input type="text" v-model="nombreE" />
+              <sui-input
+                type="text"
+                v-model="$v.nombreE.$model"
+                :class="status($v.nombreE)"
+                @keypress="letterOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.nombreE.required && $v.nombreE.$dirty"
+              >
+                El nombre del paquete no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.nombreE.minLength && $v.nombreE.maxLength"
+              >
+                El nombre del paquete debe tener entre 3 y 50 carateres
+              </div>
             </sui-grid-column>
             <sui-grid-column>
               <label class="my-label">Precio</label>
               <sui-input
                 type="text"
                 :placeholder="getSugeridoE"
-                v-model="precioE"
+                v-model="$v.precioE.$model"
+                :class="status($v.precioE)"
+                @keypress="numberOnly"
               />
+              <div
+                class="error errorMsg"
+                v-if="!$v.precioE.required && $v.precioE.$dirty"
+              >
+                El precio no debe estar en blanco
+              </div>
+              <div class="error errorMsg" v-if="!$v.precioE.minValue">
+                El precio debe se mayor a 0
+              </div>
             </sui-grid-column>
             <sui-grid-column>
-              <label style="color:transparent;" class="my-label">.</label>
+              <label style="color: transparent" class="my-label">.</label>
               <sui-button
                 v-if="detallesE.length === 0"
                 style="background: #64b5f6"
@@ -189,6 +261,14 @@
                 negative
                 @click="editar()"
                 icon="save"
+                :disabled="
+                  !(
+                    !$v.nombreE.$invalid &&
+                    $v.nombreE.$dirty &&
+                    !$v.precioE.$invalid &&
+                    $v.precioE.$dirty
+                  )
+                "
                 >Guardar</sui-button
               >
             </sui-grid-column>
@@ -211,9 +291,9 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
-                <label style="color:transparent;" class="my-label">.</label>
+                <label style="color: transparent" class="my-label">.</label>
                 <sui-button
-                  style="float:left;background-color:#64b5f6"
+                  style="float: left; background-color: #64b5f6"
                   negative
                   circular
                   @click="addProductToDetailsEdit()"
@@ -221,7 +301,7 @@
                 />
               </sui-grid-column>
               <sui-grid-column>
-                <sui-divider hidden/>
+                <sui-divider hidden />
                 <div class="ui search">
                   <div class="ui icon input">
                     <input
@@ -268,7 +348,7 @@
                 >
                 <sui-table-cell text-align="center">
                   <sui-input
-                    style="width: 6rem;"
+                    style="width: 6rem"
                     min="1"
                     max="99"
                     type="number"
@@ -276,7 +356,11 @@
                   />
                 </sui-table-cell>
                 <sui-table-cell
-                  style="display: flex;align-items: center;justify-content: center;"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
                   text-align="center"
                 >
                   <sui-button
@@ -309,7 +393,7 @@
             <sui-segments>
               <sui-segment>
                 <img
-                  style="margin-top: 0px;width: 100%;"
+                  style="margin-top: 0px; width: 100%"
                   src="https://mk0lanoticiapwmx1x6a.kinstacdn.com/wp-content/uploads/2019/11/dulce-adiccion.jpeg"
                 />
               </sui-segment>
@@ -345,6 +429,12 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
+import {
+  required,
+  minValue,
+  minLength,
+  maxLength,
+} from "vuelidate/lib/validators";
 
 Vue.use(Particles);
 export default {
@@ -371,14 +461,14 @@ export default {
       }
       return "Precio sugerido $" + sugerido;
     },
-    filteredProducts: function() {
+    filteredProducts: function () {
       return this.detalles.filter((productos) => {
         return productos.product.name
           .toLowerCase()
           .match(this.search.toLowerCase());
       });
     },
-    filteredProductEdit: function() {
+    filteredProductEdit: function () {
       return this.detallesE.filter((productos) => {
         return productos.product.name
           .toLowerCase()
@@ -423,7 +513,7 @@ export default {
       },
       idProducto: 0,
       search: "",
-      searchD:""
+      searchD: "",
     };
   },
   methods: {
@@ -638,6 +728,48 @@ export default {
           console.log(response);
         })
         .catch((error) => console.log(error));
+    },
+    status(validation) {
+      return {
+        error: validation.$error,
+        dirty: validation.$dirty,
+      };
+    },
+    numberOnly() {
+      let pattern = /[0-9.]/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
+    },
+    letterOnly() {
+      let pattern = /^[A-Za-záéíóúÁÉÍÓÚÑñ ]+$/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
+    },
+  },
+  validations: {
+    nombre: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    },
+    precio: {
+      required,
+      minValue: minValue(1),
+    },
+    nombreE: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    },
+    precioE: {
+      required,
+      minValue: minValue(1),
     },
   },
 };
