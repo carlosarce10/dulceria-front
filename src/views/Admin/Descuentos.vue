@@ -856,7 +856,6 @@ export default {
           this.listSelectProduct = [];
           for (let myproduct of this.listProduct) {
             let p = { text: "", key: 0, value: 0 };
-
             p.text = myproduct.name;
             p.key = myproduct.id;
             p.value = myproduct.id;
@@ -1063,14 +1062,14 @@ export default {
       });
     },
     editarP() {
-      this.discountEdit = {
+      this.discountEditP = {
         id: this.discountIDEdit,
         product: { id: this.discountIDEditP },
         discount: this.discountPEdit,
         comments: this.commentsPEdit,
       };
       api
-        .doPost("/discount/save", this.discountEdit)
+        .doPost("/discount/save", this.discountEditP)
         .then((response) => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
@@ -1084,14 +1083,14 @@ export default {
         });
     },
     editarM() {
-      this.discountEdit = {
+      this.discountEditM = {
         id: this.MdiscountIDEdit,
         brand: { id: this.discountIDEditM },
         discount: this.discountMEdit,
         comments: this.commentsMEdit,
       };
       api
-        .doPost("/discount/save", this.discountEdit)
+        .doPost("/discount/save", this.discountEditM)
         .then((response) => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
@@ -1106,14 +1105,14 @@ export default {
     },
 
     editarC() {
-      this.discountEdit = {
+      this.discountEditC = {
         id: this.CdiscountIDEdit,
         category: { id: this.discountIDEditC },
         discount: this.discountCEdit,
         comments: this.commentsCEdit,
       };
       api
-        .doPost("/discount/save", this.discountEdit)
+        .doPost("/discount/save", this.discountEditC)
         .then((response) => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
