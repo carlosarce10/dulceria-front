@@ -80,6 +80,9 @@ export default {
       if (auth !== null && auth === "ROLE_ADMIN") {
         this.$router.push("/admin/productos");
       }
+      if (auth !== null && auth === "ROLE_CASHIER") {
+        this.$router.push("/cajero/abrir-caja");
+      }
     }
   },
   methods: {
