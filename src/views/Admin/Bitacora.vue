@@ -37,7 +37,9 @@
                   <sui-table-header-cell text-align="center"
                     >Fecha</sui-table-header-cell
                   >
-
+                  <sui-table-header-cell text-align="center"
+                    >Tabla afectada</sui-table-header-cell
+                  >
                   <sui-table-header-cell text-align="center"
                     >Acción</sui-table-header-cell
                   >
@@ -60,7 +62,9 @@
                   <sui-table-cell text-align="center">{{
                     logbook.date
                   }}</sui-table-cell>
-
+                  <sui-table-cell text-align="center">{{
+                    logbook.table
+                  }}</sui-table-cell>
                   <sui-table-cell text-align="center">
                     <sui-button
                       @click.native="toggleEdit(logbook.id)"

@@ -105,9 +105,9 @@ export default {
             localStorage.setItem("token", token);
 
             if (authority === "ROLE_ADMIN") {
-              this.$router.push("admin/productos");
+              this.$router.push("/admin/productos");
             } else if (authority === "ROLE_CASHIER") {
-              this.$router.push("cajero/abrir-caja");
+              this.$router.push("/cajero/abrir-caja");
             }
           }
         })
