@@ -8,7 +8,7 @@
         <div class="">
           <a class="item" href="/cajero"><i class="list ul icon"></i>Menu</a>
 
-          <a class="item" href="/"
+          <a class="item" href="#" @click="logout()"
             ><i class="share square outline icon"></i>Salir</a
           >
         </div>
@@ -53,7 +53,40 @@ export default {
       visible: false,
     };
   },
+  beforeMount(){
+    let token = localStorage.getItem("token");
+    if (token !== null) {
+      let auth = localStorage.getItem("authority");
+      if (auth !== null && auth === "ROLE_CASHIER") {
+        let idCashbox = localStorage.getItem("idCashbox");
+        if(idCashbox === null){
+          this.$router.push("/cajero/abrir-caja");
+        }
+      }else{
+        this.$router.push("/");  
+      }
+    }else{
+      localStorage.clear();
+      this.$router.push("/");
+    }
+  },
   methods: {
+    logout(){
+      this.$swal({
+        title:"¿Esta seguro que desea cerrar sesión?",
+        icon:"question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+        
+      }).then(result=>{
+        if(result.isConfirmed){
+          localStorage.clear();
+          this.$router.push("/");
+        }
+      })
+    },
     onVisible() {
       if (this.visible) {
         this.visible = false;

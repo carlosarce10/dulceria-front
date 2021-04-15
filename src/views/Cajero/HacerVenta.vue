@@ -213,10 +213,13 @@ export default {
                     if(detalle.quantity < 100){
                         pricePerDiscount = detalle.product.retailPrice*(detalle.discount*0.01);
                         subtotal = (detalle.product.retailPrice-pricePerDiscount)*detalle.quantity;
+                        discountAmount = (detalle.product.retailPrice*detalle.quantity)-subtotal
                     }else{
                         pricePerDiscount = detalle.product.wholesalePrice*(detalle.discount*0.01);
-                        subtotal = (detalle.product.retailPrice-pricePerDiscount)*detalle.quantity;
+                        subtotal = (detalle.product.wholesalePrice-pricePerDiscount)*detalle.quantity;
+                        discountAmount = (detalle.product.wholesalePrice*detalle.quantity)-subtotal
                     }
+
                 }
 
                 if(detalle.packagee !== null){

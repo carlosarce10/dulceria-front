@@ -188,35 +188,25 @@
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
-              <select
-                class="ui dropdown"
-                ref="seleccionado"
+              <sui-dropdown
+                class="custom-search"
+                :options="listaSelectBrand"
+                placeholder="Marca"
+                search
+                selection
                 v-model="product.brand.id"
-              >
-                <option
-                  v-for="resultsBrand in resultsBrand"
-                  :key="resultsBrand.id"
-                  :value="resultsBrand.id"
-                >
-                  {{ resultsBrand.name }}
-                </option>
-              </select>
+              />
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
-              <select
-                class="ui dropdown"
-                ref="seleccionado"
+              <sui-dropdown
+                class="custom-search"
+                :options="listaSelectCategory"
+                placeholder="Categoría"
+                search
+                selection
                 v-model="product.category.id"
-              >
-                <option
-                  v-for="resultsCategory in resultsCategory"
-                  :key="resultsCategory.id"
-                  :value="resultsCategory.id"
-                >
-                  {{ resultsCategory.name }}
-                </option>
-              </select>
+              />
             </sui-form-field>
             <sui-form-field>
               <label>Imágen:</label>
@@ -274,35 +264,25 @@
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
-              <select
-                class="ui dropdown"
-                ref="seleccionado"
+              <sui-dropdown
+                class="custom-search"
+                :options="listaSelectBrand"
+                placeholder="Marca"
+                search
+                selection
                 v-model="productEdit.brand.id"
-              >
-                <option
-                  v-for="resultsBrand in resultsBrand"
-                  :key="resultsBrand.id"
-                  :value="resultsBrand.id"
-                >
-                  {{ resultsBrand.name }}
-                </option>
-              </select>
+              />
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
-              <select
-                class="ui dropdown"
-                ref="seleccionado"
+              <sui-dropdown
+                class="custom-search"
+                :options="listaSelectCategory"
+                placeholder="Categoría"
+                search
+                selection
                 v-model="productEdit.category.id"
-              >
-                <option
-                  v-for="resultsCategory in resultsCategory"
-                  :key="resultsCategory.id"
-                  :value="resultsCategory.id"
-                >
-                  {{ resultsCategory.name }}
-                </option>
-              </select>
+              />
             </sui-form-field>
             <sui-form-field>
               <label>Imágen:</label>
@@ -382,6 +362,8 @@ export default {
       resultsCategory: null,
       resultsBrand: null,
       resultFalse: null,
+      listaSelectBrand: [],
+      listaSelectCategory: [],
       id: null,
       search: "",
       searchD: "",
@@ -448,14 +430,32 @@ export default {
         .catch((error) => console.log(error));
       api
         .doGet("/category/list/true")
-        .then(
-          (resultsCategory) => (this.resultsCategory = resultsCategory.data)
-        )
+        .then((resultsCategory) => {
+          this.resultsCategory = resultsCategory.data;
+          this.listaSelectCategory = [];
+          for (let category of this.resultsCategory) {
+            let c = { text: "", key: 0, value: 0 };
+            c.text = category.name;
+            c.key = category.id;
+            c.value = category.id;
+            this.listaSelectCategory.push(c);
+          }
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
       api
         .doGet("/brand/list/true")
-        .then((resultsBrand) => (this.resultsBrand = resultsBrand.data))
+        .then((resultsBrand) => {
+          this.resultsBrand = resultsBrand.data;
+          this.listaSelectBrand = [];
+          for (let brand of this.resultsBrand) {
+            let b = { text: "", key: 0, value: 0 };
+            b.text = brand.name;
+            b.key = brand.id;
+            b.value = brand.id;
+            this.listaSelectBrand.push(b);
+          }
+        })
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },

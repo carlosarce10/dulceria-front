@@ -27,7 +27,7 @@
               <small style="color: #6c757d">No se encontraron registros.</small>
             </sui-segment>
             <div style="padding: 10px">
-              <sui-card-group :items-per-row="4">
+              <sui-card-group :items-per-row="3">
                 <sui-card
                   v-for="resultTrue in filteredProducts"
                   :key="resultTrue.id"

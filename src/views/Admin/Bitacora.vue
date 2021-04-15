@@ -29,8 +29,8 @@
                     >#</sui-table-header-cell
                   >
                   <sui-table-header-cell text-align="center"
-                    >Usuario que modificó</sui-table-header-cell
-                  >
+                    >Usuario
+                  </sui-table-header-cell>
                   <sui-table-header-cell text-align="center"
                     >Acción</sui-table-header-cell
                   >
@@ -130,8 +130,8 @@
                 <i class="calendar times icon"></i> Datos previos:
               </div>
               <sui-divider />
-              <div class="sub header">
-                {{ logbookEdit.previous_log }}
+              <div v-for="log in logOld" :key="log.id" class="sub header">
+                *{{ log }}
               </div>
             </h2>
           </sui-segment>
@@ -142,8 +142,8 @@
                 <i class="calendar check icon"></i> Datos nuevos:
               </div>
               <sui-divider />
-              <div class="sub header">
-                {{ logbookEdit.next_log }}
+              <div v-for="item in logNew" :key="item.id" class="sub header">
+                * {{ item }}
               </div>
             </h2>
           </sui-segment>
@@ -177,6 +177,8 @@ export default {
   },
   data() {
     return {
+      logOld: [],
+      logNew: [],
       logbookTrue: [],
       action: "",
       search: "",
@@ -199,7 +201,6 @@ export default {
   },
   computed: {
     filteredBrands: function () {
-      console.log("entre");
       return this.logbookTrue.filter((logbook) => {
         return logbook.action.toLowerCase().match(this.search.toLowerCase());
       });
@@ -217,9 +218,14 @@ export default {
       api
         .doGet("/logBook/get/" + id)
         .then((response) => {
-          console.log(response);
-
           this.logbookEdit = response.data;
+
+          this.logNew = this.logbookEdit.next_log.split("|");
+          this.logOld = this.logbookEdit.previous_log.split("|");
+
+          /* let logConvert = logArray.forEach((item) => {
+            logArray[item + 1];
+          });*/
         })
         .catch((error) => {
           console.log(error);

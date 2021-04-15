@@ -84,6 +84,23 @@ export default {
       },
     };
   },
+  beforeMount(){
+    let token = localStorage.getItem("token");
+    if (token !== null) {
+      let auth = localStorage.getItem("authority");
+      if (auth !== null && auth === "ROLE_CASHIER") {
+        let idCashbox = localStorage.getItem("idCashbox");
+        if(idCashbox !== null){
+          this.$router.push("/cajero");
+        }
+      }else{
+        this.$router.push("/");  
+      }
+    }else{
+      localStorage.clear();
+      this.$router.push("/");
+    }
+  },
   methods: {
     continuar() {
       api
