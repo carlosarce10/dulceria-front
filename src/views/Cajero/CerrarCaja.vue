@@ -41,26 +41,26 @@
             <div class="twelve wide column">
               <sui-segment color="blue" raised aligned="center">
                 <sui-segments horizontal>
-                  <sui-segment class="segmento" attached>
-                    <p>Ventas del día: ${{this.cashbox.totalSales}}</p>
+                  <sui-segment color="red" class="segmento" attached>
+                    <p>Ventas del día: {{this.cashbox.totalSales}}</p>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="red" class="segmento" attached>
                     <p>Monto inicial: ${{this.cashbox.initialAmount}}</p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="orange" class="segmento" attached>
                     <p>Monto actual: ${{this.cashbox.amount}}</p>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="orange" class="segmento" attached>
                     <p>Total retirado: ${{this.cashbox.retiro}}</p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal >
-                  <sui-segment class="segmento" attached>
+                  <sui-segment  class="segmento" attached>
                     <sui-button class="btnModal2" icon="reply" @click="cancelar">Cancelar</sui-button>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment  class="segmento" attached>
                     <sui-button class="btnModal" icon="check" @click.native="cerrar">Cerrar caja</sui-button>
                   </sui-segment>
                 </sui-segments>
@@ -97,14 +97,21 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row v-for="(venta, item) in filteredSales" :key="venta.id">
-                  <sui-table-header-cell text-align="center">{{ item + 1 }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">{{ venta.date }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">${{ venta.total }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">
-                    <sui-button style=" margin-left: auto; margin-right: auto;" class="btnModal" @click.native="getVenta(venta.id)" icon="eye" negative circular>
-                      Ver
-                    </sui-button>
-                  </sui-table-header-cell>
+                  <sui-table-cell text-align="center">{{ item + 1 }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{ venta.date }}</sui-table-cell>
+                  <sui-table-cell text-align="center">${{ venta.total }}</sui-table-cell>
+                  <sui-table-cell style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    " text-align="center">
+                    <sui-button 
+                    style="background: #64b5f6" 
+                    @click.native="getVenta(venta.id)" 
+                    icon="eye" 
+                    negative 
+                    circular/>
+                  </sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>

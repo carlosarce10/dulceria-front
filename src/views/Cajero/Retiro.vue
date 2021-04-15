@@ -39,35 +39,35 @@
             </div>
             <div class="twelve wide column">
               <sui-segments raised aligned="center" color="blue">
-                <sui-segments horizontal>
-                  <sui-segment class="segmento" attached>
+                <sui-segments  horizontal>
+                  <sui-segment color="red" class="segmento" attached>
                     <p>Ventas del día: {{this.cashbox.totalSales}}</p>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="red" class="segmento" attached>
                     <p>Monto inicial: ${{this.cashbox.initialAmount}}</p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="orange" class="segmento" attached>
                     <p>Monto actual: ${{this.cashbox.amount}}</p>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="orange" class="segmento" attached>
                     <p>Total retirado: ${{this.cashbox.retiro}}</p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal >
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="teal" class="segmento" attached>
                     <p>No. caja: #{{this.cashbox.cashboxNumber}}</p>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment color="teal" class="segmento" attached>
                     <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  v-model="dinero" fluid/></p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal >
-                  <sui-segment class="segmento" attached>
+                  <sui-segment  class="segmento" attached>
                     <sui-button class="btnModal2" icon="reply" @click="cancelar">Cancelar</sui-button>
                   </sui-segment>
-                  <sui-segment class="segmento" attached>
+                  <sui-segment   class="segmento" attached>
                     <sui-button class="btnModal" icon="check" @click="retirar">Retirar</sui-button>
                   </sui-segment>
                 </sui-segments>
@@ -105,14 +105,21 @@
               </sui-table-header>
               <sui-table-body>
                 <sui-table-row v-for="(venta, item) in filteredSales" :key="venta.id">
-                  <sui-table-header-cell text-align="center">{{ item + 1 }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">{{ venta.date }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">${{ venta.total }}</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">
-                    <sui-button style=" margin-left: auto; margin-right: auto;" class="btnModal" @click.native="getVenta(venta.id)" icon="eye" negative circular>
-                      Ver
-                    </sui-button>
-                  </sui-table-header-cell>
+                  <sui-table-cell text-align="center">{{ item + 1 }}</sui-table-cell>
+                  <sui-table-cell text-align="center">{{ venta.date }}</sui-table-cell>
+                  <sui-table-cell text-align="center">${{ venta.total }}</sui-table-cell>
+                  <sui-table-cell style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    " text-align="center">
+                    <sui-button 
+                    style="background: #64b5f6"  
+                    @click.native="getVenta(venta.id)" 
+                    icon="eye" 
+                    negative 
+                    circular/>
+                  </sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
@@ -378,7 +385,13 @@ export default {
             });
           } else {
             api.doGet("/cashbox/makeWithdrawal/"+Id+"/"+this.dinero).then((response)=>{
-              console.log(response.data);
+              if(response.data){
+                this.cashbox.amount = this.cashbox.amount - this.dinero;
+                this.$swal({
+                  title:"¡Retiro completado!",
+                  icon:"success"
+                });
+              }
               
             }).catch((error) => console.log(error));
             this.getCashbox();
