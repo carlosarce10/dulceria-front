@@ -218,6 +218,7 @@ export default {
         .doGet("/logBook/get/" + id)
         .then((response) => {
           console.log(response);
+
           this.logbookEdit = response.data;
         })
         .catch((error) => {
