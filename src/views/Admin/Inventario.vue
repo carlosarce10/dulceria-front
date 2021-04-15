@@ -63,9 +63,7 @@
                 <sui-table-cell text-align="center">{{
                   item + 1
                 }}</sui-table-cell>
-                <sui-table-cell text-align="center">{{
-                  listStock.product.name
-                }}</sui-table-cell>
+                <sui-table-cell text-align="center">{{listStock.product.name}}</sui-table-cell>
                 <sui-table-cell text-align="center">{{
                   listStock.batch
                 }}</sui-table-cell>
@@ -268,9 +266,9 @@ export default {
         quantityStock: "",
         product: { id: 0 },
       },
-      listStock: null,
-      listStockEx: null,
-      listProduct: null,
+      listStock: [],
+      listStockEx: [],
+      listProduct: [],
       open: false,
       batch: "",
       quantityStock: "",
@@ -305,32 +303,26 @@ export default {
   },
   methods: {
     threeDays(fecha){
-      console.log("AQUIIII ",fecha)
+      console.log("f=>",fecha);
+      /*
+      new Date(new Date(listStock.dateExpire.split('-')[0],listStock.dateExpire.split('-')[1]-1,listStock.dateExpire.split('-')[2]).getTime()+(86400000*3)) <= new Date()
+      new Date(fecha.split("-")[0],fecha.split("-")[1],fecha.split("-")[2])
+      */
       let dayArray = fecha.split("-")
-      console.log("AQUI ESTA ARRAY",dayArray)
-      console.log("AQUIIII ",fecha)
-      let fechaConvert = new Date(dayArray[0],dayArray[1],dayArray[2])
-      console.log("AQUI ESTA fechaConvert",fechaConvert)
+      let fechaConvert = new Date(dayArray[0],dayArray[1]-1,dayArray[2])
       let dayMili = 86400000;
-      let fechaHoyMasTres = new Date(new Date().getTime()+(dayMili*3))
-      console.log("AQUI ESTA fechaHoyMasTres",fechaHoyMasTres)
-      console.log("AQUI ESTA fechaHoyMasTres GET TIME ",fechaHoyMasTres.getTime())
-      console.log("AQUI ESTA fechaConvert GET TIME",fechaConvert.getTime())
-      console.log("Comparaaaaaa",fechaHoyMasTres.getTime() >= fechaConvert.getTime())
-
-
-
-      return fechaHoyMasTres.getTime() >= fechaConvert.getTime()
+      let fechaHoy = new Date();
+      fechaConvert = new Date(fechaConvert.getTime()-(dayMili*3))
+      console.log(fechaConvert);
+      console.log(fechaHoy);
+      
+      return fechaConvert < fechaHoy
     },
     getLists() {
       api
         .doGet("/stock/list/notExpired")
         .then((listStock) => {
-          console.log("kiwix",JSON.stringify(listStock.data))
           this.listStock = listStock.data
-          console.log("xxxxx",this.listStock[0].dateExpire)
-          console.log("yyyyy",this.listStock[1].dateExpire)
-          console.log("zzzzz",this.listStock[2].dateExpire)
         })
         .catch((error) => console.log(error));
 
@@ -416,7 +408,6 @@ export default {
 
       var fecha = anio + "-" + mes + "-" + dia;
       this.today = fecha;
-      console.log("ESTA ES LA FECHA HOY: "+fecha);
     },
     FutureDay(){
       var f = new Date();
@@ -435,9 +426,6 @@ export default {
       o3.setTime(f.getTime()+(dayMili*1))
 
       this.futureDay = o;
-      console.log("ESTA ES LA FECHA 3 DIAS DESPUES: "+o);
-      console.log("ESTA ES LA FECHA 2 DIAS DESPUES: "+o2);
-      console.log("ESTA ES LA FECHA 1 DIAS DESPUES: "+o3);
     },
     numberOnly() {
       let pattern = /[0-9.]/;
