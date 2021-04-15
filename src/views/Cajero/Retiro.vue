@@ -41,7 +41,7 @@
               <sui-segments raised aligned="center" color="blue">
                 <sui-segments horizontal>
                   <sui-segment class="segmento" attached>
-                    <p>Ventas del día: ${{this.cashbox.totalSales}}</p>
+                    <p>Ventas del día: {{this.cashbox.totalSales}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
                     <p>Monto inicial: ${{this.cashbox.initialAmount}}</p>
@@ -60,7 +60,7 @@
                     <p>No. caja: #{{this.cashbox.cashboxNumber}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  fluid/></p>
+                    <p><sui-input icon="dollar sign" placeholder="Monto a retirar"  v-model="dinero" fluid/></p>
                   </sui-segment>
                 </sui-segments>
                 <sui-segments horizontal >
@@ -68,7 +68,7 @@
                     <sui-button class="btnModal2" icon="reply" @click="cancelar">Cancelar</sui-button>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <sui-button class="btnModal" icon="check">Retirar</sui-button>
+                    <sui-button class="btnModal" icon="check" @click="retirar">Retirar</sui-button>
                   </sui-segment>
                 </sui-segments>
               </sui-segments>
@@ -139,7 +139,7 @@
                         <sui-segment color="blue" aligned="center" compact>
                           <sui-icon name="cube" size="large" color="blue" circular/>
                           <sui-divider/>
-                          Producto
+                          Producto<br/>
                           <sui-icon title="Precio menudeo" color="orange" name="circle"/>
                           <sui-icon title="Precio mayoreo" color="yellow" name="circle"  />
                         </sui-segment>
@@ -280,12 +280,14 @@ export default {
       },
       vent:[],
       search: "",
+      dinero: null
     };
   },
   beforeMount() {
     this.getUserAuthenticated();
   },mounted(){
     this.startUp();
+    this.getCashbox();
   },
   computed:{
     filteredSales: function() {
@@ -346,7 +348,7 @@ export default {
         
     },getCashbox(){
       let id = localStorage.getItem("idCashbox");
-      api.doGet("/get/"+id).then((response)=>{
+      api.doGet("/cashbox/get/"+id).then((response)=>{
         this.cashbox.id = response.data.id;
         this.cashbox.amount = response.data.amount;
         this.cashbox.cashboxNumber = response.data.cashboxNumber;
@@ -354,8 +356,36 @@ export default {
         this.cashbox.initialAmount = response.data.initialAmount;
         this.cashbox.startTime = response.data.startTime;
         this.cashbox.totalSales = response.data.totalSales;
-        this.cashbox.retiro = response.data.retiro;
+        this.cashbox.retiro = response.data.withdrawal;
       }).catch((error) => console.log(error)).finally(() => (this.loading = false));
+    },
+    retirar(){
+      let Id = localStorage.getItem("idCashbox");
+      this.$swal({
+        title:"¿Esta seguro de realizar el retiro?",
+        icon:"question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+      }).then((result)=>{
+        if(result.isConfirmed){
+          if(this.dinero<=0||this.dinero>this.cashbox.amount){
+            "Cantidad inválida"
+            this.$swal({
+              title:"¡La cantidad a retirar no es válida!",
+              icon:"warning"
+            });
+          } else {
+            api.doGet("/cashbox/makeWithdrawal/"+Id+"/"+this.dinero).then((response)=>{
+              console.log(response.data);
+              
+            }).catch((error) => console.log(error));
+            this.getCashbox();
+          }
+        }
+      });
+      
     }
   },
 };

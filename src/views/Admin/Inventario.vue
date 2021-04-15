@@ -80,6 +80,8 @@
             </sui-table-body>
           </sui-table>
         </div>
+
+        <!-- REGITRO DE NUEVO LOTE -->
         <div>
           <sui-modal class="modal-small" v-model="open">
             <sui-modal-header>Registro nuevo lote</sui-modal-header>
@@ -104,9 +106,10 @@
                 <sui-form-field>
                   <label>Cantidad:</label>
                   <input
-                    type="number"
+                    type="text"
                     v-model="$v.quantityStock.$model"
                     :class="status($v.quantityStock)"
+                    @keypress="numberOnly"
                   />
                   <div
                     class="error errorMsg"
@@ -132,9 +135,6 @@
                   >
                     La fecha no debe estar en blanco
                   </div>
-                  <!-- <div class="error errorMsg" v-if="!$v.dateExpire.minValue">
-                      La fecha no debe ser anterior a la fecha actual
-                    </div> -->
                 </sui-form-field>
                 <sui-form-field>
                   <label>Número de lote:</label>
@@ -142,6 +142,7 @@
                     type="number"
                     v-model="$v.batch.$model"
                     :class="status($v.batch)"
+                    @keypress="numberOnly"
                   />
                   <div
                     class="error errorMsg"
@@ -287,14 +288,14 @@ export default {
     this.getLists();
   },
   computed: {
-    filteredStock: function() {
+    filteredStock: function () {
       return this.listStock.filter((stock) => {
         return stock.product.name
           .toLowerCase()
           .match(this.search.toLowerCase());
       });
     },
-    filteredStockDisabled: function() {
+    filteredStockDisabled: function () {
       return this.listStockEx.filter((stock) => {
         return stock.product.name
           .toLowerCase()
@@ -437,7 +438,15 @@ export default {
       console.log("ESTA ES LA FECHA 3 DIAS DESPUES: "+o);
       console.log("ESTA ES LA FECHA 2 DIAS DESPUES: "+o2);
       console.log("ESTA ES LA FECHA 1 DIAS DESPUES: "+o3);
-    }
+    },
+    numberOnly() {
+      let pattern = /[0-9.]/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
+    },
   },
   validations: {
     batch: { required, minValue: minValue(0) },

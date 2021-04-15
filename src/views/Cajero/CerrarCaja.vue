@@ -61,7 +61,7 @@
                     <sui-button class="btnModal2" icon="reply" @click="cancelar">Cancelar</sui-button>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
-                    <sui-button class="btnModal" icon="check">Cerrar caja</sui-button>
+                    <sui-button class="btnModal" icon="check" @click.native="cerrar">Cerrar caja</sui-button>
                   </sui-segment>
                 </sui-segments>
               </sui-segment>
@@ -272,6 +272,13 @@ export default {
       };
   },mounted(){
     this.startUp();
+    this.getCashbox();
+  },computed:{
+    filteredSales: function() {
+      return this.ventas.filter((sale) => {
+        return sale.date.toLowerCase().match(this.search.toLowerCase());
+      });
+    }
   },
   methods: {
     startUp() {
@@ -298,7 +305,7 @@ export default {
       this.$router.push("/cajero");
     },getCashbox(){
       let id = localStorage.getItem("idCashbox");
-      api.doGet("/get/"+id).then((response)=>{
+      api.doGet("/cashbox/get/"+id).then((response)=>{
         this.cashbox.id = response.data.id;
         this.cashbox.amount = response.data.amount;
         this.cashbox.cashboxNumber = response.data.cashboxNumber;
@@ -306,8 +313,24 @@ export default {
         this.cashbox.initialAmount = response.data.initialAmount;
         this.cashbox.startTime = response.data.startTime;
         this.cashbox.totalSales = response.data.totalSales;
-        this.cashbox.retiro = response.data.retiro;
+        this.cashbox.retiro = response.data.withdrawal;
       }).catch((error) => console.log(error)).finally(() => (this.loading = false));
+    },cerrar(){
+      this.$swal({
+        title:"¿Esta seguro cerrar la caja?",
+        icon:"question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+      }).then((result)=>{
+        if(result.isConfirmed){
+          api.doGet("/cashbox/closeBox/"+this.cashbox.id).then((response)=>{
+            console.log(response.data);
+            this.$router.push("/cajero/abrir-caja");
+          }).catch((error) => console.log(error));
+        }
+      });
     }
   },
 };
