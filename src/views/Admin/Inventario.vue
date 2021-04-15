@@ -58,6 +58,7 @@
               <sui-table-row
                 v-for="(listStock, item) in filteredStock"
                 :key="listStock.id"
+                :negative = "threeDays(listStock.dateExpire)"
               >
                 <sui-table-cell text-align="center">{{
                   item + 1
@@ -68,7 +69,8 @@
                 <sui-table-cell text-align="center">{{
                   listStock.batch
                 }}</sui-table-cell>
-                <sui-table-cell text-align="center">{{
+                <sui-table-cell text-align="center"
+                >{{
                   listStock.dateExpire
                 }}</sui-table-cell>
                 <sui-table-cell text-align="center">{{
@@ -274,12 +276,14 @@ export default {
       product: "",
       dateExpire: "",
       today: "",
+      futureDay: "",
       search: "",
       searchD: "",
     };
   },
   beforeMount() {
     this.dateToday();
+    this.FutureDay();
     this.getLists();
   },
   computed: {
@@ -299,10 +303,34 @@ export default {
     },
   },
   methods: {
+    threeDays(fecha){
+      console.log("AQUIIII ",fecha)
+      let dayArray = fecha.split("-")
+      console.log("AQUI ESTA ARRAY",dayArray)
+      console.log("AQUIIII ",fecha)
+      let fechaConvert = new Date(dayArray[0],dayArray[1],dayArray[2])
+      console.log("AQUI ESTA fechaConvert",fechaConvert)
+      let dayMili = 86400000;
+      let fechaHoyMasTres = new Date(new Date().getTime()+(dayMili*3))
+      console.log("AQUI ESTA fechaHoyMasTres",fechaHoyMasTres)
+      console.log("AQUI ESTA fechaHoyMasTres GET TIME ",fechaHoyMasTres.getTime())
+      console.log("AQUI ESTA fechaConvert GET TIME",fechaConvert.getTime())
+      console.log("Comparaaaaaa",fechaHoyMasTres.getTime() >= fechaConvert.getTime())
+
+
+
+      return fechaHoyMasTres.getTime() >= fechaConvert.getTime()
+    },
     getLists() {
       api
         .doGet("/stock/list/notExpired")
-        .then((listStock) => (this.listStock = listStock.data))
+        .then((listStock) => {
+          console.log("kiwix",JSON.stringify(listStock.data))
+          this.listStock = listStock.data
+          console.log("xxxxx",this.listStock[0].dateExpire)
+          console.log("yyyyy",this.listStock[1].dateExpire)
+          console.log("zzzzz",this.listStock[2].dateExpire)
+        })
         .catch((error) => console.log(error));
 
       api
@@ -367,6 +395,7 @@ export default {
     },
     dateToday() {
       var f = new Date();
+
       var anio = f.getFullYear();
       var _mes = f.getMonth();
       var _dia = f.getDate();
@@ -381,12 +410,34 @@ export default {
       if (_dia < 10) {
         dia = "0" + _dia;
       } else {
-        dia = _dia.toString;
+        dia = _dia;
       }
+
       var fecha = anio + "-" + mes + "-" + dia;
       this.today = fecha;
-      console.log(fecha);
+      console.log("ESTA ES LA FECHA HOY: "+fecha);
     },
+    FutureDay(){
+      var f = new Date();
+      var o = new Date();
+      var o2 = new Date();
+      var o3 = new Date();
+      var dayMili = 86400000; 
+
+      o.setTime(f.getTime())
+      o.setTime(f.getTime()+(dayMili*3))
+
+      o2.setTime(f.getTime())
+      o2.setTime(f.getTime()+(dayMili*2))
+
+      o3.setTime(f.getTime())
+      o3.setTime(f.getTime()+(dayMili*1))
+
+      this.futureDay = o;
+      console.log("ESTA ES LA FECHA 3 DIAS DESPUES: "+o);
+      console.log("ESTA ES LA FECHA 2 DIAS DESPUES: "+o2);
+      console.log("ESTA ES LA FECHA 1 DIAS DESPUES: "+o3);
+    }
   },
   validations: {
     batch: { required, minValue: minValue(0) },
