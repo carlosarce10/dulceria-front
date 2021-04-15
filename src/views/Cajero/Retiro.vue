@@ -41,7 +41,7 @@
               <sui-segments raised aligned="center" color="blue">
                 <sui-segments horizontal>
                   <sui-segment class="segmento" attached>
-                    <p>Ventas del día: ${{this.cashbox.totalSales}}</p>
+                    <p>Ventas del día: {{this.cashbox.totalSales}}</p>
                   </sui-segment>
                   <sui-segment class="segmento" attached>
                     <p>Monto inicial: ${{this.cashbox.initialAmount}}</p>
@@ -139,7 +139,7 @@
                         <sui-segment color="blue" aligned="center" compact>
                           <sui-icon name="cube" size="large" color="blue" circular/>
                           <sui-divider/>
-                          Producto
+                          Producto<br/>
                           <sui-icon title="Precio menudeo" color="orange" name="circle"/>
                           <sui-icon title="Precio mayoreo" color="yellow" name="circle"  />
                         </sui-segment>
@@ -361,9 +361,31 @@ export default {
     },
     retirar(){
       let Id = localStorage.getItem("idCashbox");
-      api.doGet("/cashbox/makeWithdrawal/"+Id+"/"+this.dinero).then((response)=>{
-        console.log(response.data);
-      }).catch((error) => console.log(error))
+      this.$swal({
+        title:"¿Esta seguro de realizar el retiro?",
+        icon:"question",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
+        reverseButtons: true,
+      }).then((result)=>{
+        if(result.isConfirmed){
+          if(this.dinero<=0||this.dinero>this.cashbox.amount){
+            "Cantidad inválida"
+            this.$swal({
+              title:"¡La cantidad a retirar no es válida!",
+              icon:"warning"
+            });
+          } else {
+            api.doGet("/cashbox/makeWithdrawal/"+Id+"/"+this.dinero).then((response)=>{
+              console.log(response.data);
+              
+            }).catch((error) => console.log(error));
+            this.getCashbox();
+          }
+        }
+      });
+      
     }
   },
 };
