@@ -33,7 +33,7 @@
             <sui-segment basic v-if="resultTrue.length === 0">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
-            </sui-segment> 
+            </sui-segment>
             <div style="padding: 10px">
               <sui-card-group :items-per-row="3">
                 <sui-card
@@ -41,16 +41,24 @@
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
-                      <img v-if="resultTrue.image !== null" style="width:100px;height:100px;margin:0px" :src="resultTrue.url">
-                      <img v-if="resultTrue.image === null" style="width:100px;height:100px;margin:0px" src="../../assets/default.png">
+                    <img
+                      v-if="resultTrue.image !== null"
+                      style="width: 100px; height: 100px; margin: 0px"
+                      :src="resultTrue.url"
+                    />
+                    <img
+                      v-if="resultTrue.image === null"
+                      style="width: 100px; height: 100px; margin: 0px"
+                      src="../../assets/default.png"
+                    />
                   </sui-card-content>
                   <sui-card-content
                     style="
-                        height: 200px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      "
+                      height: 200px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
                   >
                     <div>
                       <sui-card-header>{{ resultTrue.name }}</sui-card-header>
@@ -110,16 +118,24 @@
                   :key="resultTrue.id"
                 >
                   <sui-card-content class="pr">
-                    <img v-if="resultTrue.image !== null" style="width:100px;height:100px;margin-top:0px" :src="resultTrue.url">
-                    <img v-if="resultTrue.image === null" style="width:100px;height:100px;margin-top:0px" src="../../assets/default.png">
+                    <img
+                      v-if="resultTrue.image !== null"
+                      style="width: 100px; height: 100px; margin-top: 0px"
+                      :src="resultTrue.url"
+                    />
+                    <img
+                      v-if="resultTrue.image === null"
+                      style="width: 100px; height: 100px; margin-top: 0px"
+                      src="../../assets/default.png"
+                    />
                   </sui-card-content>
                   <sui-card-content
                     style="
-                        height: 200px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      "
+                      height: 200px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
                   >
                     <div>
                       <sui-card-header>{{ resultTrue.name }}</sui-card-header>
@@ -148,6 +164,7 @@
       </sui-tab-pane>
     </sui-tab>
 
+    <!-- REGISTRAR NUEVO PRODUCTO -->
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar producto</sui-modal-header>
@@ -202,14 +219,24 @@
               </select>
             </sui-form-field>
             <sui-form-field>
-               <label>Imágen:</label>
-              <input @change="onFileSelected($event)" type="file" accept="image/*" />
+              <label>Imágen:</label>
+              <input
+                @change="onFileSelected($event)"
+                type="file"
+                accept="image/*"
+              />
             </sui-form-field>
-            <br>
+            <br />
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions style="margin-bottom: 3%">
-          <sui-button negative @click.native="toggle" type="submit">
+          imagen:null,
+          <sui-button
+            negative
+            @click.native="toggle"
+            @click="onReset()"
+            type="submit"
+          >
             Cancelar
           </sui-button>
           <sui-button
@@ -278,10 +305,14 @@
               </select>
             </sui-form-field>
             <sui-form-field>
-               <label>Imágen:</label>
-              <input @change="onFileSelectedEdit($event)" type="file" accept="image/*" />
+              <label>Imágen:</label>
+              <input
+                @change="onFileSelectedEdit($event)"
+                type="file"
+                accept="image/*"
+              />
             </sui-form-field>
-            <br>
+            <br />
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
@@ -310,9 +341,9 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import { storage } from '../../firebase';
+import { storage } from "../../firebase";
 
-const ref = storage.ref()
+const ref = storage.ref();
 
 Vue.use(Particles);
 export default {
@@ -323,10 +354,10 @@ export default {
   },
   data() {
     return {
-      imagenes:[],
-      imagen:null,
-      imagenEdit:null,
-      imagendesc:false,
+      imagenes: [],
+      imagen: null,
+      imagenEdit: null,
+      imagendesc: false,
       product: {
         name: "",
         netContent: "",
@@ -360,12 +391,12 @@ export default {
     this.getLists();
   },
   computed: {
-    filteredProducts: function() {
+    filteredProducts: function () {
       return this.resultTrue.filter((product) => {
         return product.name.toLowerCase().match(this.search.toLowerCase());
       });
     },
-    filteredProductsDisabled: function() {
+    filteredProductsDisabled: function () {
       return this.resultFalse.filter((product) => {
         return product.name.toLowerCase().match(this.searchD.toLowerCase());
       });
@@ -376,18 +407,20 @@ export default {
       api
         .doGet("/product/list/true")
         .then((response) => {
-          let productos = []
-          for(let p of response.data){
-            p.url = ""
-            productos.push(p)
+          let productos = [];
+          for (let p of response.data) {
+            p.url = "";
+            productos.push(p);
           }
           this.resultTrue = productos;
-          for(let p of this.resultTrue){
-            if(p.image !== null){
-              ref.child('imagenes/productos/'+p.image).getDownloadURL()
-              .then((url)=>{
-                p.url = url
-              })
+          for (let p of this.resultTrue) {
+            if (p.image !== null) {
+              ref
+                .child("imagenes/productos/" + p.image)
+                .getDownloadURL()
+                .then((url) => {
+                  p.url = url;
+                });
             }
           }
         })
@@ -395,18 +428,20 @@ export default {
       api
         .doGet("/product/list/false")
         .then((response) => {
-          let productos = []
-          for(let p of response.data){
-            p.url = ""
-            productos.push(p)
+          let productos = [];
+          for (let p of response.data) {
+            p.url = "";
+            productos.push(p);
           }
           this.resultFalse = productos;
-          for(let p of this.resultFalse){
-            if(p.image !== null){
-              ref.child('imagenes/productos/'+p.image).getDownloadURL()
-              .then((url)=>{
-                p.url = url
-              })
+          for (let p of this.resultFalse) {
+            if (p.image !== null) {
+              ref
+                .child("imagenes/productos/" + p.image)
+                .getDownloadURL()
+                .then((url) => {
+                  p.url = url;
+                });
             }
           }
         })
@@ -443,42 +478,40 @@ export default {
     },
     onFileSelected(event) {
       this.imagen = event.target.files[0];
-      console.log(this.imagen)
+      console.log(this.imagen);
     },
     onFileSelectedEdit(event) {
       this.imagenEdit = event.target.files[0];
-      console.log(this.imagenEdit)
+      console.log(this.imagenEdit);
     },
-    subirImagen(){
+    subirImagen() {
       //referencia a donde subir
-      const refImg = ref.child('imagenes/productos/'+this.imagen.name)
-      const metadata = { contentType: 'img/jpeg' }
-      refImg.put(this.imagen, metadata)
-      .then( e=> console.log(e))
+      const refImg = ref.child("imagenes/productos/" + this.imagen.name);
+      const metadata = { contentType: "img/jpeg" };
+      refImg.put(this.imagen, metadata).then((e) => console.log(e));
     },
-    subirImagenEdit(){
+    subirImagenEdit() {
       //referencia a donde subir
-      const refImg = ref.child('imagenes/productos/'+this.imagenEdit.name)
-      const metadata = { contentType: 'img/jpeg' }
-      refImg.put(this.imagenEdit, metadata)
-      .then( e=> console.log(e))
+      const refImg = ref.child("imagenes/productos/" + this.imagenEdit.name);
+      const metadata = { contentType: "img/jpeg" };
+      refImg.put(this.imagenEdit, metadata).then((e) => console.log(e));
     },
     register() {
-      if(this.imagen !== null){
-        this.subirImagen()
-        this.product.image = this.imagen.name
+      if (this.imagen !== null) {
+        this.subirImagen();
+        this.product.image = this.imagen.name;
       }
-      
+
       api
         .doPost("/product/save", this.product)
         .then((response) => {
           this.$swal({
             title: "¡Producto registrado exitosamente!",
             icon: "success",
-          }).then(result=>{
-            if(result.isConfirmed){
+          }).then((result) => {
+            if (result.isConfirmed) {
               location.reload();
-            }else{
+            } else {
               location.reload();
             }
           });
@@ -515,21 +548,21 @@ export default {
       });
     },
     editar() {
-      if(this.imagenEdit !== null){
-        this.subirImagenEdit()
-        this.productEdit.image = this.imagenEdit.name
+      if (this.imagenEdit !== null) {
+        this.subirImagenEdit();
+        this.productEdit.image = this.imagenEdit.name;
       }
-      
+
       api
         .doPost("product/save", this.productEdit)
         .then((response) => {
           this.$swal({
             title: "¡Producto modificado exitosamente!",
             icon: "success",
-          }).then(result=>{
-            if(result.isConfirmed){
+          }).then((result) => {
+            if (result.isConfirmed) {
               location.reload();
-            }else{
+            } else {
               location.reload();
             }
           });

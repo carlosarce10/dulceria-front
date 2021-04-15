@@ -328,8 +328,8 @@
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountP.minValue">
-              El descuento debe se mayor a 0
+            <div class="error errorMsg" v-if="!$v.discountP.between">
+              El descuento debe ser entre 1% - 100%
             </div>
           </sui-form-field>
           <sui-form-field>
@@ -339,7 +339,12 @@
         </sui-form>
       </sui-modal-content>
       <sui-modal-actions style="margin-bottom: 3%">
-        <sui-button negative @click.native="modalDP()" type="submit">
+        <sui-button
+          negative
+          @click.native="modalDP()"
+          @click="onReset()"
+          type="submit"
+        >
           Cancelar
         </sui-button>
         <sui-button
@@ -396,8 +401,8 @@
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountM.minValue">
-              El descuento debe se mayor a 0
+            <div class="error errorMsg" v-if="!$v.discountM.between">
+              El descuento debe ser entre 1% - 100%
             </div>
           </sui-form-field>
           <sui-form-field>
@@ -407,7 +412,12 @@
         </sui-form>
       </sui-modal-content>
       <sui-modal-actions style="margin-bottom: 3%">
-        <sui-button negative @click.native="modalDM()" type="submit">
+        <sui-button
+          negative
+          @click.native="modalDM()"
+          @click="onReset()"
+          type="submit"
+        >
           Cancelar
         </sui-button>
         <sui-button
@@ -465,8 +475,8 @@
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountC.minValue">
-              El descuento debe se mayor a 0
+            <div class="error errorMsg" v-if="!$v.discountC.between">
+              El descuento debe ser entre 1% - 100%
             </div>
           </sui-form-field>
           <sui-form-field>
@@ -476,7 +486,12 @@
         </sui-form>
       </sui-modal-content>
       <sui-modal-actions style="margin-bottom: 3%">
-        <sui-button negative @click.native="modalDC()" type="submit">
+        <sui-button
+          negative
+          @click.native="modalDC()"
+          @click="onReset()"
+          type="submit"
+        >
           Cancelar
         </sui-button>
         <sui-button
@@ -522,8 +537,8 @@
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountPEdit.minValue">
-              El descuento debe se mayor a 0
+            <div class="error errorMsg" v-if="!$v.discountPEdit.between">
+              El descuento debe ser entre 1% - 100%
             </div>
           </sui-form-field>
           <sui-form-field>
@@ -573,8 +588,8 @@
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountMEdit.minValue">
-              El descuento debe se mayor a 0
+            <div class="error errorMsg" v-if="!$v.discountMEdit.between">
+              El descuento debe ser entre 1% - 100%
             </div>
           </sui-form-field>
           <sui-form-field>
@@ -624,8 +639,8 @@
             >
               El descuento no debe estar en blanco
             </div>
-            <div class="error errorMsg" v-if="!$v.discountCEdit.minValue">
-              El descuento debe se mayor a 0
+            <div class="error errorMsg" v-if="!$v.discountCEdit.between">
+              El descuento debe ser entre 1% - 100%
             </div>
           </sui-form-field>
           <sui-form-field>
@@ -661,7 +676,7 @@ import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
-import { required, minValue } from "vuelidate/lib/validators";
+import { required, between } from "vuelidate/lib/validators";
 
 Vue.use(Particles);
 export default {
@@ -1147,6 +1162,9 @@ export default {
       };
     },
     onReset() {
+      this.product = "";
+      this.brand = "";
+      this.category = "";
       this.discountP = "";
       this.discountM = "";
       this.discountC = "";
@@ -1162,12 +1180,12 @@ export default {
     },
   },
   validations: {
-    discountP: { required, minValue: minValue(1) },
-    discountM: { required, minValue: minValue(1) },
-    discountC: { required, minValue: minValue(1) },
-    discountPEdit: { required, minValue: minValue(1) },
-    discountMEdit: { required, minValue: minValue(1) },
-    discountCEdit: { required, minValue: minValue(1) },
+    discountP: { required, between: between(1, 100) },
+    discountM: { required, between: between(1, 100) },
+    discountC: { required, between: between(1, 100) },
+    discountPEdit: { required, between: between(1, 100) },
+    discountMEdit: { required, between: between(1, 100) },
+    discountCEdit: { required, between: between(1, 100) },
     product: { required },
     brand: { required },
     category: { required },
