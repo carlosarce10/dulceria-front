@@ -8,11 +8,12 @@
     <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane icon="chart bar outline icon" title="Venta">
+          <div style="float:right">
+            <sui-button @click="doSale()" style="background: #64b5f6" negative circular icon="plus"/>
+            <sui-input class="custom-search" icon="search" type="text" placeholder="Buscar..."  />
+          </div>
           
-          <sui-button @click="doSale()" style="background: #64b5f6" negative circular icon="plus"/>
-          <sui-input class="custom-search" icon="search" type="text" placeholder="Buscar..." />
-          
-          <sui-container style="margin-top: 2%">
+          <sui-container style="margin-top: 5%">
             <sui-segment basic v-if="ventas.length === 0">
               <i style="color: #6c757d" class="massive comment icon"></i><br />
               <small style="color: #6c757d">No se encontraron registros.</small>
@@ -21,8 +22,8 @@
               <sui-table-header>
                 <sui-table-row>
                   <sui-table-header-cell text-align="center">#</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Paquete</sui-table-header-cell>
-                  <sui-table-header-cell text-align="center">Precio</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Fecha</sui-table-header-cell>
+                  <sui-table-header-cell text-align="center">Total</sui-table-header-cell>
                   <sui-table-header-cell text-align="center">Acciones</sui-table-header-cell>
                 </sui-table-row>
               </sui-table-header>
@@ -44,9 +45,6 @@
               </sui-table-body>
             </sui-table>
           </sui-container>
-      </sui-tab-pane>
-      <sui-tab-pane icon="chart bar outline icon" title="Producto">
-
       </sui-tab-pane>
     </sui-tab>
     
@@ -83,8 +81,13 @@ export default {
 
       api
         .doGet("/sales/list/cashbox/"+idCashbox)
-        .then(response=>{
+        .then((response) => {
           this.ventas = response.data;
+          for (let u of this.ventas) {
+            u.date = u.date.split(".")[0];
+            u.date = u.date.replace("T", " ");
+            u.date = u.date + " hrs.";
+          }
         })
     },
     doSale(){
