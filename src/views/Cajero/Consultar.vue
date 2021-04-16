@@ -63,7 +63,8 @@
                   <sui-card-content>
                     <sui-button
                       positive
-                      @click.native="toggleEdit(resultTrue.id)"
+                      @click.native="toggleEdit()"
+                      @click="verDetalle(resultTrue.id)"
                       type="submit"
                       circular
                       style="background: #64b5f6"
@@ -172,8 +173,14 @@
             <sui-segments raised>
               <sui-segment>
                 <img
+                      v-if="productEdit.image !== null"
+                      style="margin-top: 0px; width: 100%"
+                      :src="productEdit.image"
+                />
+                <img
+                  v-if="productEdit.image === null"
                   style="margin-top: 0px; width: 100%"
-                  src="https://mk0lanoticiapwmx1x6a.kinstacdn.com/wp-content/uploads/2019/11/dulce-adiccion.jpeg"
+                  src="../../assets/default.png"
                 />
               </sui-segment>
               <sui-segment><b>Nombre:</b> {{ productEdit.name }}</sui-segment>
@@ -236,7 +243,7 @@ export default {
       paquetes: [],
       search: "",
       searchD: "",
-      resultTrue: null,
+      resultTrue: [],
       resultCategory: "",
       resultBrand: "",
       product: {
@@ -254,6 +261,7 @@ export default {
         netContent: "",
         retailPrice: "",
         wholesalePrice: "",
+        image: "",
         brand: { id: 0 },
         category: { id: 0 },
       },
@@ -282,24 +290,6 @@ export default {
   },
   methods: {
     query() {
-      api
-        .doGet("/brand/list/true")
-        .then(
-          (response) => (
-            (this.resultBrand = response.data), console.log(response.data)
-          )
-        )
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
-      api
-        .doGet("/category/list/true")
-        .then(
-          (response) => (
-            (this.resultCategory = response.data), console.log(response.data)
-          )
-        )
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
       api
         .doGet("/product/list/true")
         .then((response) => {
@@ -331,6 +321,9 @@ export default {
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
+    toggleEdit(){
+      this.openEdit = !this.openEdit;
+    },
     toggle(id) {
       api
         .doGet("/packageDetails/get/" + id)
@@ -343,17 +336,23 @@ export default {
         });
       this.open = !this.open;
     },
-    toggleEdit(id) {
+    verDetalle(id) {
       api
         .doGet("/product/get/" + id)
         .then((response) => {
-          console.log(response);
           this.productEdit = response.data;
+          if (this.productEdit.image !== null) {
+            ref
+              .child("imagenes/productos/" + this.productEdit.image)
+              .getDownloadURL()
+              .then((url) => {
+                this.productEdit.image = url;
+              });
+          }
         })
         .catch((error) => {
           console.log(error);
         });
-      this.openEdit = !this.openEdit;
     },
   },
 };
