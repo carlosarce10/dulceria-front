@@ -172,19 +172,72 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre del producto:</label>
-              <input v-model="product.name" />
+              <input
+                v-model="$v.name.$model"
+                :class="status($v.name)"
+                @keypress="letterOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.required && $v.name.$dirty"
+              >
+                El nombre del prodcto no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.name.minLength && $v.name.maxLength"
+              >
+                El nombre del producto debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Contenido Neto:</label>
-              <input v-model="product.netContent" />
+              <input
+                v-model="$v.netContent.$model"
+                :class="status($v.netContent)"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.netContent.required && $v.netContent.$dirty"
+              >
+                El contenido no debe estar en blanco
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Precio menudeo:</label>
-              <input type="number" v-model="product.retailPrice" />
+              <input
+                type="text"
+                v-model="$v.retailPrice.$model"
+                :class="status($v.retailPrice)"
+                @keypress="numberOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.retailPrice.required && $v.retailPrice.$dirty"
+              >
+                El precio por menudeo no debe estar en blanco
+              </div>
+              <div class="error errorMsg" v-if="!$v.retailPrice.minValue">
+                El precio por menudeo debe ser mayor a 0
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Precio mayoreo:</label>
-              <input type="number" v-model="product.wholesalePrice" />
+              <input
+                type="text"
+                v-model="$v.wholesalePrice.$model"
+                :class="status($v.wholesalePrice)"
+                @keypress="numberOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.wholesalePrice.required && $v.wholesalePrice.$dirty"
+              >
+                El precio por mayoreo no debe estar en blanco
+              </div>
+              <div class="error errorMsg" v-if="!$v.wholesalePrice.minValue">
+                El precio por mayoreo debe ser mayor a 0
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
@@ -194,8 +247,12 @@
                 placeholder="Marca"
                 search
                 selection
-                v-model="product.brand.id"
+                v-model="$v.brand.$model"
+                :class="status($v.brand)"
               />
+              <div class="error errorMsg" v-if="!$v.brand.required">
+                Debe seleccionar una marca
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
@@ -205,8 +262,12 @@
                 placeholder="Categoría"
                 search
                 selection
-                v-model="product.category.id"
+                v-model="$v.category.$model"
+                :class="status($v.category)"
               />
+              <div class="error errorMsg" v-if="!$v.category.required">
+                Debe seleccionar una categoria
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Imágen:</label>
@@ -220,7 +281,6 @@
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions style="margin-bottom: 3%">
-          imagen:null,
           <sui-button
             negative
             @click.native="toggle"
@@ -235,12 +295,28 @@
             positive
             @click.native="toggle"
             type="submit"
+            :disabled="
+              !(
+                !$v.name.$invalid &&
+                $v.name.$dirty &&
+                !$v.netContent.$invalid &&
+                $v.netContent.$dirty &&
+                !$v.retailPrice.$invalid &&
+                $v.retailPrice.$dirty &&
+                !$v.wholesalePrice.$invalid &&
+                $v.wholesalePrice.$dirty &&
+                !$v.brand.$invalid &&
+                !$v.category.$invalid
+              )
+            "
           >
             OK
           </sui-button>
         </sui-modal-actions>
       </sui-modal>
     </div>
+
+    <!-- EDITAR PRODUCTO -->
     <div>
       <sui-modal class="modal-small" v-model="openEdit">
         <sui-modal-header>Modificar producto</sui-modal-header>
@@ -248,19 +324,78 @@
           <sui-form>
             <sui-form-field>
               <label>Nombre del producto:</label>
-              <input v-model="productEdit.name" />
+              <input
+                v-model="$v.nameEdit.$model"
+                :class="status($v.nameEdit)"
+                @keypress="letterOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.nameEdit.required && $v.nameEdit.$dirty"
+              >
+                El nombre de la categoría no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.nameEdit.minLength && $v.nameEdit.maxLength"
+              >
+                El nombre de la categoría debe tener entre 3 y 50 carateres
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Contenido Neto:</label>
-              <input v-model="productEdit.netContent" />
+              <input
+                v-model="$v.netContentEdit.$model"
+                :class="status($v.netContentEdit)"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.netContentEdit.required && $v.netContentEdit.$dirty"
+              >
+                El contenido no debe estar en blanco
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Precio menudeo:</label>
-              <input type="number" v-model="productEdit.retailPrice" />
+              <input
+                type="text"
+                v-model="$v.retailPriceEdit.$model"
+                :class="status($v.retailPriceEdit)"
+                @keypress="numberOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="!$v.retailPriceEdit.required && $v.retailPriceEdit.$dirty"
+              >
+                El precio por menudeo no debe estar en blanco
+              </div>
+              <div class="error errorMsg" v-if="!$v.retailPriceEdit.minValue">
+                El precio por menudeo debe ser mayor a 0
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Precio mayoreo:</label>
-              <input type="number" v-model="productEdit.wholesalePrice" />
+              <input
+                type="text"
+                v-model="$v.wholesalePriceEdit.$model"
+                :class="status($v.wholesalePriceEdit)"
+                @keypress="numberOnly"
+              />
+              <div
+                class="error errorMsg"
+                v-if="
+                  !$v.wholesalePriceEdit.required &&
+                  $v.wholesalePriceEdit.$dirty
+                "
+              >
+                El precio por mayoreo no debe estar en blanco
+              </div>
+              <div
+                class="error errorMsg"
+                v-if="!$v.wholesalePriceEdit.minValue"
+              >
+                El precio por mayoreo debe ser mayor a 0
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Marca del producto:</label>
@@ -270,8 +405,12 @@
                 placeholder="Marca"
                 search
                 selection
-                v-model="productEdit.brand.id"
+                v-model="$v.brandEdit.$model"
+                :class="status($v.brandEdit)"
               />
+              <div class="error errorMsg" v-if="!$v.brandEdit.required">
+                Debe seleccionar una marca
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Categoría del producto:</label>
@@ -281,8 +420,12 @@
                 placeholder="Categoría"
                 search
                 selection
-                v-model="productEdit.category.id"
+                v-model="$v.categoryEdit.$model"
+                :class="status($v.categoryEdit)"
               />
+              <div class="error errorMsg" v-if="!$v.categoryEdit.required">
+                Debe seleccionar una Categoría
+              </div>
             </sui-form-field>
             <sui-form-field>
               <label>Imágen:</label>
@@ -322,6 +465,12 @@ import Particles from "particles.vue";
 import Vue from "vue";
 import api from "../../util/api";
 import { storage } from "../../firebase";
+import {
+  required,
+  minLength,
+  maxLength,
+  minValue,
+} from "vuelidate/lib/validators";
 
 const ref = storage.ref();
 
@@ -367,6 +516,18 @@ export default {
       id: null,
       search: "",
       searchD: "",
+      name: "",
+      netContent: "",
+      retailPrice: "",
+      wholesalePrice: "",
+      brand: "",
+      category: "",
+      nameEdit: "",
+      netContentEdit: "",
+      retailPriceEdit: "",
+      wholesalePriceEdit: "",
+      brandEdit: "",
+      categoryEdit: "",
     };
   },
   beforeMount() {
@@ -469,6 +630,13 @@ export default {
         .then((response) => {
           console.log(response);
           this.productEdit = response.data;
+          this.productEditId = response.data.id;
+          this.nameEdit = response.data.name;
+          this.netContentEdit = response.data.netContent;
+          this.retailPriceEdit = response.data.retailPrice;
+          this.wholesalePriceEdit = response.data.wholesalePrice;
+          this.brandEdit = response.data.brand.id;
+          this.categoryEdit = response.data.category.id;
         })
         .catch((error) => {
           console.log(error);
@@ -501,7 +669,18 @@ export default {
         this.subirImagen();
         this.product.image = this.imagen.name;
       }
-
+      this.product = {
+        name: this.name,
+        netContent: this.netContent,
+        retailPrice: this.retailPrice,
+        wholesalePrice: this.wholesalePrice,
+        brand: {
+          id: this.brand,
+        },
+        category: {
+          id: this.category,
+        },
+      };
       api
         .doPost("/product/save", this.product)
         .then((response) => {
@@ -552,7 +731,19 @@ export default {
         this.subirImagenEdit();
         this.productEdit.image = this.imagenEdit.name;
       }
-
+      this.productEdit = {
+        id: this.productEditId,
+        name: this.nameEdit,
+        netContent: this.netContentEdit,
+        retailPrice: this.retailPriceEdit,
+        wholesalePrice: this.wholesalePriceEdit,
+        brand: {
+          id: this.brandEdit,
+        },
+        category: {
+          id: this.categoryEdit,
+        },
+      };
       api
         .doPost("product/save", this.productEdit)
         .then((response) => {
@@ -598,6 +789,82 @@ export default {
             .finally(() => (this.loading = false));
         }
       });
+    },
+    letterOnly() {
+      let pattern = /^[A-Za-záéíóúÁÉÍÓÚÑñ ]+$/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
+    },
+    numberOnly() {
+      let pattern = /[0-9.]/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
+    },
+    onReset() {
+      this.name = "";
+      this.netContent = "";
+      this.retailPrice = "";
+      this.wholesalePrice = "";
+      this.brand = "";
+      this.category = "";
+    },
+    status(validation) {
+      return {
+        error: validation.$error,
+        dirty: validation.$dirty,
+      };
+    },
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    },
+    netContent: {
+      required,
+    },
+    retailPrice: {
+      required,
+      minValue: minValue(1),
+    },
+    wholesalePrice: {
+      required,
+      minValue: minValue(1),
+    },
+    brand: {
+      required,
+    },
+    category: {
+      required,
+    },
+    nameEdit: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50),
+    },
+    netContentEdit: {
+      required,
+    },
+    retailPriceEdit: {
+      required,
+      minValue: minValue(1),
+    },
+    wholesalePriceEdit: {
+      required,
+      minValue: minValue(1),
+    },
+    brandEdit: {
+      required,
+    },
+    categoryEdit: {
+      required,
     },
   },
 };
