@@ -14,7 +14,7 @@
               <input
                 class="prompt"
                 type="text"
-                placeholder="Buscar producto"
+                placeholder="Buscar paquete..."
                 v-model="search"
               />
               <i class="search icon"></i>
@@ -107,6 +107,9 @@
                   <sui-table-header-cell text-align="center"
                     >Precio</sui-table-header-cell
                   >
+                  <sui-table-header-cell text-align="center"
+                    >Acción</sui-table-header-cell
+                  >
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
@@ -123,6 +126,15 @@
                   <sui-table-cell text-align="center"
                     >${{ paquetes.price }}</sui-table-cell
                   >
+                  <sui-table-cell text-align="center"
+                    ><sui-button
+                      @click.native="toggle(paquetes.id)"
+                      id="editar"
+                      style="background: #64b5f6"
+                      negative
+                      circular
+                      icon="eye"
+                  /></sui-table-cell>
                 </sui-table-row>
               </sui-table-body>
             </sui-table>
@@ -130,6 +142,26 @@
         </div>
       </sui-tab-pane>
     </sui-tab>
+    <sui-modal class="modal-small" v-model="open">
+      <sui-modal-header>{{ packages.name }}</sui-modal-header>
+      <sui-modal-content scrolling>
+        <sui-form>
+          <sui-form-field>
+            <sui-segments raised>
+              <sui-segment color="blue"
+                ><b>Nombre:</b> {{ packages.name }}</sui-segment
+              >
+              <sui-segment><b>Precio:</b> ${{ packages.price }}</sui-segment>
+            </sui-segments>
+          </sui-form-field>
+        </sui-form>
+      </sui-modal-content>
+      <sui-modal-actions>
+        <sui-button positive @click.native="toggle" type="button">
+          OK
+        </sui-button>
+      </sui-modal-actions>
+    </sui-modal>
     <sui-modal class="modal-small" v-model="openEdit">
       <sui-modal-header>{{ productEdit.name }}</sui-modal-header>
       <sui-modal-content scrolling>
@@ -195,6 +227,7 @@ export default {
       imagenes: [],
       imagen: null,
       imagendesc: false,
+      open: false,
       openEdit: false,
       loading: true,
       productos: [],
@@ -221,6 +254,10 @@ export default {
         wholesalePrice: "",
         brand: { id: 0 },
         category: { id: 0 },
+      },
+      packages: {
+        name: "",
+        price: "",
       },
     };
   },
@@ -289,6 +326,18 @@ export default {
         )
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
+    },
+    toggle(id) {
+      api
+        .doGet("/package/get/" + id)
+        .then((response) => {
+          console.log(response);
+          this.packages = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      this.open = !this.open;
     },
     toggleEdit(id) {
       api
