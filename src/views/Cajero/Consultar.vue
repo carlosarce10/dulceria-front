@@ -149,9 +149,11 @@
           <sui-form-field>
             <sui-segments raised>
               <sui-segment color="blue"
-                ><b>Nombre:</b> {{ packages.name }}</sui-segment
+                ><b>Cantidad:</b> {{ packages.quantityPackage }}</sui-segment
               >
-              <sui-segment><b>Precio:</b> ${{ packages.price }}</sui-segment>
+              <sui-segment v-for="item in packages" :key="item.id"
+                ><b>Productos:</b> {{ packages.product.name }}</sui-segment
+              >
             </sui-segments>
           </sui-form-field>
         </sui-form>
@@ -256,8 +258,10 @@ export default {
         category: { id: 0 },
       },
       packages: {
+        quantity_package: "",
         name: "",
         price: "",
+        product: { id: 0 },
       },
     };
   },
@@ -329,7 +333,7 @@ export default {
     },
     toggle(id) {
       api
-        .doGet("/package/get/" + id)
+        .doGet("/packageDetails/get/" + id)
         .then((response) => {
           console.log(response);
           this.packages = response.data;
