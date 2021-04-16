@@ -448,6 +448,17 @@
             positive
             @click.native="toggleEdit"
             type="submit"
+            :disabled="
+              !(
+                (!$v.nameEdit.$invalid && $v.nameEdit.$dirty) ||
+                (!$v.netContentEdit.$invalid && $v.netContentEdit.$dirty) ||
+                (!$v.retailPriceEdit.$invalid && $v.retailPriceEdit.$dirty) ||
+                (!$v.wholesalePriceEdit.$invalid &&
+                  $v.wholesalePriceEdit.$dirty &&
+                  !$v.brandEdit.$invalid &&
+                  !$v.categoryEdit.$invalid)
+              )
+            "
           >
             OK
           </sui-button>
