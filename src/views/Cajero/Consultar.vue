@@ -129,7 +129,8 @@
                   >
                   <sui-table-cell text-align="center"
                     ><sui-button
-                      @click.native="toggle(paquetes.id)"
+                      @click.native="toggle()"
+                      @click="getPaquete(paquetes.id)"
                       id="editar"
                       style="background: #64b5f6"
                       negative
@@ -143,19 +144,50 @@
         </div>
       </sui-tab-pane>
     </sui-tab>
-    <sui-modal class="modal-small" v-model="open">
-      <sui-modal-header>{{ packages.name }}</sui-modal-header>
+    <sui-modal v-model="open">
+      <sui-modal-header>Detalle Paquete</sui-modal-header>
       <sui-modal-content scrolling>
         <sui-form>
           <sui-form-field>
-            <sui-segments raised>
-              <sui-segment color="blue"
-                ><b>Cantidad:</b> {{ packages.quantityPackage }}</sui-segment
-              >
-              <sui-segment v-for="item in packages" :key="item.id"
-                ><b>Productos:</b> {{ packages.product.name }}</sui-segment
-              >
+            <sui-segments horizontal>
+              <sui-segment raised color="blue">
+                <h4 class="ui header">Nombre: {{ packagee.name }}</h4>
+              </sui-segment>
+              <sui-segment raised color="blue">
+                <h4 class="ui header">Precio: ${{ packagee.price }}</h4>
+              </sui-segment>
             </sui-segments>
+            <sui-table style="margin-top: 2%" raised color="blue">
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell text-align="center"
+                    >#</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Producto</sui-table-header-cell
+                  >
+                  <sui-table-header-cell text-align="center"
+                    >Cantidad</sui-table-header-cell
+                  >
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row
+                  v-for="(detail, item) in packageDetails"
+                  :key="detail.id"
+                >
+                  <sui-table-cell text-align="center">
+                    {{ item + 1 }}</sui-table-cell
+                  >
+                  <sui-table-cell text-align="center">
+                    {{ detail.product.name }}</sui-table-cell
+                  >
+                  <sui-table-cell text-align="center">{{
+                    detail.quantityPackage
+                  }}</sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+            </sui-table>
           </sui-form-field>
         </sui-form>
       </sui-modal-content>
@@ -173,9 +205,9 @@
             <sui-segments raised>
               <sui-segment>
                 <img
-                      v-if="productEdit.image !== null"
-                      style="margin-top: 0px; width: 100%"
-                      :src="productEdit.image"
+                  v-if="productEdit.image !== null"
+                  style="margin-top: 0px; width: 100%"
+                  :src="productEdit.image"
                 />
                 <img
                   v-if="productEdit.image === null"
@@ -265,11 +297,11 @@ export default {
         brand: { id: 0 },
         category: { id: 0 },
       },
-      packages: {
-        quantity_package: "",
+      packageDetails: [],
+      packagee: {
+        id: 0,
         name: "",
         price: "",
-        product: { id: 0 },
       },
     };
   },
@@ -321,20 +353,31 @@ export default {
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
     },
-    toggleEdit(){
+    toggleEdit() {
       this.openEdit = !this.openEdit;
     },
-    toggle(id) {
+    toggle() {
+      this.open = !this.open;
+    },
+    getPaquete(id) {
       api
-        .doGet("/packageDetails/get/" + id)
+        .doGet("/package/get/" + id)
         .then((response) => {
           console.log(response);
-          this.packages = response.data;
+          this.packagee = response.data;
         })
         .catch((error) => {
           console.log(error);
         });
-      this.open = !this.open;
+      api
+        .doGet("/packageDetails/find/" + id)
+        .then((response) => {
+          console.log(response);
+          this.packageDetails = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     verDetalle(id) {
       api
