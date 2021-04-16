@@ -58,17 +58,18 @@
               <sui-table-row
                 v-for="(listStock, item) in filteredStock"
                 :key="listStock.id"
-                :negative = "threeDays(listStock.dateExpire)"
+                :negative="threeDays(listStock.dateExpire)"
               >
                 <sui-table-cell text-align="center">{{
                   item + 1
                 }}</sui-table-cell>
-                <sui-table-cell text-align="center">{{listStock.product.name}}</sui-table-cell>
+                <sui-table-cell text-align="center">{{
+                  listStock.product.name
+                }}</sui-table-cell>
                 <sui-table-cell text-align="center">{{
                   listStock.batch
                 }}</sui-table-cell>
-                <sui-table-cell text-align="center"
-                >{{
+                <sui-table-cell text-align="center">{{
                   listStock.dateExpire
                 }}</sui-table-cell>
                 <sui-table-cell text-align="center">{{
@@ -155,7 +156,12 @@
               </sui-form>
             </sui-modal-content>
             <sui-modal-actions style="margin-bottom: 3%">
-              <sui-button negative @click.native="toggle" type="button">
+              <sui-button
+                negative
+                @click.native="toggle"
+                @click="onReset()"
+                type="button"
+              >
                 Cancelar
               </sui-button>
               <sui-button
@@ -302,27 +308,27 @@ export default {
     },
   },
   methods: {
-    threeDays(fecha){
-      console.log("f=>",fecha);
+    threeDays(fecha) {
+      console.log("f=>", fecha);
       /*
       new Date(new Date(listStock.dateExpire.split('-')[0],listStock.dateExpire.split('-')[1]-1,listStock.dateExpire.split('-')[2]).getTime()+(86400000*3)) <= new Date()
       new Date(fecha.split("-")[0],fecha.split("-")[1],fecha.split("-")[2])
       */
-      let dayArray = fecha.split("-")
-      let fechaConvert = new Date(dayArray[0],dayArray[1]-1,dayArray[2])
+      let dayArray = fecha.split("-");
+      let fechaConvert = new Date(dayArray[0], dayArray[1] - 1, dayArray[2]);
       let dayMili = 86400000;
       let fechaHoy = new Date();
-      fechaConvert = new Date(fechaConvert.getTime()-(dayMili*3))
+      fechaConvert = new Date(fechaConvert.getTime() - dayMili * 3);
       console.log(fechaConvert);
       console.log(fechaHoy);
-      
-      return fechaConvert < fechaHoy
+
+      return fechaConvert < fechaHoy;
     },
     getLists() {
       api
         .doGet("/stock/list/notExpired")
         .then((listStock) => {
-          this.listStock = listStock.data
+          this.listStock = listStock.data;
         })
         .catch((error) => console.log(error));
 
@@ -409,21 +415,21 @@ export default {
       var fecha = anio + "-" + mes + "-" + dia;
       this.today = fecha;
     },
-    FutureDay(){
+    FutureDay() {
       var f = new Date();
       var o = new Date();
       var o2 = new Date();
       var o3 = new Date();
-      var dayMili = 86400000; 
+      var dayMili = 86400000;
 
-      o.setTime(f.getTime())
-      o.setTime(f.getTime()+(dayMili*3))
+      o.setTime(f.getTime());
+      o.setTime(f.getTime() + dayMili * 3);
 
-      o2.setTime(f.getTime())
-      o2.setTime(f.getTime()+(dayMili*2))
+      o2.setTime(f.getTime());
+      o2.setTime(f.getTime() + dayMili * 2);
 
-      o3.setTime(f.getTime())
-      o3.setTime(f.getTime()+(dayMili*1))
+      o3.setTime(f.getTime());
+      o3.setTime(f.getTime() + dayMili * 1);
 
       this.futureDay = o;
     },
@@ -434,6 +440,12 @@ export default {
         event.preventDefault();
         return false;
       }
+    },
+    onReset() {
+      this.product = "";
+      this.quantityStock = "";
+      this.batch = "";
+      this.dateExpire = "";
     },
   },
   validations: {

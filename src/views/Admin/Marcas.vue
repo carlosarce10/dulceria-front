@@ -184,7 +184,12 @@
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions>
-          <sui-button negative @click.native="toggle" type="submit">
+          <sui-button
+            negative
+            @click.native="toggle"
+            @click="onReset()"
+            type="submit"
+          >
             Cancelar
           </sui-button>
           <sui-button
@@ -433,6 +438,9 @@ export default {
         event.preventDefault();
         return false;
       }
+    },
+    onReset() {
+      this.name = "";
     },
   },
   validations: {

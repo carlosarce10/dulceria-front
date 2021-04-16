@@ -43,22 +43,22 @@
                   <sui-card-content class="pr">
                     <img
                       v-if="resultTrue.image !== null"
-                      style="width:100px;height:100px;margin:0px"
+                      style="width: 100px; height: 100px; margin: 0px"
                       :src="resultTrue.url"
                     />
                     <img
                       v-if="resultTrue.image === null"
-                      style="width:100px;height:100px;margin:0px"
+                      style="width: 100px; height: 100px; margin: 0px"
                       src="../../assets/default.png"
                     />
                   </sui-card-content>
                   <sui-card-content
                     style="
-                        height: 200px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      "
+                      height: 200px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
                   >
                     <div>
                       <sui-card-header>{{ resultTrue.name }}</sui-card-header>
@@ -120,22 +120,22 @@
                   <sui-card-content class="pr">
                     <img
                       v-if="resultTrue.image !== null"
-                      style="width:100px;height:100px;margin-top:0px"
+                      style="width: 100px; height: 100px; margin-top: 0px"
                       :src="resultTrue.url"
                     />
                     <img
                       v-if="resultTrue.image === null"
-                      style="width:100px;height:100px;margin-top:0px"
+                      style="width: 100px; height: 100px; margin-top: 0px"
                       src="../../assets/default.png"
                     />
                   </sui-card-content>
                   <sui-card-content
                     style="
-                        height: 200px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      "
+                      height: 200px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
                   >
                     <div>
                       <sui-card-header>{{ resultTrue.name }}</sui-card-header>
@@ -164,6 +164,7 @@
       </sui-tab-pane>
     </sui-tab>
 
+    <!-- REGISTRAR NUEVO PRODUCTO -->
     <div>
       <sui-modal class="modal-small" v-model="open">
         <sui-modal-header>Registrar producto</sui-modal-header>
@@ -219,7 +220,13 @@
           </sui-form>
         </sui-modal-content>
         <sui-modal-actions style="margin-bottom: 3%">
-          <sui-button negative @click.native="toggle" type="submit">
+          imagen:null,
+          <sui-button
+            negative
+            @click.native="toggle"
+            @click="onReset()"
+            type="submit"
+          >
             Cancelar
           </sui-button>
           <sui-button
@@ -366,12 +373,12 @@ export default {
     this.getLists();
   },
   computed: {
-    filteredProducts: function() {
+    filteredProducts: function () {
       return this.resultTrue.filter((product) => {
         return product.name.toLowerCase().match(this.search.toLowerCase());
       });
     },
-    filteredProductsDisabled: function() {
+    filteredProductsDisabled: function () {
       return this.resultFalse.filter((product) => {
         return product.name.toLowerCase().match(this.searchD.toLowerCase());
       });
