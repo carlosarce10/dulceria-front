@@ -46,6 +46,7 @@
 }
 </style>
 <script>
+import api from "../util/api";
 export default {
   name: "Sidebar",
   data() {
@@ -72,20 +73,30 @@ export default {
   },
   methods: {
     logout(){
+      let idCashbox = localStorage.getItem("idCashbox");
+
       this.$swal({
-        title:"¿Esta seguro que desea cerrar sesión?",
-        icon:"question",
+        title: "¿Está seguro de cerrar sesión?",
+        text: "La caja se cerrará automáticamente.",
+        icon: "warning",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
         reverseButtons: true,
-        
-      }).then(result=>{
-        if(result.isConfirmed){
-          localStorage.clear();
-          this.$router.push("/");
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api
+            .doGet("/cashbox/closeBox/" + idCashbox)
+            .then((response) => {
+              console.log(response.data);
+
+              localStorage.clear();
+              this.$router.push("/");
+              
+            })
+            .catch((error) => console.log(error));
         }
-      })
+      });
     },
     onVisible() {
       if (this.visible) {

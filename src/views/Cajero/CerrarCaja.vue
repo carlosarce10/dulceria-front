@@ -456,8 +456,9 @@ export default {
     },
     cerrar() {
       this.$swal({
-        title: "¿Esta seguro cerrar la caja?",
-        icon: "question",
+        title: "¿Está seguro de cerrar caja?",
+        text: "La caja se cerrará y automáticamente cerrará la sesión.",
+        icon: "warning",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         confirmButtonText: "Confirmar",
@@ -468,7 +469,10 @@ export default {
             .doGet("/cashbox/closeBox/" + this.cashbox.id)
             .then((response) => {
               console.log(response.data);
-              this.$router.push("/cajero/abrir-caja");
+
+              localStorage.clear();
+              this.$router.push("/");
+              
             })
             .catch((error) => console.log(error));
         }

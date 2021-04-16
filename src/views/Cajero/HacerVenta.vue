@@ -470,6 +470,12 @@ export default {
                                                 this.$swal({
                                                     title:"¡La venta se ha realizado exitosamente!",
                                                     icon:"success"
+                                                }).then(result=>{
+                                                    if(result.isConfirmed){
+                                                        this.$router.push("/cajero/venta");
+                                                    }else{
+                                                        this.$router.push("/cajero/venta");
+                                                    }
                                                 });
                                             })
                                             .catch(error=>{
