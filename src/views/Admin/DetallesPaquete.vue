@@ -393,8 +393,14 @@
             <sui-segments>
               <sui-segment>
                 <img
+                  v-if="producto.image !== null"
                   style="margin-top: 0px; width: 100%"
-                  src="https://mk0lanoticiapwmx1x6a.kinstacdn.com/wp-content/uploads/2019/11/dulce-adiccion.jpeg"
+                  :src="producto.image"
+                />
+                <img
+                  v-if="producto.image === null"
+                  style="margin-top: 0px; width: 100%"
+                  src="../../assets/default.png"
                 />
               </sui-segment>
               <sui-segment><b>Nombre:</b> {{ producto.name }}</sui-segment>
@@ -435,6 +441,9 @@ import {
   minLength,
   maxLength,
 } from "vuelidate/lib/validators";
+import { storage } from "../../firebase";
+
+const ref = storage.ref();
 
 Vue.use(Particles);
 export default {
@@ -495,6 +504,7 @@ export default {
         name: "",
         retailPrice: 0,
         netContent: "",
+        image:"",
         brand: {
           name: "",
         },
@@ -665,6 +675,14 @@ export default {
     getProduct(id) {
       api.doGet("/product/get/" + id).then((response) => {
         this.producto = response.data;
+        if (this.producto.image !== null) {
+            ref
+              .child("imagenes/productos/" + this.producto.image)
+              .getDownloadURL()
+              .then((url) => {
+                this.producto.image = url;
+              });
+        }
       });
     },
     register() {
