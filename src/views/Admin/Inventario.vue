@@ -138,7 +138,7 @@
                 <sui-form-field>
                   <label>Número de lote:</label>
                   <input
-                    type="number"
+                    type="text"
                     v-model="$v.batch.$model"
                     :class="status($v.batch)"
                     @keypress="numberOnly"
