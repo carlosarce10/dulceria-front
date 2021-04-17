@@ -91,10 +91,9 @@ export default {
 
 .wrapper {
   margin-left: 1%;
-  overflow: hidden; /* Eliminamos errores de float */
+  overflow: hidden; 
 }
 
-/* Menú de hamburguesa */
 #content {
   min-height: 100px;
 }

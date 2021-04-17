@@ -211,8 +211,28 @@ export default {
       api
         .doGet("/logBook/list")
         .then((response) => (this.logbookTrue = response.data))
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
     },
     toggleEdit(id) {
       api
@@ -222,13 +242,28 @@ export default {
 
           this.logNew = this.logbookEdit.next_log.split("|");
           this.logOld = this.logbookEdit.previous_log.split("|");
-
-          /* let logConvert = logArray.forEach((item) => {
-            logArray[item + 1];
-          });*/
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
 
       this.openEdit = !this.openEdit;

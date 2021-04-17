@@ -31,10 +31,9 @@
 
 .wrapper {
   margin-left: 1%;
-  overflow: hidden; /* Eliminamos errores de float */
+  overflow: hidden; 
 }
 
-/* Menú de hamburguesa */
 #content {
   min-height: 100px;
 }
@@ -54,25 +53,25 @@ export default {
       visible: false,
     };
   },
-  beforeMount(){
+  beforeMount() {
     let token = localStorage.getItem("token");
     if (token !== null) {
       let auth = localStorage.getItem("authority");
       if (auth !== null && auth === "ROLE_CASHIER") {
         let idCashbox = localStorage.getItem("idCashbox");
-        if(idCashbox === null){
+        if (idCashbox === null) {
           this.$router.push("/cajero/abrir-caja");
         }
-      }else{
-        this.$router.push("/");  
+      } else {
+        this.$router.push("/");
       }
-    }else{
+    } else {
       localStorage.clear();
       this.$router.push("/");
     }
   },
   methods: {
-    logout(){
+    logout() {
       let idCashbox = localStorage.getItem("idCashbox");
 
       this.$swal({
@@ -88,13 +87,35 @@ export default {
           api
             .doGet("/cashbox/closeBox/" + idCashbox)
             .then(() => {
-
               localStorage.clear();
               this.$router.push("/");
-              
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            });
         }
+      }).finally(()=>{
+              localStorage.clear();
+              this.$router.push("/");
       });
     },
     onVisible() {

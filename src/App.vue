@@ -58,7 +58,6 @@
   color: #42b983;
 }
 
-/* Validaciones */
 .dirty {
   border-color: #8e8 !important;
 }

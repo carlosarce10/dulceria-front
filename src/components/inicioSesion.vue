@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     authenticate() {
-      console.log(this.user);
       api
         .doPost("/login", this.user)
         .then((response) => {
@@ -115,8 +114,6 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error.response);
-          console.log(error.response.data);
           this.$swal({
             title: "Oops!",
             text: error.response.data,

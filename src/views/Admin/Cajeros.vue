@@ -485,7 +485,28 @@ export default {
             }
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
       api
         .doGet("/user/list/false")
         .then((response) => {
@@ -498,7 +519,28 @@ export default {
             }
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
     },
     toggle() {
       this.open = !this.open;
@@ -513,26 +555,62 @@ export default {
       api
         .doGet("/user/get/" + id)
         .then((response) => {
-          console.log(response);
           this.userEdit = response.data;
           this.usernameEdit = response.data.username;
           this.idEdit = response.data.id;
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     getUserPass(id) {
       api
         .doGet("/user/get/" + id)
         .then((response) => {
-          console.log(response);
           this.idPassEdit = response.data.id;
           this.userPass.username = response.data.username;
           this.usernameEditPass = response.data.username;
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     register() {
@@ -552,23 +630,61 @@ export default {
             } else {
               api
                 .doPost("/user/save/cashier", this.userObj)
-                .then((response) => {
+                .then(() => {
                   this.$swal({
                     title: "¡Usuario registrado exitosamente!",
                     icon: "success",
                   });
-                  console.log(response);
                   this.getLists();
                   this.username = "";
                   this.password = "";
                   this.confirmPassword = "";
                 })
-                .catch((error) => console.log(error))
-                .finally(() => (this.loading = false));
+                .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+                });
             }
           })
-          .catch((e) => {
-            console.log(e);
+          .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
           });
       } else {
         this.$swal({
@@ -589,16 +705,35 @@ export default {
         if (result.isConfirmed) {
           api
             .doDelete("/user/del/" + id)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Usuario eliminado exitosamente!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
-            .catch((error) => console.log(error))
-            .finally(() => (this.loading = false));
+            .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+            });
         }
       });
     },
@@ -614,21 +749,59 @@ export default {
           } else {
             api
               .doPut("/user/change/" + this.usernameEdit + "/" + this.idEdit)
-              .then((response) => {
+              .then(() => {
                 this.$swal({
                   title: "¡Nombre de usuario modificado exitosamente!",
                   icon: "success",
                 });
-                console.log(response);
                 this.getLists();
                 this.usernameEdit = "";
               })
-              .catch((error) => console.log(error))
-              .finally(() => (this.loading = false));
+              .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+              });
           }
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     changePassword() {
@@ -638,11 +811,9 @@ export default {
           username: this.usernameEditPass,
           password: this.passwordEdit,
         };
-        console.log("Objeto pass: " + this.passwordEdit);
         api
           .doPost("/user/change/password", this.passEdit)
-          .then((res) => {
-            console.log(res);
+          .then(() => {
             this.$swal({
               title: "¡La contraseña fue modificada exitosamente!",
               icon: "success",
@@ -650,8 +821,27 @@ export default {
             this.passwordEdit = "";
             this.confirmPasswordEdit = "";
           })
-          .catch((e) => {
-            console.log(e);
+          .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
           });
       } else {
         this.$swal({
@@ -661,7 +851,6 @@ export default {
       }
     },
     recuperar(id) {
-      console.log(id);
 
       this.$swal({
         title: "¿Estás seguro de recuperar este usuario?",
@@ -674,16 +863,35 @@ export default {
         if (result.isConfirmed) {
           api
             .doPut("/user/put/" + id)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Usuario recuperado!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
-            .catch((error) => console.log(error))
-            .finally(() => (this.loading = false));
+            .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+            });
         }
       });
     },
