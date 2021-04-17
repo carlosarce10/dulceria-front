@@ -263,10 +263,8 @@
                 icon="save"
                 :disabled="
                   !(
-                    !$v.nombreE.$invalid &&
-                    $v.nombreE.$dirty &&
-                    !$v.precioE.$invalid &&
-                    $v.precioE.$dirty
+                    (!$v.nombreE.$invalid && $v.nombreE.$dirty) ||
+                    (!$v.precioE.$invalid && $v.precioE.$dirty)
                   )
                 "
                 >Guardar</sui-button
@@ -504,7 +502,7 @@ export default {
         name: "",
         retailPrice: 0,
         netContent: "",
-        image:"",
+        image: "",
         brand: {
           name: "",
         },
@@ -676,12 +674,12 @@ export default {
       api.doGet("/product/get/" + id).then((response) => {
         this.producto = response.data;
         if (this.producto.image !== null) {
-            ref
-              .child("imagenes/productos/" + this.producto.image)
-              .getDownloadURL()
-              .then((url) => {
-                this.producto.image = url;
-              });
+          ref
+            .child("imagenes/productos/" + this.producto.image)
+            .getDownloadURL()
+            .then((url) => {
+              this.producto.image = url;
+            });
         }
       });
     },

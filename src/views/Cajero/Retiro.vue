@@ -68,6 +68,7 @@
                         placeholder="Monto a retirar"
                         v-model="dinero"
                         fluid
+                        @keypress="numberOnly"
                       />
                     </p>
                   </sui-segment>
@@ -507,7 +508,8 @@ export default {
               .then((response) => {
                 if (response.data) {
                   this.cashbox.amount = this.cashbox.amount - this.dinero;
-                  this.cashbox.retiro = parseFloat(this.cashbox.retiro) + parseFloat(this.dinero);
+                  this.cashbox.retiro =
+                    parseFloat(this.cashbox.retiro) + parseFloat(this.dinero);
                   this.$swal({
                     title: "¡Retiro completado!",
                     icon: "success",
@@ -519,6 +521,14 @@ export default {
           }
         }
       });
+    },
+    numberOnly() {
+      let pattern = /[0-9.]/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
     },
   },
 };
