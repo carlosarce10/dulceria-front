@@ -65,7 +65,7 @@
                     <sui-grid-row>
                       <sui-grid-column :width="12">
                         <div
-                          style="margin-top:8px; float:left; display:block;"
+                          style="margin-top: 8px; float: left; display: block"
                           class="ui icon input"
                         >
                           <sui-dropdown
@@ -76,7 +76,7 @@
                             v-model="idProducto"
                           />
                         </div>
-                        <div style="float:left;display:block;">
+                        <div style="float: left; display: block">
                           <sui-button
                             @click="addProductToSale()"
                             circular
@@ -85,7 +85,12 @@
                           />
                         </div>
                         <div
-                          style="margin-left: 8px;margin-top:8px; float:left; display:block;"
+                          style="
+                            margin-left: 8px;
+                            margin-top: 8px;
+                            float: left;
+                            display: block;
+                          "
                           class="ui icon input"
                         >
                           <sui-dropdown
@@ -96,7 +101,7 @@
                             v-model="idPaquete"
                           />
                         </div>
-                        <div style="float:left;display:block;">
+                        <div style="float: left; display: block">
                           <sui-button
                             @click="addPackageToSale()"
                             circular
@@ -211,10 +216,11 @@
                       </sui-table-cell>
                       <sui-table-cell text-align="center">
                         <sui-input
-                          style="width: 6rem;"
+                          style="width: 6rem"
                           min="1"
                           max="999"
                           type="number"
+                          @keypress="numberOnly"
                           v-model="detalle.quantity"
                         />
                       </sui-table-cell>
@@ -225,7 +231,11 @@
                         >${{ detalle.subtotal }}</sui-table-cell
                       >
                       <sui-table-cell
-                        style="display: flex;align-items: center;justify-content: center;"
+                        style="
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                        "
                         text-align="center"
                       >
                         <sui-button
@@ -255,10 +265,10 @@
             <sui-container>
               <sui-segment color="yellow">
                 <i
-                  style="float: right;"
+                  style="float: right"
                   class="big yellow exclamation triangle icon"
                 ></i>
-                <p style="font-size: 1.5em;font-weight: bold;">
+                <p style="font-size: 1.5em; font-weight: bold">
                   No hay suficiente producto en inventario para realizar la
                   venta, lo sentimos.
                 </p>
@@ -367,7 +377,7 @@ export default {
 
       return total;
     },
-    filteredSales: function() {
+    filteredSales: function () {
       return this.detalles.filter((detalle) => {
         console.log(detalle);
         if (detalle.product === undefined || detalle.product === null) {
@@ -650,6 +660,14 @@ export default {
             });
         }
       });
+    },
+    numberOnly() {
+      let pattern = /[0-9.]/;
+      let res = event.key.match(pattern);
+      if (!res) {
+        event.preventDefault();
+        return false;
+      }
     },
   },
 };
