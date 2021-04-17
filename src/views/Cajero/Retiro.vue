@@ -416,7 +416,7 @@ export default {
     startUp() {
       this.id = localStorage.getItem("idCashbox");
       this.user = localStorage.getItem("username");
-      console.log(localStorage);
+
       api
         .doGet("/sales/list/cashbox/" + this.id)
         .then((response) => {
@@ -428,7 +428,26 @@ export default {
           }
         })
         .catch((error) => {
-          this.$swal(error.message);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     toggle() {
@@ -446,7 +465,6 @@ export default {
         .doGet("/sales/get/" + id)
         .then((response) => {
           this.venta.details = response.data.saleDetails;
-          console.log(this.venta.details);
           this.venta.date = response.data.sale.date;
           this.venta.date = this.venta.date.split(".")[0];
           this.venta.date = this.venta.date.replace("T", " ");
@@ -457,7 +475,26 @@ export default {
             response.data.sale.cashbox.cashboxNumber;
         })
         .catch((error) => {
-          this.$swal(error.message);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     getUserAuthenticated() {
@@ -465,7 +502,28 @@ export default {
       api
         .doGet("/user/get/" + id)
         .then((response) => (this.user = response.data))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     getCashbox() {
@@ -482,7 +540,28 @@ export default {
           this.cashbox.totalSales = response.data.totalSales;
           this.cashbox.retiro = response.data.withdrawal;
         })
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     retirar() {
@@ -516,8 +595,28 @@ export default {
                   });
                 }
               })
-              .catch((error) => console.log(error));
-            this.getCashbox();
+              .catch((error) => {
+                let errorResponse = error.response.data;
+                if (errorResponse.errorExists) {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'><b>" +
+                      errorResponse.code +
+                      "</b> " +
+                      errorResponse.message +
+                      "<br>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                } else {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                }
+              });
           }
         }
       });

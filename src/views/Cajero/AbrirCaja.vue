@@ -143,13 +143,31 @@ export default {
       api
         .doPost("/cashbox/open/box", this.cashbox)
         .then((response) => {
-          console.log(response);
           localStorage.setItem("idCashbox", response.data.id);
           localStorage.setItem("cashboxNumber", response.data.cashboxNumber);
           this.$router.push("/cajero");
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
 
       //this.$router.push({name: "AbrirCaja", params: { cantidad: cant }});
