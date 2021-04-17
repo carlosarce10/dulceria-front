@@ -309,7 +309,6 @@ export default {
   },
   methods: {
     threeDays(fecha) {
-      console.log("f=>", fecha);
       /*
       new Date(new Date(listStock.dateExpire.split('-')[0],listStock.dateExpire.split('-')[1]-1,listStock.dateExpire.split('-')[2]).getTime()+(86400000*3)) <= new Date()
       new Date(fecha.split("-")[0],fecha.split("-")[1],fecha.split("-")[2])
@@ -319,8 +318,6 @@ export default {
       let dayMili = 86400000;
       let fechaHoy = new Date();
       fechaConvert = new Date(fechaConvert.getTime() - dayMili * 3);
-      console.log(fechaConvert);
-      console.log(fechaHoy);
 
       return fechaConvert < fechaHoy;
     },
@@ -380,8 +377,23 @@ export default {
           this.stock.dateExpire = "";
           (this.stock.quantityStock = ""), (this.stock.product.id = 0);
         })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if(errorResponse.errorExists){
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html: "<span style='font-size:14pt'><b>" + errorResponse.code + "</b> " + errorResponse.message + "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error"
+            });
+          }else{
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html: "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error"
+            });
+          }
+          
+        });
     },
     toggle() {
       this.open = !this.open;

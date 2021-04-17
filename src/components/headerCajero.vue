@@ -87,8 +87,7 @@ export default {
         if (result.isConfirmed) {
           api
             .doGet("/cashbox/closeBox/" + idCashbox)
-            .then((response) => {
-              console.log(response.data);
+            .then(() => {
 
               localStorage.clear();
               this.$router.push("/");
