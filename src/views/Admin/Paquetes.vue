@@ -67,10 +67,10 @@
 
                   <sui-table-cell
                     style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
                   >
                     <sui-button
                       style="background: #64b5f6"
@@ -145,10 +145,10 @@
                   }}</sui-table-cell>
                   <sui-table-cell
                     style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
                     ><sui-button
                       id="recuperar"
                       v-on:click="recuperar(listPackageFalse.id)"
@@ -321,13 +321,12 @@ export default {
     this.obtenerDatos();
   },
   computed: {
-    filteredPackage: function() {
+    filteredPackage: function () {
       return this.listPackage.filter((paquete) => {
-        console.log(paquete.name);
         return paquete.name.toLowerCase().match(this.search.toLowerCase());
       });
     },
-    filteredPackageDisabled: function() {
+    filteredPackageDisabled: function () {
       return this.listPackageFalse.filter((paquete) => {
         return paquete.name.toLowerCase().match(this.searchD.toLowerCase());
       });
@@ -347,7 +346,28 @@ export default {
       api
         .doGet("package/list/true")
         .then((listPackage) => (this.listPackage = listPackage.data))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     obtenerDatosF() {
@@ -356,7 +376,28 @@ export default {
         .then(
           (listPackageFalse) => (this.listPackageFalse = listPackageFalse.data)
         )
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     register() {
@@ -367,42 +408,98 @@ export default {
 
       api
         .doPost("package/save", this.packages)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Producto registrado exitosamente!",
             icon: "success",
           });
           this.onReset();
-          console.log(response);
         })
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     toggleEdit(id) {
       api
         .doGet("package/get/" + id)
         .then((res) => {
-          console.log(res);
           this.packagesEdit = res.data;
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
       this.openEdit = !this.openEdit;
     },
     editar() {
       api
         .doPost("package/save", this.packagesEdit)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Marca modificada exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.onReset();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     eliminar(id) {
@@ -417,21 +514,40 @@ export default {
         if (result.isConfirmed) {
           api
             .doDelete("package/del/" + id)
-            .then((res) => {
+            .then(() => {
               this.$swal({
                 title: "¡Producto eliminado exitosamente!",
                 icon: "success",
               });
-              console.log(res);
               this.onReset();
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       });
     },
     recuperar(id) {
-      console.log(id);
       this.$swal({
         title: "¿Estás seguro de recuperar este producto?",
         icon: "question",
@@ -443,15 +559,35 @@ export default {
         if (result.isConfirmed) {
           api
             .doPut("package/put/" + id)
-            .then((res) => {
+            .then(() => {
               this.$swal({
                 title: "¡Producto recuperado!",
                 icon: "success",
               });
               this.onReset();
-              console.log(res);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       });

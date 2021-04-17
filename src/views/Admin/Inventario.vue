@@ -309,10 +309,6 @@ export default {
   },
   methods: {
     threeDays(fecha) {
-      /*
-      new Date(new Date(listStock.dateExpire.split('-')[0],listStock.dateExpire.split('-')[1]-1,listStock.dateExpire.split('-')[2]).getTime()+(86400000*3)) <= new Date()
-      new Date(fecha.split("-")[0],fecha.split("-")[1],fecha.split("-")[2])
-      */
       let dayArray = fecha.split("-");
       let fechaConvert = new Date(dayArray[0], dayArray[1] - 1, dayArray[2]);
       let dayMili = 86400000;
@@ -327,12 +323,54 @@ export default {
         .then((listStock) => {
           this.listStock = listStock.data;
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
 
       api
         .doGet("/stock/list/expired")
         .then((listStockEx) => (this.listStockEx = listStockEx.data))
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
 
       api
         .doGet("/product/list/true")
@@ -352,7 +390,28 @@ export default {
             this.listSelectProduct.push(item);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
     },
     register() {
       this.stock = {
@@ -363,15 +422,13 @@ export default {
         },
         dateExpire: this.dateExpire,
       };
-      console.log(this.stock);
       api
         .doPost("stock/save", this.stock)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Lote registrado exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
           this.stock.batch = "";
           this.stock.dateExpire = "";
@@ -379,20 +436,25 @@ export default {
         })
         .catch((error) => {
           let errorResponse = error.response.data;
-          if(errorResponse.errorExists){
+          if (errorResponse.errorExists) {
             this.$swal({
               title: "Oops! Ha ocurrido un error en el servidor.",
-              html: "<span style='font-size:14pt'><b>" + errorResponse.code + "</b> " + errorResponse.message + "<br>Contacte a su operador para más detalles.</span>",
-              icon: "error"
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
             });
-          }else{
+          } else {
             this.$swal({
               title: "Oops! Ha ocurrido un error en el servidor.",
-              html: "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
-              icon: "error"
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
             });
           }
-          
         });
     },
     toggle() {
@@ -464,7 +526,7 @@ export default {
     batch: { required, minValue: minValue(0) },
     quantityStock: { required, minValue: minValue(1) },
     product: { required },
-    dateExpire: { required /* minValue: minValue(this.today) */ },
+    dateExpire: { required },
   },
 };
 </script>

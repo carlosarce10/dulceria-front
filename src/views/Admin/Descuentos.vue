@@ -294,7 +294,6 @@
     </sui-tab>
 
     <!-- MODAL DE REGISTRO DE DESCUENTO PARA PRODUCTO -->
-
     <sui-modal class="modal-small" v-model="openP">
       <sui-modal-header>Producto - Registrar descuento</sui-modal-header>
       <sui-modal-content>
@@ -367,7 +366,6 @@
     </sui-modal>
 
     <!-- MODAL DE REGISTRO DE DESCUENTO PARA MARCA -->
-
     <sui-modal class="modal-small" v-model="openM">
       <sui-modal-header>Marca - Registrar descuento</sui-modal-header>
       <sui-modal-content>
@@ -440,7 +438,6 @@
     </sui-modal>
 
     <!-- MODAL DE REGISTRO DE DESCUENTO PARA CATEGORIA -->
-
     <sui-modal class="modal-small" v-model="openC">
       <sui-modal-header>Categoría - Registrar descuento</sui-modal-header>
       <sui-modal-content>
@@ -749,7 +746,6 @@ export default {
     },
     filteredDiscountM: function () {
       return this.descuentosMarcas.filter((discount) => {
-        console.log(discount.brand.name);
         return discount.brand.name
           .toLowerCase()
           .match(this.searchM.toLowerCase());
@@ -777,7 +773,6 @@ export default {
       api
         .doGet("/discount/get/" + id)
         .then((response) => {
-          console.log(response);
           this.discountEdit = response.data;
           this.discountIDEdit = response.data.id;
           this.discountIDEditP = response.data.product.id;
@@ -786,14 +781,32 @@ export default {
           this.toggleEditP();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     getEditM(id) {
       api
         .doGet("/discount/get/" + id)
         .then((response) => {
-          console.log(response);
           this.discountEdit = response.data;
           this.MdiscountIDEdit = response.data.id;
           this.discountIDEditM = response.data.brand.id;
@@ -802,14 +815,32 @@ export default {
           this.toggleEditM();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     getEditC(id) {
       api
         .doGet("/discount/get/" + id)
         .then((response) => {
-          console.log(response);
           this.discountEdit = response.data;
           this.CdiscountIDEdit = response.data.id;
           this.discountIDEditC = response.data.category.id;
@@ -818,7 +849,26 @@ export default {
           this.toggleEditC();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     getLists() {
@@ -841,7 +891,28 @@ export default {
             }
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
       api
         .doGet("/category/list/true")
         .then((listCategory) => {
@@ -855,7 +926,28 @@ export default {
             this.listSelectCategory.push(c);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
       api
         .doGet("/brand/list/true")
         .then((listBrand) => {
@@ -869,7 +961,28 @@ export default {
             this.listSelectBrand.push(b);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
       api
         .doGet("/product/list/true")
         .then((listProduct) => {
@@ -884,7 +997,28 @@ export default {
             this.listSelectProduct.push(p);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
     },
     registerDP() {
       this.discount = {
@@ -894,16 +1028,13 @@ export default {
         discount: this.discountP,
         comments: this.comments,
       };
-      console.log(this.discount);
       let obj = {};
       Object.assign(obj, this.discount);
       obj.brand = null;
       obj.category = null;
-      console.log("I hopeP: ", obj);
       api
         .doGet("/discount/has/product/" + this.discount.product.id)
         .then((res) => {
-          console.log(res);
           if (res.data) {
             this.$swal({
               title: "¡Este producto ya tiene un descuento!",
@@ -912,8 +1043,7 @@ export default {
           } else {
             api
               .doPost("/discount/save", obj)
-              .then((res) => {
-                console.log(res);
+              .then(() => {
                 this.$swal({
                   title: "¡El descuento ha sido registrado exitosamente!",
                   icon: "success",
@@ -926,19 +1056,51 @@ export default {
                 };
                 this.onReset();
               })
-              .catch((e) => {
-                this.$swal({
-                  title: "Ha ocurrido un error en el servidor.",
-                  text:
-                    e.message +
-                    " Por favor conacte, a su operador para más detalles.",
-                  icon: "error",
-                });
+              .catch((error) => {
+                let errorResponse = error.response.data;
+                if (errorResponse.errorExists) {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'><b>" +
+                      errorResponse.code +
+                      "</b> " +
+                      errorResponse.message +
+                      "<br>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                } else {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                }
               });
           }
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     registerDM() {
@@ -949,16 +1111,13 @@ export default {
         discount: this.discountM,
         comments: this.comments,
       };
-      console.log(this.discount);
       let obj = {};
       Object.assign(obj, this.discount);
       obj.product = null;
       obj.category = null;
-      console.log("I hopeM: ", obj);
       api
         .doGet("/discount/has/brand/" + this.discount.brand.id)
         .then((res) => {
-          console.log(res);
           if (res.data) {
             this.$swal({
               title: "¡Esta marca ya tiene un descuento!",
@@ -967,8 +1126,7 @@ export default {
           } else {
             api
               .doPost("/discount/save", obj)
-              .then((res) => {
-                console.log(res);
+              .then(() => {
                 this.$swal({
                   title: "¡El descuento ha sido registrado exitosamente!",
                   icon: "success",
@@ -983,20 +1141,51 @@ export default {
                 };
                 this.onReset();
               })
-              .catch((e) => {
-                console.log(e);
-                this.$swal({
-                  title: "Ha ocurrido un error en el servidor.",
-                  text:
-                    e.message +
-                    " Por favor, conacte a su operador para más detalles.",
-                  icon: "error",
-                });
+              .catch((error) => {
+                let errorResponse = error.response.data;
+                if (errorResponse.errorExists) {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'><b>" +
+                      errorResponse.code +
+                      "</b> " +
+                      errorResponse.message +
+                      "<br>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                } else {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                }
               });
           }
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     registerDC() {
@@ -1007,16 +1196,13 @@ export default {
         discount: this.discountC,
         comments: this.comments,
       };
-      console.log(this.discount);
       let obj = {};
       Object.assign(obj, this.discount);
       obj.brand = null;
       obj.product = null;
-      console.log("I hopeC: ", obj);
       api
         .doGet("/discount/has/category/" + this.discount.category.id)
         .then((res) => {
-          console.log(res);
           if (res.data) {
             this.$swal({
               title: "¡Esta categoría ya tiene un descuento!",
@@ -1025,8 +1211,7 @@ export default {
           } else {
             api
               .doPost("/discount/save", obj)
-              .then((res) => {
-                console.log(res);
+              .then(() => {
                 this.$swal({
                   title: "¡El descuento ha sido registrado exitosamente!",
                   icon: "success",
@@ -1041,23 +1226,54 @@ export default {
                 };
                 this.onReset();
               })
-              .catch((e) => {
-                this.$swal({
-                  title: "Ha ocurrido un error en el servidor.",
-                  text:
-                    e.message +
-                    " Por favor, conacte a su operador para más detalles.",
-                  icon: "error",
-                });
+              .catch((error) => {
+                let errorResponse = error.response.data;
+                if (errorResponse.errorExists) {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'><b>" +
+                      errorResponse.code +
+                      "</b> " +
+                      errorResponse.message +
+                      "<br>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                } else {
+                  this.$swal({
+                    title: "Oops! Ha ocurrido un error en el servidor.",
+                    html:
+                      "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                    icon: "error",
+                  });
+                }
               });
           }
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     eliminar(id) {
-      console.log(id);
       this.$swal({
         title: "¿Estás seguro de eliminar este descuento?",
         icon: "question",
@@ -1069,15 +1285,35 @@ export default {
         if (result.isConfirmed) {
           api
             .doDelete("/discount/del/" + id)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Descuento eliminado exitosamente!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       });
@@ -1091,16 +1327,34 @@ export default {
       };
       api
         .doPost("/discount/save", this.discountEditP)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     editarM() {
@@ -1112,16 +1366,34 @@ export default {
       };
       api
         .doPost("/discount/save", this.discountEditM)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
 
@@ -1134,16 +1406,34 @@ export default {
       };
       api
         .doPost("/discount/save", this.discountEditC)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Descuento modificado exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     toggleEditP() {

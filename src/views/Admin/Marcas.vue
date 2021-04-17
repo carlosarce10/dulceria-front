@@ -307,13 +307,55 @@ export default {
       api
         .doGet("/brand/list/true")
         .then((response) => (this.marcasTrue = response.data))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
 
       api
         .doGet("/brand/list/false")
         .then((response) => (this.marcasFalse = response.data))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     toggle() {
@@ -323,12 +365,30 @@ export default {
       api
         .doGet("/brand/get/" + id)
         .then((response) => {
-          console.log(response);
           this.nameEdit = response.data.name;
           this.idEdit = response.data.id;
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
 
       this.openEdit = !this.openEdit;
@@ -340,18 +400,36 @@ export default {
       };
       api
         .doPost("/brand/save", this.marcaEdit)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Marca modificada exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
           this.marcaEdit.id = 0;
           this.name = "";
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     register() {
@@ -359,16 +437,36 @@ export default {
         .doPost("/brand/save/", {
           name: this.name,
         })
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Marca registrada exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
           this.name = "";
         })
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     eliminar(id) {
@@ -386,21 +484,40 @@ export default {
         if (result.isConfirmed) {
           api
             .doDelete("/brand/del/" + id)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Marca eliminada exitosamente!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       });
     },
     recuperar(id) {
-      console.log(id);
       this.$swal({
         title: "¿Estás seguro de recuperar esta marca?",
         icon: "question",
@@ -412,15 +529,35 @@ export default {
         if (result.isConfirmed) {
           api
             .doPut("/brand/put/" + id)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Marca recuperada!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       });

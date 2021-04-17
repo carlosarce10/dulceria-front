@@ -555,7 +555,6 @@ export default {
       this.openP = !this.openP;
     },
     addProductToDetails() {
-      console.log(this.idProducto);
       if (this.idProducto !== 0) {
         let agregar = true;
 
@@ -581,13 +580,33 @@ export default {
 
               this.detalles.unshift(detalle);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       }
     },
     addProductToDetailsEdit() {
-      console.log(this.idProducto);
       if (this.idProducto !== 0) {
         let agregar = true;
 
@@ -613,7 +632,28 @@ export default {
 
               this.detallesE.unshift(detalle);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       }
@@ -692,11 +732,10 @@ export default {
         .doPost("/package/save", this.package)
         .then((response) => {
           let idPa = response.data.id;
-          console.log(response.data.id);
 
           api
             .doPost("/packageDetails/save/many/" + idPa, this.detalles)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Paquete registrado exitosamente!",
                 icon: "success",
@@ -707,14 +746,54 @@ export default {
                   this.$router.push("/admin/paquetes");
                 }
               });
-              console.log(response);
             })
-            .catch((error) => console.log(error.response))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
           this.onReset();
-          console.log(response);
         })
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     editar() {
@@ -727,23 +806,61 @@ export default {
         .doPost("/package/save", this.package)
         .then((response) => {
           let idPa = response.data.id;
-          console.log(idPa);
 
           api
             .doPost("/packageDetails/save/many/edit/" + idPa, this.detallesE)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Paquete actualizado exitosamente!",
                 icon: "success",
               });
-              console.log(response);
             })
-            .catch((error) => console.log(error.response))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
-
-          console.log(response);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
     },
     status(validation) {
       return {

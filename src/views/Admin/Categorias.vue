@@ -5,7 +5,6 @@
     <div class="funciones">
       <h3>Categorías</h3>
     </div>
-
     <sui-divider hidden />
     <sui-tab class="panel">
       <sui-tab-pane icon="check icon" title="Categorías Activas">
@@ -308,13 +307,55 @@ export default {
       api
         .doGet("/category/list/true")
         .then((response) => (this.categoriasTrue = response.data))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
 
       api
         .doGet("/category/list/false")
         .then((response) => (this.categoriasFalse = response.data))
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        })
         .finally(() => (this.loading = false));
     },
     toggle() {
@@ -324,12 +365,30 @@ export default {
       api
         .doGet("/category/get/" + id)
         .then((response) => {
-          console.log(response);
           this.nameEdit = response.data.name;
           this.idEdit = response.data.id;
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
 
       this.openEdit = !this.openEdit;
@@ -341,18 +400,36 @@ export default {
       };
       api
         .doPost("/category/save", this.categoriaEdit)
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Categoría modificada exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
           this.name = "";
           this.categoriaEdit.id = 0;
         })
         .catch((error) => {
-          console.log(error);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     register() {
@@ -360,21 +437,38 @@ export default {
         .doPost("/category/save", {
           name: this.name,
         })
-        .then((response) => {
+        .then(() => {
           this.$swal({
             title: "¡Categoría registrada exitosamente!",
             icon: "success",
           });
-          console.log(response);
           this.getLists();
           this.name = "";
         })
-        .catch((error) => console.log(error))
-        .finally(() => (this.loading = false));
+        .catch((error) => {
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
+        });
     },
-
     eliminar(id) {
-      console.log(id);
       this.$swal({
         title: "¿Estás seguro de eliminar esta categoría?",
         icon: "question",
@@ -386,13 +480,33 @@ export default {
         if (result.isConfirmed) {
           api
             .doDelete("/category/del/" + id)
-            .catch((error) => console.log(error))
-            .then((response) => {
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
+            .then(() => {
               this.$swal({
                 title: "¡Categoría eliminada exitosamente!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
             .finally(() => (this.loading = false));
@@ -400,7 +514,6 @@ export default {
       });
     },
     recuperar(id) {
-      console.log(id);
       this.$swal({
         title: "¿Estás seguro de recuperar esta categoría?",
         icon: "question",
@@ -412,15 +525,35 @@ export default {
         if (result.isConfirmed) {
           api
             .doPut("/category/put/" + id)
-            .then((response) => {
+            .then(() => {
               this.$swal({
                 title: "¡Categoría recuperada!",
                 icon: "success",
               });
-              console.log(response);
               this.getLists();
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+              let errorResponse = error.response.data;
+              if (errorResponse.errorExists) {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'><b>" +
+                    errorResponse.code +
+                    "</b> " +
+                    errorResponse.message +
+                    "<br>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              } else {
+                this.$swal({
+                  title: "Oops! Ha ocurrido un error en el servidor.",
+                  html:
+                    "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+                  icon: "error",
+                });
+              }
+            })
             .finally(() => (this.loading = false));
         }
       });

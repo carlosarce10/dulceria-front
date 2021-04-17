@@ -331,10 +331,10 @@
                 <sui-table-cell
                   ><sui-button
                     style="
-                        display: block;
-                        margin-left: auto;
-                        margin-right: auto;
-                      "
+                      display: block;
+                      margin-left: auto;
+                      margin-right: auto;
+                    "
                     class="btnModal"
                     @click.native="getVenta(venta.id)"
                     >Ver</sui-button
@@ -566,12 +566,12 @@ export default {
     this.startup();
   },
   computed: {
-    filteredSales: function() {
+    filteredSales: function () {
       return this.ventas.filter((sale) => {
         return sale.date.toLowerCase().match(this.search.toLowerCase());
       });
     },
-    filteredSalesToday: function() {
+    filteredSalesToday: function () {
       return this.ventasHoy.filter((sale) => {
         return sale.date.toLowerCase().match(this.searchD.toLowerCase());
       });
@@ -595,7 +595,6 @@ export default {
       api
         .doGet("sales/list/today")
         .then((response) => {
-          console.log(response.data);
           this.ventasHoy = response.data;
           for (let u of this.ventasHoy) {
             u.date = u.date.split(".")[0];
@@ -604,7 +603,26 @@ export default {
           }
         })
         .catch((error) => {
-          this.$swal(error.message);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
     },
     toggle() {
@@ -614,7 +632,6 @@ export default {
       api
         .doGet("sales/get/" + id)
         .then((response) => {
-          console.log(response.data);
           this.venta.details = response.data.saleDetails;
           this.venta.date = response.data.sale.date;
           this.venta.date = this.venta.date.split(".")[0];
@@ -626,7 +643,26 @@ export default {
             response.data.sale.cashbox.cashboxNumber;
         })
         .catch((error) => {
-          this.$swal(error.message);
+          let errorResponse = error.response.data;
+          if (errorResponse.errorExists) {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'><b>" +
+                errorResponse.code +
+                "</b> " +
+                errorResponse.message +
+                "<br>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          } else {
+            this.$swal({
+              title: "Oops! Ha ocurrido un error en el servidor.",
+              html:
+                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
+              icon: "error",
+            });
+          }
         });
 
       this.open = !this.open;
