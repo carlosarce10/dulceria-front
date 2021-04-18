@@ -63,7 +63,7 @@
                     logbook.date
                   }}</sui-table-cell>
                   <sui-table-cell text-align="center">{{
-                    logbook.table
+                    logbook.tableExecute
                   }}</sui-table-cell>
                   <sui-table-cell text-align="center">
                     <sui-button
@@ -111,7 +111,7 @@
           <sui-segment raised color="pink">
             <h2 class="ui header">
               <div class="sub header">
-                <i class="th icon"></i>Tabla: {{ logbookEdit.table }}
+                <i class="th icon"></i>Tabla: {{ logbookEdit.tableExecute }}
               </div>
             </h2>
           </sui-segment>
@@ -159,7 +159,7 @@
   </div>
 </template>
 
-<script >
+<script>
 import fondo from "../../components/fondo";
 import cabecera from "../../components/headerAdmin";
 import Particles from "particles.vue";
@@ -187,8 +187,8 @@ export default {
         id: 0,
         tableExecute: "",
         action: "",
-        previous_log: "",
-        next_log: "",
+        previousLog: "",
+        nextLog: "",
         user: "",
         date: "",
         host: "",
@@ -200,7 +200,7 @@ export default {
     this.getList();
   },
   computed: {
-    filteredBrands: function () {
+    filteredBrands: function() {
       return this.logbookTrue.filter((logbook) => {
         return logbook.action.toLowerCase().match(this.search.toLowerCase());
       });
@@ -240,8 +240,8 @@ export default {
         .then((response) => {
           this.logbookEdit = response.data;
 
-          this.logNew = this.logbookEdit.next_log.split("|");
-          this.logOld = this.logbookEdit.previous_log.split("|");
+          this.logNew = this.logbookEdit.nextLog.split("|");
+          this.logOld = this.logbookEdit.previousLog.split("|");
         })
         .catch((error) => {
           let errorResponse = error.response.data;
