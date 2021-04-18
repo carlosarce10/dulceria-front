@@ -513,6 +513,7 @@ export default {
         netContent: "",
         retailPrice: "",
         wholesalePrice: "",
+        image: null,
         brand: { id: 0 },
         category: { id: 0 },
       },
@@ -764,23 +765,25 @@ export default {
     subirImagen() {
       const refImg = ref.child("imagenes/productos/" + this.imagen.name);
       const metadata = { contentType: "img/jpeg" };
-      refImg.put(this.imagen, metadata).then((e) => console.log(e));
+      refImg.put(this.imagen, metadata);
     },
     subirImagenEdit() {
       const refImg = ref.child("imagenes/productos/" + this.imagenEdit.name);
       const metadata = { contentType: "img/jpeg" };
-      refImg.put(this.imagenEdit, metadata).then((e) => console.log(e));
+      refImg.put(this.imagenEdit, metadata);
     },
     register() {
+      let MyImagen = null
       if (this.imagen !== null) {
         this.subirImagen();
-        this.product.image = this.imagen.name;
+        MyImagen = this.imagen.name;
       }
       this.product = {
         name: this.name,
         netContent: this.netContent,
         retailPrice: this.retailPrice,
         wholesalePrice: this.wholesalePrice,
+        image: MyImagen,
         brand: {
           id: this.brand,
         },
@@ -788,6 +791,7 @@ export default {
           id: this.category,
         },
       };
+      console.log("ESTE PRODUCTO ",this.product)
       api
         .doPost("/product/save", this.product)
         .then(() => {
@@ -871,9 +875,10 @@ export default {
       });
     },
     editar() {
+      let MyImagen = null
       if (this.imagenEdit !== null) {
         this.subirImagenEdit();
-        this.productEdit.image = this.imagenEdit.name;
+        MyImagen = this.imagenEdit.name;
       }
       this.productEdit = {
         id: this.productEditId,
@@ -881,6 +886,7 @@ export default {
         netContent: this.netContentEdit,
         retailPrice: this.retailPriceEdit,
         wholesalePrice: this.wholesalePriceEdit,
+        image: MyImagen,
         brand: {
           id: this.brandEdit,
         },
