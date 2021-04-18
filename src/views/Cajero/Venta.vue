@@ -330,7 +330,17 @@ export default {
       api
         .doGet("/sales/get/" + id)
         .then((response) => {
-          this.venta.details = response.data.saleDetails;
+          let ventaDetalles = response.data.saleDetails;
+          for (let item of ventaDetalles) {
+            let convert = (item.discountAmount + "").split(".");
+
+            if (convert.length === 2) {
+              let amount = convert[0] + "." + convert[1].substring(0, 2);
+              item.discountAmount = amount;
+            }
+          }
+
+          this.venta.details = ventaDetalles;
           this.venta.date = response.data.sale.date;
           this.venta.date = this.venta.date.split(".")[0];
           this.venta.date = this.venta.date.replace("T", " ");

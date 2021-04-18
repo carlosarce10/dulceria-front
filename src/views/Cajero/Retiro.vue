@@ -398,9 +398,7 @@ export default {
       dinero: null,
     };
   },
-  beforeMount() {
-    this.getUserAuthenticated();
-  },
+
   mounted() {
     this.startUp();
     this.getCashbox();
@@ -464,7 +462,17 @@ export default {
       api
         .doGet("/sales/get/" + id)
         .then((response) => {
-          this.venta.details = response.data.saleDetails;
+          let ventaDetalles = response.data.saleDetails;
+          for (let item of ventaDetalles) {
+            let convert = (item.discountAmount + "").split(".");
+
+            if (convert.length === 2) {
+              let amount = convert[0] + "." + convert[1].substring(0, 2);
+              item.discountAmount = amount;
+            }
+          }
+
+          this.venta.details = ventaDetalles;
           this.venta.date = response.data.sale.date;
           this.venta.date = this.venta.date.split(".")[0];
           this.venta.date = this.venta.date.replace("T", " ");
@@ -496,35 +504,6 @@ export default {
             });
           }
         });
-    },
-    getUserAuthenticated() {
-      let id = localStorage.getItem("idCashbox");
-      api
-        .doGet("/user/get/" + id)
-        .then((response) => (this.user = response.data))
-        .catch((error) => {
-          let errorResponse = error.response.data;
-          if (errorResponse.errorExists) {
-            this.$swal({
-              title: "Oops! Ha ocurrido un error en el servidor.",
-              html:
-                "<span style='font-size:14pt'><b>" +
-                errorResponse.code +
-                "</b> " +
-                errorResponse.message +
-                "<br>Contacte a su operador para más detalles.</span>",
-              icon: "error",
-            });
-          } else {
-            this.$swal({
-              title: "Oops! Ha ocurrido un error en el servidor.",
-              html:
-                "<span style='font-size:14pt'>Contacte a su operador para más detalles.</span>",
-              icon: "error",
-            });
-          }
-        })
-        .finally(() => (this.loading = false));
     },
     getCashbox() {
       let id = localStorage.getItem("idCashbox");
