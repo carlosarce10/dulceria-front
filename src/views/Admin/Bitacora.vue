@@ -127,7 +127,7 @@
           <sui-segment color="green" raised>
             <h2 class="ui header">
               <div class="sub header">
-                <i class="calendar times icon"></i> Datos previos:
+                <i class="calendar times icon"></i> Registro Original:
               </div>
               <sui-divider />
               <div v-for="log in logOld" :key="log.id" class="sub header">
@@ -139,7 +139,7 @@
           <sui-segment raised color="green">
             <h2 class="ui header">
               <div class="sub header">
-                <i class="calendar check icon"></i> Datos nuevos:
+                <i class="calendar check icon"></i> Registro nuevo:
               </div>
               <sui-divider />
               <div v-for="item in logNew" :key="item.id" class="sub header">
@@ -200,7 +200,7 @@ export default {
     this.getList();
   },
   computed: {
-    filteredBrands: function() {
+    filteredBrands: function () {
       return this.logbookTrue.filter((logbook) => {
         return logbook.action.toLowerCase().match(this.search.toLowerCase());
       });
