@@ -24,7 +24,7 @@
                   El monto inicial es requerido
                 </div>
                 <div class="error errorMsg" v-if="!$v.initialAmount.between">
-                  El monto inicial debe ser de un rango entre $0 - $100
+                  El monto inicial debe ser de un rango entre $0 - $1000
                 </div>
                 <br />
                 <label class="custom-label"
@@ -173,6 +173,7 @@ export default {
       //this.$router.push({name: "AbrirCaja", params: { cantidad: cant }});
     },
     salir() {
+      localStorage.clear();
       this.$router.push({ name: "Home" });
     },
     status(validation) {

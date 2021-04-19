@@ -540,6 +540,7 @@ export default {
       wholesalePriceEdit: "",
       brandEdit: "",
       categoryEdit: "",
+      imageEdit: "",
     };
   },
   beforeMount() {
@@ -723,6 +724,7 @@ export default {
         .doGet("/product/get/" + id)
         .then((response) => {
           this.productEdit = response.data;
+          this.imageEdit = response.data.image;
           this.productEditId = response.data.id;
           this.nameEdit = response.data.name;
           this.netContentEdit = response.data.netContent;
@@ -875,10 +877,9 @@ export default {
       });
     },
     editar() {
-      let MyImagen = null
       if (this.imagenEdit !== null) {
         this.subirImagenEdit();
-        MyImagen = this.imagenEdit.name;
+        this.imageEdit = this.imagenEdit.name;
       }
       this.productEdit = {
         id: this.productEditId,
@@ -886,7 +887,7 @@ export default {
         netContent: this.netContentEdit,
         retailPrice: this.retailPriceEdit,
         wholesalePrice: this.wholesalePriceEdit,
-        image: MyImagen,
+        image: this.imageEdit,
         brand: {
           id: this.brandEdit,
         },

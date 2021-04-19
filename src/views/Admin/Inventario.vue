@@ -430,9 +430,7 @@ export default {
             icon: "success",
           });
           this.getLists();
-          this.stock.batch = "";
-          this.stock.dateExpire = "";
-          (this.stock.quantityStock = ""), (this.stock.product.id = 0);
+          this.onReset();
         })
         .catch((error) => {
           let errorResponse = error.response.data;

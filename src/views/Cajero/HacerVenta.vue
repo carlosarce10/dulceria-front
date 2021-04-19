@@ -373,6 +373,8 @@ export default {
         detalle.discountAmount = discountAmount;
         detalle.subtotal = subtotal;
         total = total + subtotal;
+
+        total = (""+total).split(".").length === 2 ? parseFloat((""+total).split(".")[0]+"."+((""+total).split(".")[1]).substring(0,2)): total;
       }
 
       return total;

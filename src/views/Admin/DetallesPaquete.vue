@@ -14,6 +14,7 @@
         />
       </a>
     </div>
+    <br><br><br>
 
     <!-- REGISTRO DE PAQUETE -->
     <sui-tab class="panel">

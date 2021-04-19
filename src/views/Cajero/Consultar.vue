@@ -14,7 +14,7 @@
               <input
                 class="prompt"
                 type="text"
-                placeholder="Buscar paquete..."
+                placeholder="Buscar producto"
                 v-model="search"
               />
               <i class="search icon"></i>
@@ -84,7 +84,7 @@
               <input
                 class="prompt"
                 type="text"
-                placeholder="Buscar producto"
+                placeholder="Buscar paquete"
                 v-model="search"
               />
               <i class="search icon"></i>

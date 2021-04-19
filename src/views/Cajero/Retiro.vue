@@ -512,6 +512,8 @@ export default {
         .then((response) => {
           this.cashbox.id = response.data.id;
           this.cashbox.amount = response.data.amount;
+          this.cashbox.amount = (""+this.cashbox.amount).split(".").length === 2 ? parseFloat((""+this.cashbox.amount).split(".")[0]+"."+((""+this.cashbox.amount).split(".")[1]).substring(0,2)): this.cashbox.amount;
+          
           this.cashbox.cashboxNumber = response.data.cashboxNumber;
           this.cashbox.date = response.data.date;
           this.cashbox.initialAmount = response.data.initialAmount;
@@ -546,7 +548,7 @@ export default {
     retirar() {
       let Id = localStorage.getItem("idCashbox");
       this.$swal({
-        title: "¿Esta seguro de realizar el retiro?",
+        title: "¿Está seguro de realizar el retiro?",
         icon: "question",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
